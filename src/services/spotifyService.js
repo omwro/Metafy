@@ -1,7 +1,6 @@
 import axios from 'axios';
 import store from "@/store/store";
 import Home from "@/views/Home";
-// import {sha256} from 'js-sha256';
 
 export class SpotifyService {
 
@@ -68,7 +67,7 @@ export class SpotifyService {
             .then(response => {
                 store.commit("accessToken", response.data.access_token)
                 store.commit("refreshToken", response.data.refresh_token)
-                this.$router.push(Home);
+                    this.$router.push(Home);
             })
             .catch(e => {
                 console.error("SpotifyService",e)
@@ -76,7 +75,7 @@ export class SpotifyService {
     }
 
      static async fetchPlaylists() {
-        axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
+        return axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
             .then(response => {
                 store.commit("playlists", response.data.items);
                 console.log("User Playlists fetched", response.data)
@@ -85,5 +84,28 @@ export class SpotifyService {
             .catch(e => {
                 console.error("SpotifyService",e)
             })
+    }
+
+    static splitPlaylistFromTags(playlists) {
+        const regex = /\[.*?\]/g;
+        let playlistsWithTags = [];
+        let playlistsWithoutTags = [];
+        for (let pl of playlists) {
+            const match = pl.name.match(regex);
+            if (match) {
+                // Get first match of the regex and remove the squared brackets
+                const firstMatch = match[0].slice(1,-1);
+                if (playlistsWithTags[firstMatch] === undefined) {
+                    playlistsWithTags[firstMatch] = [];
+                }
+                playlistsWithTags[firstMatch].push(pl);
+            } else {
+                playlistsWithoutTags.push(pl);
+            }
+        }
+        return {
+            withTags: playlistsWithTags,
+            withoutTags: playlistsWithoutTags
+        };
     }
 }
