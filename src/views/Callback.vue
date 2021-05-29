@@ -3,8 +3,9 @@
 </template>
 
 <script>
-import {SpotifyService} from "@/services/spotifyService.js";
+import {SpotifyAuthService} from "@/services/spotifyAuthService.js";
 import store from "@/store/store";
+import Home from "@/views/Home";
 
 export default {
     name: 'Callback',
@@ -18,7 +19,10 @@ export default {
         console.log(authorizationCode)
         console.log(store.state.codeVerifier)
         if (authorizationCode && store.state.codeVerifier) {
-            SpotifyService.fetchAccessToken(authorizationCode, store.state.codeVerifier);
+            SpotifyAuthService.fetchAccessToken(authorizationCode, store.state.codeVerifier)
+            .then(() => {
+                this.$router.push(Home);
+            });
         }
     }
 }

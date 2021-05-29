@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
+import moment from "moment";
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
         authorizationState: null,
         accessToken: null,
         refreshToken: null,
+        expiresIn: moment(),
         playlists: []
     },
     mutations: {
@@ -33,6 +35,9 @@ export default new Vuex.Store({
         },
         refreshToken (state, value) {
             state.refreshToken = value;
+        },
+        expiresIn (state, value) {
+            state.expiresIn = value;
         },
         playlists (state, value) {
             state.playlists = value;

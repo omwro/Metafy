@@ -21,15 +21,27 @@
 
 <script>
 import axios from 'axios';
-import {SpotifyService} from "@/services/spotifyService.js";
+import {SpotifyAuthService} from "@/services/spotifyAuthService.js";
 import store from "@/store/store";
 import Home from "@/views/Home";
 
-if (store.state.accessToken) {
+if (store.state.accessToken && store.state.refreshToken) {
     axios.interceptors.request.use(function (config) {
         config.headers.Authorization = "Bearer "+store.state.accessToken;
         return config;
     });
+
+    // axios.interceptors.response.use((response) => {
+    //     return response;
+    // }, (error) => {
+    //     console.log("Error response", error.response)
+    //     if (error.response.status === 401) {
+    //        SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+    //         .then(() => this.$router.push(Home));
+    //     } else {
+    //         return new Promise(((resolve, reject) => reject(error)));
+    //     }
+    // })
 }
 
 export default {
@@ -48,14 +60,14 @@ export default {
             return store.getters.isLoggedIn;
         },
         async getAuth() {
-            const codeVerifier = SpotifyService.generateCodeVerifier();
-            const hashed = await SpotifyService.sha256(codeVerifier);
-            const codeChallenge = SpotifyService.generateCodeChallenge(hashed);
+            const codeVerifier = SpotifyAuthService.generateCodeVerifier();
+            const hashed = await SpotifyAuthService.sha256(codeVerifier);
+            const codeChallenge = SpotifyAuthService.generateCodeChallenge(hashed);
 
             store.commit("codeVerifier", codeVerifier);
             store.commit("codeChallenge", codeChallenge);
 
-            SpotifyService.redirectToAuthorizationPage(codeChallenge);
+            SpotifyAuthService.redirectToAuthorizationPage(codeChallenge);
         }
     }
 };

@@ -7,24 +7,25 @@
         </v-row>
         <v-row>
             <v-col>
-                <h3 class="text-center">Your tagged playlists ({{playlistsWithTags.length}})</h3>
+                <h3 class="text-center">Your tagged playlists</h3>
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="playlist-container">
+            <v-col>
                 <v-row>
                     <v-col
-                        v-for="(_, tag) in playlistsWithTags"
-                        :key="tag"
+                        v-for="obj in playlistsWithTags"
+                        :key="obj.tag"
+                        class="playlist-container"
                     >
-                        <h3 class="text-center">{{ tag }}</h3>
-<!--                        <v-chip-->
-<!--                            v-for="pl in playlistsWithTags"-->
-<!--                            :key="pl.id"-->
-<!--                            class="playlist-chip"-->
-<!--                        >-->
-<!--                            {{ pl.name }}-->
-<!--                        </v-chip>-->
+                        <h3 class="text-center">{{ obj.tag }}</h3>
+                        <v-chip
+                            v-for="pl in obj.playlists"
+                            :key="pl.id"
+                            class="playlist-chip"
+                        >
+                            {{ pl.name }}
+                        </v-chip>
                     </v-col>
                 </v-row>
             </v-col>
@@ -66,7 +67,6 @@ export default {
         SpotifyService.fetchPlaylists().then((result) => {
             const splittedPlaylists = SpotifyService.splitPlaylistFromTags(result);
             this.playlistsWithTags = splittedPlaylists.withTags;
-            console.log(this.playlistsWithTags)
             this.playlistsWithoutTags = splittedPlaylists.withoutTags;
         });
     },
