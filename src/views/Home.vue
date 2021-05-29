@@ -1,6 +1,14 @@
 <template>
     <v-container v-if="isLoggedIn()">
         <h1>Let's vibe with Metafy!</h1>
+        <ul>
+            <li
+                v-for="pl in playlists"
+                :key="pl.id"
+            >
+                {{ pl.name }}
+            </li>
+        </ul>
     </v-container>
     <v-container v-else>
         <h1>Welcome to Metafy!</h1>
@@ -17,7 +25,10 @@ export default {
         playlists: []
     }),
     created() {
-        SpotifyService.fetchPlaylists();
+        SpotifyService.fetchPlaylists().then((result) => {
+            this.playlists = result;
+            console.log(result)
+        });
     },
     methods: {
         isLoggedIn() {

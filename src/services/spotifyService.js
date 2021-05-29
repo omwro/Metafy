@@ -75,11 +75,12 @@ export class SpotifyService {
             })
     }
 
-    static fetchPlaylists() {
+     static async fetchPlaylists() {
         axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
             .then(response => {
                 store.commit("playlists", response.data.items);
                 console.log("User Playlists fetched", response.data)
+                return response.data.items;
             })
             .catch(e => {
                 console.error("SpotifyService",e)
