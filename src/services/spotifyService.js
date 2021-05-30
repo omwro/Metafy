@@ -2,7 +2,10 @@ import axios from 'axios';
 import store from "@/store/store";
 import {SpotifyAuthService} from "@/services/spotifyAuthService.js";
 
+const TAG_REGEX = /\[.*?\]/g;
+
 export class SpotifyService {
+
     static async fetchPlaylists() {
         if (SpotifyAuthService.isAccessTokenExpired()){
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
@@ -19,32 +22,48 @@ export class SpotifyService {
             })
     }
 
-    static splitPlaylistFromTags(playlists) {
-        const regex = /\[.*?\]/g;
+    static convertPlaylist(playlists) {
+        let playlistsWithDynamics = [];
         let playlistsWithTags = [];
         let playlistsWithoutTags = [];
         for (let pl of playlists) {
-            const match = pl.name.match(regex);
-            if (match) {
-                // Get first match of the regex and remove the squared brackets
-                const firstMatch = match[0].slice(1, -1);
-                if (!playlistsWithTags.filter((obj) => obj.tag === firstMatch).length) {
-                    playlistsWithTags.push({
-                        tag: firstMatch,
-                        playlists: []
-                    })
+            pl["metafy"] = {
+                categoryName: "",
+                tagName: pl.name
+            };
+
+            if (pl.name.match(TAG_REGEX)) {
+                const masterTag = this.getTagFromPlaylistName(pl);
+                pl.metafy.categoryName = masterTag.categoryName;
+                pl.metafy.tagName = masterTag.tagName;
+                if (masterTag.categoryName === "Dynamic") {
+                    playlistsWithDynamics.push(pl)
+                } else {
+                    if (!playlistsWithTags.filter((plwt) => plwt.categoryName === masterTag.categoryName).length) {
+                        playlistsWithTags.push({
+                            categoryName: masterTag.categoryName,
+                            playlists: []
+                        })
+                    }
+                    playlistsWithTags
+                        .filter((plwt) => plwt.categoryName === masterTag.categoryName)[0]
+                        .playlists
+                        .push(pl)
                 }
-                playlistsWithTags
-                    .filter((obj) => obj.tag === firstMatch)[0]
-                    .playlists
-                    .push(pl)
             } else {
                 playlistsWithoutTags.push(pl);
             }
         }
         return {
-            withTags: playlistsWithTags,
-            withoutTags: playlistsWithoutTags
+            dynamics: playlistsWithDynamics,
+            tags: playlistsWithTags,
+            others: playlistsWithoutTags
         };
+    }
+
+    static getTagFromPlaylistName(playlist) {
+        const categoryName = playlist.name.match(TAG_REGEX)[0].slice(1, -1);
+        const tagName = playlist.name.substring(playlist.name.match(TAG_REGEX)[0].length)
+        return {categoryName, tagName};
     }
 }

@@ -7,24 +7,46 @@
         </v-row>
         <v-row>
             <v-col>
-                <h3 class="text-center">Your tagged playlists</h3>
+                <h2 class="text-center">Your dynamic playlists</h2>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="playlist-container">
+                <v-chip
+                    v-for="pl in playlists.dynamics"
+                    :key="pl.id"
+                    class="playlist-chip"
+                >
+                    {{ pl.metafy.tagName }}
+                </v-chip>
             </v-col>
         </v-row>
         <v-row>
             <v-col>
+                <h2 class="text-center">Your tagged playlists</h2>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col
+                v-for="plwt in playlists.tags"
+                :key="plwt.categoryName"
+            >
+                <v-row>
+                    <v-col>
+                        <h3 class="text-center">{{ plwt.categoryName }}</h3>
+                    </v-col>
+                </v-row>
                 <v-row>
                     <v-col
-                        v-for="obj in playlistsWithTags"
-                        :key="obj.tag"
+
                         class="playlist-container"
                     >
-                        <h3 class="text-center">{{ obj.tag }}</h3>
                         <v-chip
-                            v-for="pl in obj.playlists"
+                            v-for="pl in plwt.playlists"
                             :key="pl.id"
                             class="playlist-chip"
                         >
-                            {{ pl.name }}
+                            {{ pl.metafy.tagName }}
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -32,13 +54,13 @@
         </v-row>
         <v-row>
             <v-col>
-                <h3 class="text-center">Your untagged playlists</h3>
+                <h2 class="text-center">Your untagged playlists</h2>
             </v-col>
         </v-row>
         <v-row>
             <v-col class="playlist-container">
                 <v-chip
-                    v-for="pl in playlistsWithoutTags"
+                    v-for="pl in playlists.others"
                     :key="pl.id"
                     class="playlist-chip"
                 >
@@ -59,15 +81,11 @@ import store from "@/store/store";
 export default {
     name: 'Home',
     data: () => ({
-        key: 0,
-        playlistsWithTags: [],
-        playlistsWithoutTags: []
+        playlists: [],
     }),
     created() {
         SpotifyService.fetchPlaylists().then((result) => {
-            const splittedPlaylists = SpotifyService.splitPlaylistFromTags(result);
-            this.playlistsWithTags = splittedPlaylists.withTags;
-            this.playlistsWithoutTags = splittedPlaylists.withoutTags;
+            this.playlists = SpotifyService.convertPlaylist(result);
         });
     },
     methods: {
@@ -80,7 +98,7 @@ export default {
 
 <style scoped lang="scss">
 .playlist-container {
-    margin: 0 32px;
+    margin: 0 12px;
     padding: 8px;
     border: solid 1px black;
 
