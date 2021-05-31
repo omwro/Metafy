@@ -11,15 +11,18 @@ export class SpotifyService {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
 
-        return axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
-            .then(response => {
-                store.commit("playlists", response.data.items);
-                console.log("User Playlists fetched", response.data)
-                return response.data.items;
-            })
-            .catch(e => {
-                console.error("SpotifyService", e)
-            })
+        const playlists = [];
+        const firstFetch = await axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
+        playlists.push(firstFetch.data.items);
+        const total = firstFetch.data.total;
+        const multiplier = Math.ceil(total / 50);
+        for (let i = 1; i < multiplier; i++) {
+            const otherFetch = await axios.get("https://api.spotify.com/v1/me/playlists?limit=50&offset="+i)
+            playlists.push(otherFetch.data.items);
+        }
+        store.commit("playlists", playlists);
+        return playlists
+
     }
 
     static convertPlaylist(playlists) {
