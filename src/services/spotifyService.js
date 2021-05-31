@@ -1,8 +1,11 @@
 import axios from 'axios';
 import store from "@/store/store";
 import {SpotifyAuthService} from "@/services/spotifyAuthService.js";
+import {PlaylistRepository} from "@/repositories/playlistRepository";
 
 const TAG_REGEX = /\[.*?\]/g;
+
+const PLAYLIST_FETCH_LIMIT = 50;
 
 export class SpotifyService {
 
@@ -11,18 +14,18 @@ export class SpotifyService {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
 
-        const playlists = [];
-        const firstFetch = await axios.get("https://api.spotify.com/v1/me/playlists?limit=50")
-        playlists.push(firstFetch.data.items);
-        const total = firstFetch.data.total;
-        const multiplier = Math.ceil(total / 50);
-        for (let i = 1; i < multiplier; i++) {
-            const otherFetch = await axios.get("https://api.spotify.com/v1/me/playlists?limit=50&offset="+i)
-            playlists.push(otherFetch.data.items);
+        let playlists = [];
+        let total = 1;
+        // Loop through the request, because of restriction with request all items.
+        for (let offset = 0; offset < total;) {
+            const fetch = await PlaylistRepository.fetchCurrentUserPlaylists(PLAYLIST_FETCH_LIMIT, offset);
+            offset += PLAYLIST_FETCH_LIMIT;
+            if (offset < fetch.total) total += PLAYLIST_FETCH_LIMIT
+            // Add the new fetched items to the playlist instead of adding the array itself.
+            playlists = playlists.concat(fetch.items);
         }
         store.commit("playlists", playlists);
         return playlists
-
     }
 
     static convertPlaylist(playlists) {

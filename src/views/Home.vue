@@ -98,6 +98,7 @@ export default {
         },
         async fetchPlaylists() {
             SpotifyService.fetchPlaylists().then((result) => {
+                console.log("FetchUserPlaylists", result);
                 this.playlists = SpotifyService.convertPlaylist(result);
                 console.log("Converted Playlist", this.playlists)
             });
