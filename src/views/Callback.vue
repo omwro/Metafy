@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {SpotifyAuthService} from "@/services/spotifyAuthService.js";
+import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import store from "@/store/store";
 import Home from "@/views/Home";
 

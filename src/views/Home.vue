@@ -17,13 +17,13 @@
         </v-row>
         <v-row>
             <v-col class="playlist-container">
-                <v-chip
-                    v-for="pl in playlists.dynamics"
-                    :key="pl.id"
-                    class="playlist-chip"
-                >
-                    {{ pl.metafy.tagName }}
-                </v-chip>
+                <v-card v-for="pl in playlists.dynamics"
+                        :key="pl.id">
+                    <v-card-title>{{pl.metafy.tagName}}</v-card-title>
+                    <v-card-text>
+
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
         <v-row>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import {SpotifyService} from "@/services/spotifyService.js";
+import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
 
 export default {
