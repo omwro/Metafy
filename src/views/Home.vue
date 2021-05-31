@@ -7,7 +7,12 @@
         </v-row>
         <v-row>
             <v-col>
-                <h2 class="text-center">Your dynamic playlists</h2>
+                <h2 class="text-center">
+                    Your dynamic playlists
+                    <v-icon v-on:click="refreshDynamicPlaylists">
+                        mdi-refresh
+                    </v-icon>
+                </h2>
             </v-col>
         </v-row>
         <v-row>
@@ -82,15 +87,24 @@ export default {
     name: 'Home',
     data: () => ({
         playlists: [],
+        key: 0
     }),
     created() {
-        SpotifyService.fetchPlaylists().then((result) => {
-            this.playlists = SpotifyService.convertPlaylist(result);
-        });
+        this.fetchPlaylists()
     },
     methods: {
         isLoggedIn() {
             return store.getters.isLoggedIn;
+        },
+        async fetchPlaylists() {
+            SpotifyService.fetchPlaylists().then((result) => {
+                this.playlists = SpotifyService.convertPlaylist(result);
+                console.log("Converted Playlist", this.playlists)
+            });
+        },
+        async refreshDynamicPlaylists() {
+            await SpotifyService.refreshDynamics(this.playlists.dynamics);
+            await this.fetchPlaylists();
         }
     }
 }

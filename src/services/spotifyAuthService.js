@@ -7,7 +7,7 @@ export class SpotifyAuthService {
     static clientId = "e1e4a778c5bf4bf7b6be2ff48801f98c";
     static responseType = "code";
     static redirectUri = this.getCurrentWebsiteCallbackUri();
-    static scope = "user-read-private playlist-read-private";
+    static scope = "user-read-private playlist-read-private playlist-modify-public playlist-modify-private";
     static codeChallengeMethod = "S256";
 
     static getCurrentWebsiteCallbackUri() {
