@@ -19,6 +19,16 @@ export class SpotifyMultiRequestHandler {
         return playlists
     }
 
+    static async fetchAllPlaylists(playlistIds) {
+        let playlists = [];
+        // Loop through the request, because of restriction with request all items.
+        for (let i = 0; i < playlistIds.length;) {
+            const fetch = await SpotifyRepository.fetchPlaylist(playlistIds[++i]);
+            playlists.push(fetch);
+        }
+        return playlists
+    }
+
     static async fetchAllPlaylistTracks(playlistId) {
         let playlists = [];
         let total = 1;

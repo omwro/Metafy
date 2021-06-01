@@ -21,7 +21,13 @@
                         :key="pl.id">
                     <v-card-title>{{pl.metafy.tagName}}</v-card-title>
                     <v-card-text>
-
+                            <v-chip
+                                v-for="subPl in pl.metafy.subTags"
+                                :key="subPl.id"
+                                class="playlist-chip"
+                            >
+                                {{subPl.metafy.tagName}}
+                            </v-chip>
                     </v-card-text>
                 </v-card>
             </v-col>

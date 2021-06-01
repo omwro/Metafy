@@ -22,8 +22,9 @@ export class SpotifyService {
         let playlistsWithoutTags = [];
         for (let pl of playlists) {
             pl["metafy"] = {
-                categoryName: "",
-                tagName: pl.name
+                categoryName: undefined,
+                tagName: pl.name,
+                subTags: []
             };
 
             if (pl.name.match(TAG_REGEX)) {
@@ -31,8 +32,9 @@ export class SpotifyService {
                 pl.metafy.categoryName = masterTag.categoryName;
                 pl.metafy.tagName = masterTag.tagName;
                 if (masterTag.categoryName === "Dynamic") {
+                    const descriptionTags = pl.description.split(",")
+                    pl.metafy.subTags = playlists.filter((p) => descriptionTags.includes(p.id));
                     playlistsWithDynamics.push(pl)
-                    console.log(pl)
                 } else {
                     if (!playlistsWithTags.filter((plwt) => plwt.categoryName === masterTag.categoryName).length) {
                         playlistsWithTags.push({
@@ -70,7 +72,6 @@ export class SpotifyService {
         let refreshedPlaylist = [];
         for (let pl of playlists) {
             const oldTracks = await SpotifyMultiRequestHandler.fetchAllPlaylistTracks(pl.id);
-            console.log("oldtracks",  oldTracks);
 
             if (oldTracks.length) {
                 const oldTrackUris = oldTracks.map((t) => {return { uri: t.track.uri}})
@@ -80,7 +81,6 @@ export class SpotifyService {
             const tagPlaylistId = pl.description.split(",")
             for (let id of tagPlaylistId) {
                 const newTracks = await SpotifyMultiRequestHandler.fetchAllPlaylistTracks(id);
-                console.log("newTracks", newTracks);
                 if (newTracks.length) {
                     const newTrackUris = newTracks.map((t) => t.track.uri)
                     await SpotifyMultiRequestHandler.addAllPlaylistTracks(pl.id, newTrackUris)
