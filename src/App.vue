@@ -6,10 +6,10 @@
             </div>
             <v-spacer></v-spacer>
             <v-container v-if="isLoggedIn()">
-                <v-btn v-on:click="getAuth">Hi user</v-btn>
+                <v-btn v-on:click="logout">Hi {{getUser ? getUser["display_name"] : "user"}}</v-btn>
             </v-container>
             <v-container v-else>
-                <v-btn v-on:click="getAuth">Login with Spotify</v-btn>
+                <v-btn v-on:click="login">Login with Spotify</v-btn>
             </v-container>
         </v-app-bar>
 
@@ -31,17 +31,17 @@ if (store.state.accessToken && store.state.refreshToken) {
         return config;
     });
 
-    // axios.interceptors.response.use((response) => {
-    //     return response;
-    // }, (error) => {
-    //     console.log("Error response", error.response)
-    //     if (error.response.status === 401) {
-    //        SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-    //         .then(() => this.$router.push(Home));
-    //     } else {
-    //         return new Promise(((resolve, reject) => reject(error)));
-    //     }
-    // })
+    axios.interceptors.response.use((response) => {
+        return response;
+    }, (error) => {
+        console.log("Error response", error.response)
+        if (error.response.status === 401) {
+           SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+            .then(() => this.$router.push(Home));
+        } else {
+            return new Promise(((resolve, reject) => reject(error)));
+        }
+    })
 }
 
 export default {
@@ -59,15 +59,14 @@ export default {
         isLoggedIn() {
             return store.getters.isLoggedIn;
         },
-        async getAuth() {
-            const codeVerifier = SpotifyAuthService.generateCodeVerifier();
-            const hashed = await SpotifyAuthService.sha256(codeVerifier);
-            const codeChallenge = SpotifyAuthService.generateCodeChallenge(hashed);
-
-            store.commit("codeVerifier", codeVerifier);
-            store.commit("codeChallenge", codeChallenge);
-
-            SpotifyAuthService.redirectToAuthorizationPage(codeChallenge);
+        getUser() {
+            return store.state.user;
+        },
+        async login() {
+            await SpotifyAuthService.login();
+        },
+        async logout() {
+            await SpotifyAuthService.logout();
         }
     }
 };

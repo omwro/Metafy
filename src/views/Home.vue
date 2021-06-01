@@ -12,22 +12,27 @@
                     <v-icon v-on:click="refreshDynamicPlaylists">
                         mdi-refresh
                     </v-icon>
+                    <v-icon v-on:click="openCreatePlaylistDialog">
+                        mdi-plus
+                    </v-icon>
                 </h2>
             </v-col>
         </v-row>
         <v-row>
             <v-col class="playlist-container">
-                <v-card v-for="pl in playlists.dynamics"
-                        :key="pl.id">
-                    <v-card-title>{{pl.metafy.tagName}}</v-card-title>
+                <v-card
+                    v-for="pl in playlists.dynamics"
+                    :key="pl.id"
+                >
+                    <v-card-title>{{ pl.metafy.tagName }}</v-card-title>
                     <v-card-text>
-                            <v-chip
-                                v-for="subPl in pl.metafy.subTags"
-                                :key="subPl.id"
-                                class="playlist-chip"
-                            >
-                                {{subPl.metafy.tagName}}
-                            </v-chip>
+                        <v-chip
+                            v-for="subPl in pl.metafy.subTags"
+                            :key="subPl.id"
+                            class="playlist-chip"
+                        >
+                            {{ subPl.metafy.tagName }}
+                        </v-chip>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -79,6 +84,47 @@
                 </v-chip>
             </v-col>
         </v-row>
+        <v-dialog
+            v-model="createPlaylistDialog"
+            max-width="600px"
+        >
+            <v-card>
+                <v-card-title>
+                    <span class="text-h5">Create a dynamic playlist</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                <v-text-field
+                                    label="Playlist name*"
+                                    hint="The playlist name without the category."
+                                    required
+                                />
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <small>*indicates required field</small>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="closeCreatePlaylistDialog"
+                    >
+                        Close
+                    </v-btn>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="saveCreatePlaylistDialog"
+                    >
+                        Save
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
     <v-container v-else>
         <h1>Welcome to Metafy!</h1>
@@ -93,7 +139,7 @@ export default {
     name: 'Home',
     data: () => ({
         playlists: [],
-        key: 0
+        createPlaylistDialog: false
     }),
     created() {
         this.fetchPlaylists()
@@ -112,6 +158,15 @@ export default {
         async refreshDynamicPlaylists() {
             await SpotifyService.refreshDynamics(this.playlists.dynamics);
             await this.fetchPlaylists();
+        },
+        async openCreatePlaylistDialog() {
+            this.createPlaylistDialog = true
+        },
+        async closeCreatePlaylistDialog() {
+            this.createPlaylistDialog = false
+        },
+        async saveCreatePlaylistDialog() {
+            await this.closeCreatePlaylistDialog()
         }
     }
 }

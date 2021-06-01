@@ -93,4 +93,12 @@ export class SpotifyService {
         console.log("refreshed", refreshedPlaylist)
         return refreshedPlaylist;
     }
+
+    static async createPlaylist(name, description) {
+        if (SpotifyAuthService.isAccessTokenExpired()){
+            await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+        }
+
+        return await SpotifyRepository.createPlaylist(store.state.user.id, name, description);
+    }
 }

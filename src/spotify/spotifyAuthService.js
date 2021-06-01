@@ -10,6 +10,21 @@ export class SpotifyAuthService {
     static scope = "user-read-private playlist-read-private playlist-modify-public playlist-modify-private";
     static codeChallengeMethod = "S256";
 
+    static async logout() {
+        store.commit("resetState");
+    }
+
+    static async login() {
+        const codeVerifier = this.generateCodeVerifier();
+        const hashed = await this.sha256(codeVerifier);
+        const codeChallenge = this.generateCodeChallenge(hashed);
+
+        store.commit("codeVerifier", codeVerifier);
+        store.commit("codeChallenge", codeChallenge);
+
+        this.redirectToAuthorizationPage(codeChallenge);
+    }
+
     static getCurrentWebsiteCallbackUri() {
         let urlArray = window.location.href.split("/");
         return urlArray[0] + "//" + urlArray[2] + "/callback";
@@ -92,6 +107,7 @@ export class SpotifyAuthService {
                 store.commit("accessToken", response.data.access_token)
                 store.commit("refreshToken", response.data.refresh_token)
                 store.commit("expiresIn", moment().add(response.data.expires_in, "second"))
+                this.getUserProfile();
                 return response.data
             })
             .catch(e => {
@@ -100,6 +116,18 @@ export class SpotifyAuthService {
     }
 
     static isAccessTokenExpired() {
-        return moment().isAfter(store.state.expiresIn)
+        return moment().isAfter(store.state.expiresIn) && store.state.accessToken
+    }
+
+    static async getUserProfile() {
+        return axios.get("https://api.spotify.com/v1/me")
+            .then(response => {
+                store.commit("user", response.data)
+                console.log("user", response.data)
+                return response.data
+            })
+            .catch(e => {
+                console.error("SpotifyService", e)
+            })
     }
 }

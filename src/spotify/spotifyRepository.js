@@ -48,4 +48,17 @@ export class SpotifyRepository {
             .then(response => response.data)
             .catch(e => console.error("PlaylistRepository", e))
     }
+
+    static async createPlaylist(userId, name, description) {
+        return axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+            name,
+            description
+        },{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.data)
+            .catch(e => console.error("PlaylistRepository", e))
+    }
 }

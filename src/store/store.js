@@ -5,9 +5,8 @@ import moment from "moment";
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-    plugins: [createPersistedState()],
-    state: {
+const getDefaultState = () => {
+    return {
         codeVerifier: null,
         codeChallenge: null,
         authorizationCode: null,
@@ -15,8 +14,14 @@ export default new Vuex.Store({
         accessToken: null,
         refreshToken: null,
         expiresIn: moment(),
+        user: null,
         playlists: []
-    },
+    }
+}
+
+export default new Vuex.Store({
+    plugins: [createPersistedState()],
+    state: getDefaultState,
     mutations: {
         codeVerifier (state, value) {
             state.codeVerifier = value;
@@ -39,8 +44,14 @@ export default new Vuex.Store({
         expiresIn (state, value) {
             state.expiresIn = value;
         },
+        user (state, value) {
+            state.user = value;
+        },
         playlists (state, value) {
             state.playlists = value;
+        },
+        resetState (state) {
+            Object.assign(state, getDefaultState())
         }
     },
     getters: {
