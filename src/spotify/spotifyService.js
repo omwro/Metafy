@@ -3,7 +3,7 @@ import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
 import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
 
-const TAG_REGEX = /\[.*?\]/g;
+const CATEGORY_REGEX = /\[.*?\]/g;
 
 export class SpotifyService {
 
@@ -17,50 +17,30 @@ export class SpotifyService {
     }
 
     static convertPlaylist(playlists) {
-        let playlistsWithDynamics = [];
-        let playlistsWithTags = [];
-        let playlistsWithoutTags = [];
-        for (let pl of playlists) {
-            pl["metafy"] = {
-                categoryName: undefined,
-                tagName: pl.name,
-                subTags: []
-            };
+        return playlists.map((pl) => {
+            pl.category = undefined;
+            pl.tag = pl.name;
+            pl.subtags = [];
+            pl.dependecy = undefined
+            pl.songs = []
 
-            if (pl.name.match(TAG_REGEX)) {
+            if (pl.name.match(CATEGORY_REGEX)) {
                 const masterTag = this.getTagFromPlaylistName(pl);
-                pl.metafy.categoryName = masterTag.categoryName;
-                pl.metafy.tagName = masterTag.tagName;
+                pl.category = masterTag.categoryName;
+                pl.tag = masterTag.tagName;
                 if (masterTag.categoryName === "Dynamic") {
-                    const descriptionTags = pl.description.split(",")
-                    pl.metafy.subTags = playlists.filter((p) => descriptionTags.includes(p.id));
-                    playlistsWithDynamics.push(pl)
-                } else {
-                    if (!playlistsWithTags.filter((plwt) => plwt.categoryName === masterTag.categoryName).length) {
-                        playlistsWithTags.push({
-                            categoryName: masterTag.categoryName,
-                            playlists: []
-                        })
-                    }
-                    playlistsWithTags
-                        .filter((plwt) => plwt.categoryName === masterTag.categoryName)[0]
-                        .playlists
-                        .push(pl)
+                    pl.dependecy = pl.description
+                    const descriptionTags = pl.description.split("+")
+                    pl.subtags = playlists.filter((p) => descriptionTags.includes(p.id));
                 }
-            } else {
-                playlistsWithoutTags.push(pl);
             }
-        }
-        return {
-            dynamics: playlistsWithDynamics,
-            tags: playlistsWithTags,
-            others: playlistsWithoutTags
-        };
+            return pl
+        })
     }
 
     static getTagFromPlaylistName(playlist) {
-        const categoryName = playlist.name.match(TAG_REGEX)[0].slice(1, -1).trim();
-        const tagName = playlist.name.substring(playlist.name.match(TAG_REGEX)[0].length).trim()
+        const categoryName = playlist.name.match(CATEGORY_REGEX)[0].slice(1, -1).trim();
+        const tagName = playlist.name.substring(playlist.name.match(CATEGORY_REGEX)[0].length).trim()
         return {categoryName, tagName};
     }
 

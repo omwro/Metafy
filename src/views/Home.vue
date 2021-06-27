@@ -21,17 +21,17 @@
         <v-row>
             <v-col class="playlist-container">
                 <v-card
-                    v-for="pl in playlists.dynamics"
+                    v-for="pl in $store.getters.getDynamicPlaylists"
                     :key="pl.id"
                 >
-                    <v-card-title>{{ pl.metafy.tagName }}</v-card-title>
+                    <v-card-title>{{ pl.tag }}</v-card-title>
                     <v-card-text>
                         <v-chip
-                            v-for="subPl in pl.metafy.subTags"
+                            v-for="subPl in pl.subtags"
                             :key="subPl.id"
                             class="playlist-chip"
                         >
-                            {{ subPl.metafy.tagName }}
+                            {{ subPl.tag }}
                         </v-chip>
                     </v-card-text>
                 </v-card>
@@ -44,12 +44,12 @@
         </v-row>
         <v-row>
             <v-col
-                v-for="plwt in playlists.tags"
-                :key="plwt.categoryName"
+                v-for="tpl in $store.getters.getTaggedPlaylists"
+                :key="tpl.category"
             >
                 <v-row>
                     <v-col>
-                        <h3 class="text-center">{{ plwt.categoryName }}</h3>
+                        <h3 class="text-center">{{ tpl.category }}</h3>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -58,11 +58,11 @@
                         class="playlist-container"
                     >
                         <v-chip
-                            v-for="pl in plwt.playlists"
+                            v-for="pl in tpl.playlists"
                             :key="pl.id"
                             class="playlist-chip"
                         >
-                            {{ pl.metafy.tagName }}
+                            {{ pl.tag}}
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -76,7 +76,7 @@
         <v-row>
             <v-col class="playlist-container">
                 <v-chip
-                    v-for="pl in playlists.others"
+                    v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
                     class="playlist-chip"
                 >
@@ -95,12 +95,15 @@
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-col>
+                            <v-col cols="12">
                                 <v-text-field
                                     label="Playlist name*"
                                     hint="The playlist name without the category."
                                     required
                                 />
+                            </v-col>
+                            <v-col cols="12">
+
                             </v-col>
                         </v-row>
                     </v-container>
@@ -138,7 +141,6 @@ import store from "@/store/store";
 export default {
     name: 'Home',
     data: () => ({
-        playlists: [],
         createPlaylistDialog: false
     }),
     created() {
@@ -149,14 +151,13 @@ export default {
             return store.getters.isLoggedIn;
         },
         async fetchPlaylists() {
-            SpotifyService.fetchPlaylists().then((result) => {
-                console.log("FetchUserPlaylists", result);
-                this.playlists = SpotifyService.convertPlaylist(result);
-                console.log("Converted Playlist", this.playlists)
-            });
+            const playlists = await SpotifyService.fetchPlaylists()
+            const convertedPlaylists = SpotifyService.convertPlaylist(playlists)
+            store.commit("playlists", convertedPlaylists);
+            console.log("PLS:",convertedPlaylists)
         },
         async refreshDynamicPlaylists() {
-            await SpotifyService.refreshDynamics(this.playlists.dynamics);
+            await SpotifyService.refreshDynamics(store.getters.getDynamicPlaylists);
             await this.fetchPlaylists();
         },
         async openCreatePlaylistDialog() {
