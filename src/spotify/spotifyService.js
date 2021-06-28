@@ -2,27 +2,23 @@ import store from "@/store/store";
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
 import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
+import {Playlist} from "@/models/Playlist";
+import {Song} from "@/models/Song";
 
 const CATEGORY_REGEX = /\[.*?\]/g;
 
 export class SpotifyService {
 
     static async fetchPlaylists() {
-        if (SpotifyAuthService.isAccessTokenExpired()){
+        if (SpotifyAuthService.isAccessTokenExpired()) {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
-        const playlists = await SpotifyMultiRequestHandler.fetchAllCurrentUserPlaylists();
-        store.commit("playlists", playlists);
-        return playlists;
+        return await SpotifyMultiRequestHandler.fetchAllCurrentUserPlaylists();
     }
 
     static convertPlaylist(playlists) {
-        return playlists.map((pl) => {
-            pl.category = undefined;
-            pl.tag = pl.name;
-            pl.subtags = [];
-            pl.dependecy = undefined
-            pl.songs = []
+        return playlists.map((oldPlaylist) => {
+            let pl = new Playlist(oldPlaylist)
 
             if (pl.name.match(CATEGORY_REGEX)) {
                 const masterTag = this.getTagFromPlaylistName(pl);
@@ -38,6 +34,15 @@ export class SpotifyService {
         })
     }
 
+    static async convertPlaylistSongs(playlists) {
+        return await Promise.all(playlists.map(async (pl) => {
+            let songs = await SpotifyMultiRequestHandler.fetchAllPlaylistTracks(pl.id)
+            pl.songs = songs.map((song) => new Song(song))
+            return pl
+        }))
+    }
+
+
     static getTagFromPlaylistName(playlist) {
         const categoryName = playlist.name.match(CATEGORY_REGEX)[0].slice(1, -1).trim();
         const tagName = playlist.name.substring(playlist.name.match(CATEGORY_REGEX)[0].length).trim()
@@ -45,7 +50,7 @@ export class SpotifyService {
     }
 
     static async refreshDynamics(playlists) {
-        if (SpotifyAuthService.isAccessTokenExpired()){
+        if (SpotifyAuthService.isAccessTokenExpired()) {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
 
@@ -54,7 +59,9 @@ export class SpotifyService {
             const oldTracks = await SpotifyMultiRequestHandler.fetchAllPlaylistTracks(pl.id);
 
             if (oldTracks.length) {
-                const oldTrackUris = oldTracks.map((t) => {return { uri: t.track.uri}})
+                const oldTrackUris = oldTracks.map((t) => {
+                    return {uri: t.track.uri}
+                })
                 await SpotifyMultiRequestHandler.deleteAllPlaylistTracks(pl.id, oldTrackUris)
             }
 
@@ -75,7 +82,7 @@ export class SpotifyService {
     }
 
     static async createPlaylist(name, description) {
-        if (SpotifyAuthService.isAccessTokenExpired()){
+        if (SpotifyAuthService.isAccessTokenExpired()) {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
 

@@ -62,7 +62,7 @@
                             :key="pl.id"
                             class="playlist-chip"
                         >
-                            {{ pl.tag}}
+                            {{ pl.tag }}
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -97,13 +97,49 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-text-field
-                                    label="Playlist name*"
+                                    v-model="createPlaylistDialogName"
+                                    label="Playlist name *"
                                     hint="The playlist name without the category."
                                     required
                                 />
                             </v-col>
                             <v-col cols="12">
-
+                                <v-text-field
+                                    :value="getCombinationString()"
+                                    label="Playlist combination *"
+                                    disabled
+                                />
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('+');toggleDialogCombination()" block>+</v-btn>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('-');toggleDialogCombination()" block>-</v-btn>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('=');toggleDialogCombination()" block>=</v-btn>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('(');toggleDialogCombination()" block>(</v-btn>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push(')');toggleDialogCombination()" block>)</v-btn>
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn :disabled="combination.length === 0" @click="combination.pop();toggleDialogCombination()" block>
+                                    <v-icon>mdi-keyboard-backspace</v-icon>
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="12" class="dialogChipContainer">
+                                <v-chip
+                                    v-for="pl in $store.state.playlists"
+                                    :key="pl.id"
+                                    :disabled="!dialogTagToggle"
+                                    @click="combination.push(pl);toggleDialogCombination()"
+                                    class="playlist-chip"
+                                >
+                                    {{ pl.name }}
+                                </v-chip>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -141,7 +177,11 @@ import store from "@/store/store";
 export default {
     name: 'Home',
     data: () => ({
-        createPlaylistDialog: false
+        createPlaylistDialog: false,
+        createPlaylistDialogName: "",
+        dialogTagToggle: true,
+        dialogOperatorToggle: false,
+        combination: [],
     }),
     created() {
         this.fetchPlaylists()
@@ -154,7 +194,14 @@ export default {
             const playlists = await SpotifyService.fetchPlaylists()
             const convertedPlaylists = SpotifyService.convertPlaylist(playlists)
             store.commit("playlists", convertedPlaylists);
-            console.log("PLS:",convertedPlaylists)
+            console.log("DPLS:", store.getters.getDynamicPlaylists)
+            console.log("TPLS:", store.getters.getTaggedPlaylists)
+            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+            const convertedPlaylistSongs = await SpotifyService.convertPlaylistSongs(convertedPlaylists)
+            store.commit("playlists", convertedPlaylistSongs);
+            console.log("DPLS:", store.getters.getDynamicPlaylists)
+            console.log("TPLS:", store.getters.getTaggedPlaylists)
+            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
         },
         async refreshDynamicPlaylists() {
             await SpotifyService.refreshDynamics(store.getters.getDynamicPlaylists);
@@ -168,6 +215,18 @@ export default {
         },
         async saveCreatePlaylistDialog() {
             await this.closeCreatePlaylistDialog()
+        },
+        getCombinationString() {
+            let string = ""
+            this.combination.forEach((c) => {
+                if (c.name !== undefined) string += c.name
+                else string += c
+            })
+            return string
+        },
+        toggleDialogCombination() {
+            this.dialogTagToggle = !this.dialogTagToggle
+            this.dialogOperatorToggle = !this.dialogOperatorToggle
         }
     }
 }
@@ -178,9 +237,14 @@ export default {
     margin: 0 12px;
     padding: 8px;
     border: solid 1px black;
+}
 
-    .playlist-chip {
-        margin: 4px;
-    }
+.playlist-chip {
+    margin: 4px;
+}
+
+.dialogChipContainer {
+    max-height: 150px;
+    overflow-y: scroll;
 }
 </style>
