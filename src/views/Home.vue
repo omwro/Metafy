@@ -30,6 +30,7 @@
                             v-for="subPl in pl.subtags"
                             :key="subPl.id"
                             class="playlist-chip"
+                            @click="playlistDetailDialog = true; selectedPlaylist = pl"
                         >
                             {{ subPl.tag }}
                         </v-chip>
@@ -61,6 +62,7 @@
                             v-for="pl in tpl.playlists"
                             :key="pl.id"
                             class="playlist-chip"
+                            @click="playlistDetailDialog = true; selectedPlaylist = pl"
                         >
                             {{ pl.tag }}
                         </v-chip>
@@ -79,11 +81,13 @@
                     v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
                     class="playlist-chip"
+                    @click="playlistDetailDialog = true; selectedPlaylist = pl"
                 >
                     {{ pl.name }}
                 </v-chip>
             </v-col>
         </v-row>
+
         <v-dialog
             v-model="createPlaylistDialog"
             max-width="600px"
@@ -111,22 +115,33 @@
                                 />
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('+');toggleDialogCombination()" block>+</v-btn>
+                                <v-btn :disabled="!dialogOperatorToggle"
+                                       @click="combination.push('+');toggleDialogCombination()" block>+
+                                </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('-');toggleDialogCombination()" block>-</v-btn>
+                                <v-btn :disabled="!dialogOperatorToggle"
+                                       @click="combination.push('-');toggleDialogCombination()" block>-
+                                </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('=');toggleDialogCombination()" block>=</v-btn>
+                                <v-btn :disabled="!dialogOperatorToggle"
+                                       @click="combination.push('=');toggleDialogCombination()" block>=
+                                </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push('(');toggleDialogCombination()" block>(</v-btn>
+                                <v-btn :disabled="!dialogOperatorToggle"
+                                       @click="combination.push('(');toggleDialogCombination()" block>(
+                                </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle" @click="combination.push(')');toggleDialogCombination()" block>)</v-btn>
+                                <v-btn :disabled="!dialogOperatorToggle"
+                                       @click="combination.push(')');toggleDialogCombination()" block>)
+                                </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="combination.length === 0" @click="combination.pop();toggleDialogCombination()" block>
+                                <v-btn :disabled="combination.length === 0"
+                                       @click="combination.pop();toggleDialogCombination()" block>
                                     <v-icon>mdi-keyboard-backspace</v-icon>
                                 </v-btn>
                             </v-col>
@@ -164,6 +179,47 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <v-dialog
+            v-model="playlistDetailDialog"
+            max-width="600px"
+            v-if="selectedPlaylist"
+        >
+            <v-card>
+                <v-card-title>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-chip class="mr-2">{{ selectedPlaylist.category }}</v-chip>
+                            <span class="text-h5">{{ selectedPlaylist.tag }}</span>
+                        </v-col>
+                    </v-row>
+                </v-card-title>
+                <v-card-text class="pt-5">
+                        <v-row>
+                            <v-col cols="12">
+                                <v-chip class="ma-1" v-for="subtag in selectedPlaylist.subtags" :key="subtag.id">
+                                    {{ subtag.tag }}
+                                </v-chip>
+                            </v-col>
+                            <v-col cols="12" v-for="(song, i) in selectedPlaylist.songs" :key="i">
+                                <v-card>
+                                    <v-card-title>{{ song.name }}</v-card-title>
+                                </v-card>
+                            </v-col>
+                        </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="playlistDetailDialog = false"
+                    >
+                        Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
     <v-container v-else>
         <h1>Welcome to Metafy!</h1>
@@ -182,6 +238,8 @@ export default {
         dialogTagToggle: true,
         dialogOperatorToggle: false,
         combination: [],
+        playlistDetailDialog: false,
+        selectedPlaylist: undefined,
     }),
     created() {
         this.fetchPlaylists()
@@ -191,14 +249,7 @@ export default {
             return store.getters.isLoggedIn;
         },
         async fetchPlaylists() {
-            const playlists = await SpotifyService.fetchPlaylists()
-            const convertedPlaylists = SpotifyService.convertPlaylist(playlists)
-            store.commit("playlists", convertedPlaylists);
-            console.log("DPLS:", store.getters.getDynamicPlaylists)
-            console.log("TPLS:", store.getters.getTaggedPlaylists)
-            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
-            const convertedPlaylistSongs = await SpotifyService.convertPlaylistSongs(convertedPlaylists)
-            store.commit("playlists", convertedPlaylistSongs);
+            await SpotifyService.fetchEverything()
             console.log("DPLS:", store.getters.getDynamicPlaylists)
             console.log("TPLS:", store.getters.getTaggedPlaylists)
             console.log("UTPLS:", store.getters.getUntaggedPlaylists)

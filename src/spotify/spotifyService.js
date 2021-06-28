@@ -1,13 +1,26 @@
-import store from "@/store/store";
+import store, {DYNAMIC} from "@/store/store";
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
 import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
 import {Playlist} from "@/models/Playlist";
 import {Song} from "@/models/Song";
 
-const CATEGORY_REGEX = /\[.*?\]/g;
+export const CATEGORY_REGEX = /\[.*?\]/g;
 
 export class SpotifyService {
+
+    static async fetchEverything() {
+        if (SpotifyAuthService.isAccessTokenExpired()) {
+            await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+        }
+        let playlists = await SpotifyMultiRequestHandler.fetchAllCurrentUserPlaylists();
+        store.commit("playlists", playlists);
+        playlists = playlists.map((playlist) => new Playlist(playlist, playlists))
+        store.commit("playlists", playlists);
+        playlists = await this.convertPlaylistSongs(playlists)
+        store.commit("playlists", playlists);
+        return playlists
+    }
 
     static async fetchPlaylists() {
         if (SpotifyAuthService.isAccessTokenExpired()) {
@@ -24,7 +37,7 @@ export class SpotifyService {
                 const masterTag = this.getTagFromPlaylistName(pl);
                 pl.category = masterTag.categoryName;
                 pl.tag = masterTag.tagName;
-                if (masterTag.categoryName === "Dynamic") {
+                if (masterTag.categoryName === DYNAMIC) {
                     pl.dependecy = pl.description
                     const descriptionTags = pl.description.split("+")
                     pl.subtags = playlists.filter((p) => descriptionTags.includes(p.id));

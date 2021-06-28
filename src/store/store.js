@@ -5,6 +5,8 @@ import moment from "moment";
 
 Vue.use(Vuex)
 
+export const DYNAMIC = "Dynamic"
+
 const getDefaultState = () => {
     return {
         codeVerifier: null,
@@ -59,12 +61,12 @@ export default new Vuex.Store({
             return state.accessToken != null;
         },
         getDynamicPlaylists: state => {
-            return state.playlists.filter(pl => pl.category === "Dynamic")
+            return state.playlists.filter(pl => pl.category === DYNAMIC)
         },
         getTaggedPlaylists: state => {
             const taggedList = []
             state.playlists
-                .filter(pl => pl.category !== "Dynamic" && pl.category !== undefined)
+                .filter(pl => pl.category !== DYNAMIC && pl.category !== undefined)
                 .forEach((pl) => {
                     if (!taggedList.filter((tl) => tl.category === pl.category).length) {
                         taggedList.push({
