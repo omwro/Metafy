@@ -6,7 +6,7 @@
             </div>
             <v-spacer></v-spacer>
             <v-container v-if="isLoggedIn()">
-                <v-btn v-on:click="logout">Hi {{getUser ? getUser["display_name"] : "user"}}</v-btn>
+                <v-btn v-on:click="logout">Hi {{getUser ? getUser().display_name : "user"}}</v-btn>
             </v-container>
             <v-container v-else>
                 <v-btn v-on:click="login">Login with Spotify</v-btn>

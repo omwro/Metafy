@@ -11,6 +11,16 @@ export function splitDependencyString(string) {
         .map((id) => !id.match(OPERATOR_REGEX) ? new Playlist(store.state.playlists.find((pl) => pl.id === id)) : id)
 }
 
+// Make a string from the dependency list
+export function getDependencyStringFromList(dependencyList) {
+    let string = ""
+    dependencyList.forEach((dep) => {
+        if (dep instanceof Playlist) string += dep.id
+        else string += dep
+    })
+    return string
+}
+
 // Split the dependency string from "dwadwa+vrfrrdgdr" to subtags like [Playlist, Playlist]
 export function getSubTagsFromDependencyString(string) {
     return string.split(OPERATOR_REGEX)

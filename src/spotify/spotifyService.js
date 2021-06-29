@@ -32,10 +32,6 @@ export class SpotifyService {
     }
 
     static async refreshDynamicPlaylistSongs(playlists) {
-        if (SpotifyAuthService.isAccessTokenExpired()) {
-            await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-        }
-
         let refreshedPlaylist = [];
         for (let pl of playlists) {
             const oldSongs = pl.songs
@@ -58,10 +54,7 @@ export class SpotifyService {
     }
 
     static async createPlaylist(name, description) {
-        if (SpotifyAuthService.isAccessTokenExpired()) {
-            await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-        }
-
+        console.log("user",store.state.user)
         return await SpotifyRepository.createPlaylist(store.state.user.id, name, description);
     }
 }

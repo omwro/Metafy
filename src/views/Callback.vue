@@ -16,8 +16,6 @@ export default {
         store.commit("authorizationCode", authorizationCode);
         store.commit("authorizationState", authorizationState);
 
-        console.log(authorizationCode)
-        console.log(store.state.codeVerifier)
         if (authorizationCode && store.state.codeVerifier) {
             SpotifyAuthService.fetchAccessToken(authorizationCode, store.state.codeVerifier)
             .then(() => {

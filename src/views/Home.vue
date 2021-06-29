@@ -172,6 +172,7 @@
                     <v-btn
                         color="blue darken-1"
                         text
+                        :disabled="!dialogOperatorToggle"
                         @click="saveCreatePlaylistDialog"
                     >
                         Save
@@ -229,6 +230,7 @@
 <script>
 import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
+import {getDependencyStringFromList} from "@/utilities/Dependency";
 
 export default {
     name: 'Home',
@@ -258,14 +260,17 @@ export default {
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
             await this.fetchPlaylists();
         },
-        async openCreatePlaylistDialog() {
+        openCreatePlaylistDialog() {
             this.createPlaylistDialog = true
         },
-        async closeCreatePlaylistDialog() {
+        closeCreatePlaylistDialog() {
             this.createPlaylistDialog = false
         },
         async saveCreatePlaylistDialog() {
-            await this.closeCreatePlaylistDialog()
+            this.closeCreatePlaylistDialog()
+            await SpotifyService.createPlaylist(this.createPlaylistDialogName, getDependencyStringFromList(this.combination))
+            await this.fetchPlaylists();
+            await this.refreshDynamicPlaylists();
         },
         getCombinationString() {
             let string = ""

@@ -79,9 +79,10 @@ export class SpotifyAuthService {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         })
-            .then(response => {
+            .then(async response => {
                 store.commit("accessToken", response.data.access_token)
                 store.commit("refreshToken", response.data.refresh_token)
+                await this.getUserProfile();
                 return response.data;
             })
             .catch(e => {
@@ -103,11 +104,11 @@ export class SpotifyAuthService {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         })
-            .then(response => {
+            .then(async response => {
                 store.commit("accessToken", response.data.access_token)
                 store.commit("refreshToken", response.data.refresh_token)
                 store.commit("expiresIn", moment().add(response.data.expires_in, "second"))
-                this.getUserProfile();
+                await this.getUserProfile();
                 return response.data
             })
             .catch(e => {
@@ -120,7 +121,11 @@ export class SpotifyAuthService {
     }
 
     static async getUserProfile() {
-        return axios.get("https://api.spotify.com/v1/me")
+        return axios.get("https://api.spotify.com/v1/me", {
+            headers: {
+                "Authorization": `Bearer ${store.state.accessToken}`
+            }
+        })
             .then(response => {
                 store.commit("user", response.data)
                 console.log("user", response.data)
