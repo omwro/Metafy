@@ -55,7 +55,6 @@ export class SpotifyMultiRequestHandler {
 
     static async addAllPlaylistTracks(playlistId, trackUris) {
         const slicedTrackUriArray = this.sliceArrayIntoChunks(trackUris, PLAYLIST_TRACK_FETCH_LIMIT);
-        console.log("sliced", slicedTrackUriArray)
         for (const t of slicedTrackUriArray) {
             await SpotifyRepository.addPlaylistTracks(playlistId, t);
         }

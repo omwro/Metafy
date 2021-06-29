@@ -5,6 +5,7 @@ export class Song {
     constructor(spotifyTrack) {
         const { track } = spotifyTrack
         this.id = track.id
+        this.uri = track.uri
         this.name = track.name
         this.artists = track.artists.map((artist) => new Artist(artist))
         this.duration_ms = track.duration_ms

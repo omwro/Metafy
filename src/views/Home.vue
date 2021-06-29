@@ -130,12 +130,12 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle"
+                                <v-btn disabled
                                        @click="combination.push('(');toggleDialogCombination()" block>(
                                 </v-btn>
                             </v-col>
                             <v-col cols="2">
-                                <v-btn :disabled="!dialogOperatorToggle"
+                                <v-btn disabled
                                        @click="combination.push(')');toggleDialogCombination()" block>)
                                 </v-btn>
                             </v-col>
@@ -255,7 +255,7 @@ export default {
             console.log("UTPLS:", store.getters.getUntaggedPlaylists)
         },
         async refreshDynamicPlaylists() {
-            await SpotifyService.refreshDynamics(store.getters.getDynamicPlaylists);
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
             await this.fetchPlaylists();
         },
         async openCreatePlaylistDialog() {

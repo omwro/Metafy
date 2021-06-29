@@ -60,6 +60,9 @@ export default new Vuex.Store({
         isLoggedIn: state => {
             return state.accessToken != null;
         },
+        getPlaylistFromId: state => id => {
+            return state.playlists.filter(pl => pl.id === id).pop()
+        },
         getDynamicPlaylists: state => {
             return state.playlists.filter(pl => pl.category === DYNAMIC)
         },
