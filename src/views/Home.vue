@@ -23,6 +23,7 @@
                 <v-card
                     v-for="pl in $store.getters.getDynamicPlaylists"
                     :key="pl.id"
+                    @click="playlistDetailDialog = true; playlist = pl"
                 >
                     <v-card-title>{{ pl.tag }}</v-card-title>
                     <v-card-text>
@@ -30,7 +31,6 @@
                             v-for="subPl in pl.subtags"
                             :key="subPl.id"
                             class="playlist-chip"
-                            @click="playlistDetailDialog = true; selectedPlaylist = pl"
                         >
                             {{ subPl.tag }}
                         </v-chip>
@@ -196,18 +196,16 @@
                     </v-row>
                 </v-card-title>
                 <v-card-text class="pt-5">
-                        <v-row>
-                            <v-col cols="12">
-                                <v-chip class="ma-1" v-for="subtag in selectedPlaylist.subtags" :key="subtag.id">
-                                    {{ subtag.tag }}
-                                </v-chip>
-                            </v-col>
-                            <v-col cols="12" v-for="(song, i) in selectedPlaylist.songs" :key="i">
-                                <v-card>
-                                    <v-card-title>{{ song.name }}</v-card-title>
-                                </v-card>
-                            </v-col>
-                        </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-chip class="ma-1" v-for="subtag in selectedPlaylist.subtags" :key="subtag.id">
+                                {{ subtag.tag }}
+                            </v-chip>
+                        </v-col>
+                        <v-col cols="12" v-for="(song, i) in selectedPlaylist.songs" :key="i">
+                            <SongCard :song="song"/>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -221,6 +219,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
     </v-container>
     <v-container v-else>
         <h1>Welcome to Metafy!</h1>
@@ -231,9 +230,11 @@
 import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
 import {getDependencyStringFromList} from "@/utilities/Dependency";
+import SongCard from "@/components/SongCard";
 
 export default {
     name: 'Home',
+    components: {SongCard},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
