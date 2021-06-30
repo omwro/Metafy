@@ -23,7 +23,7 @@
                 <v-card
                     v-for="pl in $store.getters.getDynamicPlaylists"
                     :key="pl.id"
-                    @click="playlistDetailDialog = true; selectedPlaylist = pl"
+                    @click="showPlaylistDetailDialog(pl)"
                 >
                     <v-card-title>
                             {{ pl.tag }} ({{ pl.songs.length }})
@@ -64,7 +64,7 @@
                             v-for="pl in tpl.playlists"
                             :key="pl.id"
                             class="playlist-chip"
-                            @click="playlistDetailDialog = true; selectedPlaylist = pl"
+                            @click="showPlaylistDetailDialog(pl)"
                         >
                             {{ pl.tag }}
                         </v-chip>
@@ -183,49 +183,7 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog
-            v-model="playlistDetailDialog"
-            max-width="600px"
-            v-if="selectedPlaylist"
-        >
-            <v-card>
-                <v-card-title>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-chip class="mr-2">{{ selectedPlaylist.category }}</v-chip>
-                            <span class="text-h5">{{ selectedPlaylist.tag }}</span>
-                        </v-col>
-                    </v-row>
-                </v-card-title>
-                <v-card-text class="pt-5">
-                    <v-row>
-                        <v-col cols="12">
-                            <v-chip
-                                class="ma-1"
-                                v-for="(dep, i) in selectedPlaylist.dependency"
-                                :key="i"
-                                :label="!isInstanceOfPlaylist(dep)"
-                            >
-                                {{ isInstanceOfPlaylist(dep) ? dep.name : dep }}
-                            </v-chip>
-                        </v-col>
-                        <v-col cols="12" v-for="(song, i) in selectedPlaylist.songs" :key="i">
-                            <SongCard :song="song"/>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="playlistDetailDialog = false"
-                    >
-                        Close
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <PlayListDetailDialog ref="playlistDetailDialog" />
 
     </v-container>
     <v-container v-else>
@@ -237,19 +195,18 @@
 import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
 import {getDependencyStringFromList} from "@/utilities/Dependency";
-import SongCard from "@/components/SongCard";
 import {Playlist} from "@/models/Playlist";
+import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
 
 export default {
     name: 'Home',
-    components: {SongCard},
+    components: {PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
         dialogTagToggle: true,
         dialogOperatorToggle: false,
         combination: [],
-        playlistDetailDialog: false,
         selectedPlaylist: undefined,
     }),
     created() {
@@ -295,6 +252,10 @@ export default {
         },
         isInstanceOfPlaylist(obj) {
             return obj instanceof Playlist
+        },
+        showPlaylistDetailDialog(playlist) {
+            this.$refs.playlistDetailDialog.playlist = playlist
+            this.$refs.playlistDetailDialog.dialog = true
         }
     }
 }
