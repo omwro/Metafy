@@ -23,9 +23,11 @@
                 <v-card
                     v-for="pl in $store.getters.getDynamicPlaylists"
                     :key="pl.id"
-                    @click="playlistDetailDialog = true; playlist = pl"
+                    @click="playlistDetailDialog = true; selectedPlaylist = pl"
                 >
-                    <v-card-title>{{ pl.tag }}</v-card-title>
+                    <v-card-title>
+                            {{ pl.tag }} ({{ pl.songs.length }})
+                    </v-card-title>
                     <v-card-text>
                         <v-chip
                             v-for="subPl in pl.subtags"
@@ -198,8 +200,13 @@
                 <v-card-text class="pt-5">
                     <v-row>
                         <v-col cols="12">
-                            <v-chip class="ma-1" v-for="subtag in selectedPlaylist.subtags" :key="subtag.id">
-                                {{ subtag.tag }}
+                            <v-chip
+                                class="ma-1"
+                                v-for="(dep, i) in selectedPlaylist.dependency"
+                                :key="i"
+                                :label="!isInstanceOfPlaylist(dep)"
+                            >
+                                {{ isInstanceOfPlaylist(dep) ? dep.name : dep }}
                             </v-chip>
                         </v-col>
                         <v-col cols="12" v-for="(song, i) in selectedPlaylist.songs" :key="i">
@@ -231,6 +238,7 @@ import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
 import {getDependencyStringFromList} from "@/utilities/Dependency";
 import SongCard from "@/components/SongCard";
+import {Playlist} from "@/models/Playlist";
 
 export default {
     name: 'Home',
@@ -275,15 +283,18 @@ export default {
         },
         getCombinationString() {
             let string = ""
-            this.combination.forEach((c) => {
-                if (c.name !== undefined) string += c.name
-                else string += c
+            this.combination.forEach((combination) => {
+                if (combination.name !== undefined) string += combination.name
+                else string += combination
             })
             return string
         },
         toggleDialogCombination() {
             this.dialogTagToggle = !this.dialogTagToggle
             this.dialogOperatorToggle = !this.dialogOperatorToggle
+        },
+        isInstanceOfPlaylist(obj) {
+            return obj instanceof Playlist
         }
     }
 }

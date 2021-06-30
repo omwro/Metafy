@@ -51,6 +51,5 @@ export function getSongsFromDependencyList(dependencyList) {
             operator = dep
         }
     })
-    console.log(songs, operator)
     return songs
 }

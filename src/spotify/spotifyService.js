@@ -32,7 +32,6 @@ export class SpotifyService {
     }
 
     static async refreshDynamicPlaylistSongs(playlists) {
-        let refreshedPlaylist = [];
         for (let pl of playlists) {
             const oldSongs = pl.songs
 
@@ -45,16 +44,10 @@ export class SpotifyService {
 
             const newSongUris = getSongsFromDependencyList(pl.dependency).map((song) => song.uri)
             await SpotifyMultiRequestHandler.addAllPlaylistTracks(pl.id, newSongUris)
-
-            const newPlaylist = await SpotifyRepository.fetchPlaylist(pl.id)
-            refreshedPlaylist.push(newPlaylist)
         }
-        console.log("refreshed", refreshedPlaylist)
-        return refreshedPlaylist;
     }
 
     static async createPlaylist(name, description) {
-        console.log("user",store.state.user)
         return await SpotifyRepository.createPlaylist(store.state.user.id, name, description);
     }
 }
