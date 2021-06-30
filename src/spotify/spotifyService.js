@@ -14,7 +14,7 @@ export class SpotifyService {
         if (SpotifyAuthService.isAccessTokenExpired()) {
             await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         }
-        let playlists = await SpotifyMultiRequestHandler.fetchAllCurrentUserPlaylists();
+        let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
         store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
         store.commit("playlists", playlists);
@@ -25,7 +25,7 @@ export class SpotifyService {
 
     static async fetchPlaylistSongs(playlists) {
         return await Promise.all(playlists.map(async (pl) => {
-            let songs = await SpotifyMultiRequestHandler.fetchAllPlaylistTracks(pl.id)
+            let songs = await SpotifyRepository.fetchPlaylistTracks(pl.id)
             pl.songs = songs.map((song) => new Song(song))
             return pl
         }))
