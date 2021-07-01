@@ -2,7 +2,7 @@ import store from "@/store/store";
 import {Playlist} from "@/models/Playlist";
 import {addSongs, equalizeSongs, removeSongs} from "@/utilities/Combination";
 
-const OPERATOR_REGEX = /[+|\-|=]+/g
+export const OPERATOR_REGEX = /[+|\-|=]+/g
 export const COMBINATION_REGEX = /([[:alnum:]]+|[+|\-|=]+)/g
 
 // Split the dependency string from "dwadwa+vrfrrdgdr" to a combined list like [Playlist, "+", Playlist]
