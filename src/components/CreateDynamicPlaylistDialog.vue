@@ -64,16 +64,28 @@
                                 <v-icon>mdi-keyboard-backspace</v-icon>
                             </v-btn>
                         </v-col>
-                        <v-col cols="12" class="dialogChipContainer">
-                            <v-chip
-                                v-for="pl in $store.state.playlists"
-                                :key="pl.id"
+                        <v-col cols="12">
+                            <v-autocomplete
+                                label="Playlists"
+                                solo
+                                :items="$store.state.playlists"
+                                v-model="selectedPlaylist"
+                                @change="combination.push(selectedPlaylist);clearPlaylistSelect()"
                                 :disabled="!isTagSelectable()"
-                                @click="combination.push(pl)"
-                                class="playlist-chip"
                             >
-                                {{ pl.name }}
-                            </v-chip>
+                                <template v-slot:selection="{ item }">
+                                    {{ item.name }}
+                                </template>
+                                <template v-slot:item="{ item }">
+                                    {{ item.name }}
+                                </template>
+                            </v-autocomplete>
+                        </v-col>
+                        <v-col cols="12" class="pt-0">
+                            <div class="text-h5 text-center">Preview Playlist</div>
+                            <v-container class="px-0 song-container">
+                                <PreviewSongs :combination="combination" />
+                            </v-container>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -102,21 +114,22 @@
 </template>
 
 <script>
-
 import {SpotifyService} from "@/spotify/spotifyService";
 import {getDependencyStringFromList} from "@/utilities/Dependency";
 import {Playlist} from "@/models/Playlist";
 import {isAnOperator} from "@/models/Operator";
+import PreviewSongs from "@/components/PreviewSongs";
 const {OPERATORS} = require('@/models/Operator');
-
 
 export default {
     name: 'CreateDynamicPlaylistDialog',
+    components: {PreviewSongs},
     data: () => ({
         dialog: false,
         playlistName: "",
         combination: [],
-        operator: OPERATORS
+        operator: OPERATORS,
+        selectedPlaylist: null,
     }),
     methods: {
         async saveCreatePlaylistDialog() {
@@ -124,6 +137,11 @@ export default {
             await SpotifyService.createPlaylist(this.playlistName, getDependencyStringFromList(this.combination))
             await this.fetchPlaylists();
             await this.refreshDynamicPlaylists();
+        },
+        clearPlaylistSelect() {
+            this.$nextTick(() => {
+                this.selectedPlaylist = 0
+            })
         },
         getCombinationString() {
             let string = ""
@@ -154,5 +172,9 @@ export default {
 <style lang="scss" scoped>
 .playlist-chip {
     margin: 4px;
+}
+.song-container {
+    max-height: 250px;
+    overflow-y: scroll;
 }
 </style>

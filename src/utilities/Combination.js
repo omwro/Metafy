@@ -6,10 +6,10 @@ export function addSongs(list1, list2) {
 
 // Remove the songs from list 2 in list 1
 export function removeSongs(list1, list2) {
-    return list1.filter((song) => !list2.includes(song))
+    return list1.filter((song) => !list2.map(l => l.id).includes(song.id))
 }
 
 // Filter out the songs that only exist in both lists
 export function equalizeSongs(list1, list2) {
-    return list1.filter((song) => list2.includes(song))
+    return list1.filter((song) => list2.map(l => l.id).includes(song.id))
 }
