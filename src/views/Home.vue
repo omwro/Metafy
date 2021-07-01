@@ -130,9 +130,11 @@ export default {
             console.log("DPLS:", store.getters.getDynamicPlaylists)
             console.log("TPLS:", store.getters.getTaggedPlaylists)
             console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+            this.notifySuccess("All data successfully fetched.")
         },
         async refreshDynamicPlaylists() {
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
+            this.notifySuccess("Dynamic playlist songs are refreshed.")
             await this.fetchPlaylists();
         },
         isInstanceOfPlaylist(obj) {
@@ -144,6 +146,14 @@ export default {
         },
         showCreatePlaylistDialog() {
             this.$refs.createDynamicPlaylistDialog.dialog = true
+        },
+        notifySuccess(title) {
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: title,
+                duration: 5000,
+            })
         },
     }
 }

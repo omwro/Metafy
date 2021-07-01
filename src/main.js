@@ -6,8 +6,10 @@ import store from './store/store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios';
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService";
+import Notifications from 'vue-notification'
 
 Vue.config.productionTip = false
+Vue.use(Notifications)
 
 new Vue({
     router,

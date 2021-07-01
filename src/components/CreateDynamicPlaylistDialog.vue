@@ -18,7 +18,7 @@
                                 required
                             />
                         </v-col>
-                        <v-col cols="12">
+                        <v-col cols="12" class="pb-0">
                             <v-textarea
                                 :value="getCombinationString()"
                                 label="Playlist combination *"
@@ -27,6 +27,9 @@
                                 row-height="15"
                                 disabled
                             />
+                        </v-col>
+                        <v-col cols="12" class="py-0">
+                            <small>Max 13 playlists</small>
                         </v-col>
                         <v-col cols="3">
                             <v-btn
@@ -84,7 +87,7 @@
                         <v-col cols="12" class="pt-0">
                             <div class="text-h5 text-center">Preview Playlist</div>
                             <v-container class="px-0 song-container">
-                                <PreviewSongs :combination="combination" />
+                                <PreviewSongs :combination="combination"/>
                             </v-container>
                         </v-col>
                     </v-row>
@@ -119,6 +122,7 @@ import {getDependencyStringFromList} from "@/utilities/Dependency";
 import {Playlist} from "@/models/Playlist";
 import {isAnOperator} from "@/models/Operator";
 import PreviewSongs from "@/components/PreviewSongs";
+
 const {OPERATORS} = require('@/models/Operator');
 
 export default {
@@ -135,6 +139,7 @@ export default {
         async saveCreatePlaylistDialog() {
             this.dialog = false
             await SpotifyService.createPlaylist(this.playlistName, getDependencyStringFromList(this.combination))
+            this.notifySuccess("Your new playlist is created.")
             await this.fetchPlaylists();
             await this.refreshDynamicPlaylists();
         },
@@ -165,6 +170,14 @@ export default {
             if (this.getLastCombination() instanceof Playlist) return true
             return false
         },
+        notifySuccess(title) {
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: title,
+                duration: 5000,
+            })
+        },
     }
 }
 </script>
@@ -173,8 +186,11 @@ export default {
 .playlist-chip {
     margin: 4px;
 }
+
 .song-container {
     max-height: 250px;
     overflow-y: scroll;
+    border: solid 1px darkgrey;
+    border-radius: 5px;
 }
 </style>

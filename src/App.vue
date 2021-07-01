@@ -13,6 +13,8 @@
             </v-container>
         </v-app-bar>
 
+        <notifications group="main" position="top center" style="top: 64px"/>
+
         <v-main>
             <router-view/>
         </v-main>
