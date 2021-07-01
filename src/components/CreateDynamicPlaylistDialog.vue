@@ -19,9 +19,12 @@
                             />
                         </v-col>
                         <v-col cols="12">
-                            <v-text-field
+                            <v-textarea
                                 :value="getCombinationString()"
                                 label="Playlist combination *"
+                                auto-grow
+                                rows="1"
+                                row-height="15"
                                 disabled
                             />
                         </v-col>
@@ -135,11 +138,12 @@ export default {
         },
         isTagSelectable() {
             if (this.combination.length === 0) return true
+            if (this.combination.length >= 25) return false
             if (isAnOperator(this.getLastCombination())) return true
             return false
         },
         isOperatorSelectable() {
-            if (this.combination.length === 0) return false
+            if (this.combination.length === 0 || this.combination.length >= 25) return false
             if (this.getLastCombination() instanceof Playlist) return true
             return false
         },
