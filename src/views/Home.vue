@@ -34,7 +34,7 @@
                             :key="subPl.id"
                             class="playlist-chip"
                         >
-                            {{ subPl.tag }}
+                            {{ subPl.name }}
                         </v-chip>
                     </v-card-text>
                 </v-card>

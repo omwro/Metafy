@@ -50,4 +50,8 @@ export class SpotifyService {
     static async createPlaylist(name, description) {
         return await SpotifyRepository.createPlaylist(store.state.user.id, name, description);
     }
+
+    static async editPlaylist(playlistId, name, description) {
+        return await SpotifyRepository.editPlaylist(playlistId, name, description);
+    }
 }

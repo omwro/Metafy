@@ -7,6 +7,7 @@ export class Playlist {
     constructor(spotifyPlaylist) {
         this.id = spotifyPlaylist.id
         this.uri = spotifyPlaylist.uri
+        this.externalUrl = spotifyPlaylist["external_urls"]["spotify"]
         this.name = spotifyPlaylist.name
         this.description = spotifyPlaylist.description
         this.category = undefined

@@ -43,7 +43,6 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(error);
 });
 
-// TODO Make combination edit page with preview
 // TODO Able to delete playlists in playlist detail dialog
 // TODO Redirect btn to the playlist
 // TODO Improve the fetch api request chain

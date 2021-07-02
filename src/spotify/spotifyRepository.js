@@ -85,7 +85,7 @@ export class SpotifyRepository {
         name,
         description
     ) {
-        return axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        return axios.post(`${PLAYLISTS_API_BASE_URI}/users/${userId}/playlists`, {
             name,
             description
         },{
@@ -95,5 +95,22 @@ export class SpotifyRepository {
         })
             .then(response => response.data)
             .catch(e => console.error("PlaylistRepository.createPlaylist()", e))
+    }
+
+    static async editPlaylist(
+        playlistId,
+        name,
+        description
+    ) {
+        return axios.put(`${PLAYLISTS_API_BASE_URI}/playlists/${playlistId}`, {
+            name,
+            description
+        },{
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.data)
+            .catch(e => console.error("PlaylistRepository.editPlaylist()", e))
     }
 }
