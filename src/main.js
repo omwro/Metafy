@@ -44,7 +44,6 @@ axios.interceptors.response.use((response) => {
 });
 
 // TODO Able to delete playlists in playlist detail dialog
-// TODO Redirect btn to the playlist
 // TODO Improve the fetch api request chain
 // TODO Fix error code 429 with request tracks
 // TODO Fix add/delete repo's so multi request handler can be removed
