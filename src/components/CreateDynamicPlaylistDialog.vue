@@ -14,7 +14,7 @@
                             <v-text-field
                                 v-model="playlistName"
                                 label="Playlist name *"
-                                hint="The playlist name without the category."
+                                hint="The playlist name without the category. "
                                 required
                             />
                         </v-col>
@@ -72,16 +72,12 @@
                                 label="Playlists"
                                 solo
                                 :items="$store.state.playlists"
+                                item-text="name"
+                                return-object
                                 v-model="selectedPlaylist"
                                 @change="combination.push(selectedPlaylist);clearPlaylistSelect()"
                                 :disabled="!isTagSelectable()"
                             >
-                                <template v-slot:selection="{ item }">
-                                    {{ item.name }}
-                                </template>
-                                <template v-slot:item="{ item }">
-                                    {{ item.name }}
-                                </template>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="12" class="pt-0">
@@ -122,6 +118,7 @@ import {getDependencyStringFromList} from "@/utilities/Dependency";
 import {Playlist} from "@/models/Playlist";
 import {isAnOperator} from "@/models/Operator";
 import PreviewSongs from "@/components/PreviewSongs";
+import store from "@/store/store";
 
 const {OPERATORS} = require('@/models/Operator');
 
@@ -138,10 +135,12 @@ export default {
     methods: {
         async saveCreatePlaylistDialog() {
             this.dialog = false
-            await SpotifyService.createPlaylist(this.playlistName, getDependencyStringFromList(this.combination))
+            await SpotifyService.createPlaylist(`[Dynamic] ${this.playlistName}`, getDependencyStringFromList(this.combination))
             this.notifySuccess("Your new playlist is created.")
-            await this.fetchPlaylists();
-            await this.refreshDynamicPlaylists();
+            await SpotifyService.fetchEverything()
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
+            this.playlistName = ""
+            this.combination = []
         },
         clearPlaylistSelect() {
             this.$nextTick(() => {

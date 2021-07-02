@@ -42,3 +42,13 @@ axios.interceptors.response.use((response) => {
     }
     return Promise.reject(error);
 });
+
+// TODO Make combination edit page with preview
+// TODO Able to delete playlists in playlist detail dialog
+// TODO Redirect btn to the playlist
+// TODO Improve the fetch api request chain
+// TODO Fix error code 429 with request tracks
+// TODO Fix add/delete repo's so multi request handler can be removed
+// TODO Error handling in case playlist does not exist in the dynamic combination
+// TODO Refresh token fix
+// TODO Notify and Store.commit in the service layer
