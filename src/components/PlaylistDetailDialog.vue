@@ -8,7 +8,7 @@
             <v-card-title>
                 <v-row>
                     <v-col>
-                        <v-chip class="mr-2">[{{ playlist.category }}]</v-chip>
+                        <v-chip v-if="playlist.category" class="mr-2">[{{ playlist.category }}]</v-chip>
                     </v-col>
                     <v-col class="text-right">
                         <v-tooltip bottom>

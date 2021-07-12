@@ -83,7 +83,7 @@
                     v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
                     class="playlist-chip"
-                    @click="playlistDetailDialog = true; selectedPlaylist = pl"
+                    @click="showPlaylistDetailDialog(pl)"
                 >
                     {{ pl.name }}
                 </v-chip>
