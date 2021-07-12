@@ -87,7 +87,7 @@ export default {
             this.isRefreshing = false
         },
         getRefreshedOn() {
-            return store.state.refreshedOn.format("DD-MM-yy HH:mm")
+            return store.state.refreshedOn !== null ? store.state.refreshedOn.format("DD-MM-yy HH:mm") : ""
         }
     }
 };
