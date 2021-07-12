@@ -15,6 +15,7 @@ const getDefaultState = () => {
         authorizationState: null,
         accessToken: null,
         refreshToken: null,
+        refreshedOn: null,
         expiresIn: moment(),
         user: null,
         playlists: []
@@ -42,6 +43,9 @@ export default new Vuex.Store({
         },
         refreshToken(state, value) {
             state.refreshToken = value;
+        },
+        refreshedOn(state, value) {
+            state.refreshedOn = value;
         },
         expiresIn(state, value) {
             state.expiresIn = value;

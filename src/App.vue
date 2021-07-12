@@ -5,12 +5,13 @@
                 <h1 v-on:click="goToHome">Metafy</h1>
             </div>
             <v-spacer></v-spacer>
-            <v-container v-if="isLoggedIn()">
-                <v-btn v-on:click="logout">Hi {{getUser ? getUser().display_name : "user"}}</v-btn>
-            </v-container>
-            <v-container v-else>
-                <v-btn v-on:click="login">Login with Spotify</v-btn>
-            </v-container>
+            <div v-if="isLoggedIn()">
+                <small class="mr-1">{{ getRefreshedOn() }}</small>
+                <v-icon @click="refresh" :disabled="isRefreshing">mdi-refresh</v-icon>
+            </div>
+            <v-spacer></v-spacer>
+            <v-btn v-if="isLoggedIn()" v-on:click="logout">Hi {{ getUser() ? getUser().display_name : "user" }}</v-btn>
+            <v-btn v-else v-on:click="login">Login with Spotify</v-btn>
         </v-app-bar>
 
         <notifications group="main" position="top center" style="top: 64px"/>
@@ -22,41 +23,42 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import store from "@/store/store";
 import Home from "@/views/Home";
+import {SpotifyService} from "@/spotify/spotifyService";
 
-if (store.state.accessToken && store.state.refreshToken) {
-    axios.interceptors.request.use(function (config) {
-        config.headers.Authorization = "Bearer "+store.state.accessToken;
-        return config;
-    });
+// axios.interceptors.request.use(function (config) {
+//     if (store.state.accessToken) {
+//         config.headers.Authorization = "Bearer " + store.state.accessToken;
+//     }
+//     return config;
+// });
 
-    axios.interceptors.response.use((response) => {
-        return response;
-    }, (error) => {
-        console.log("Error response", error.response)
-        if (error.response.status === 401) {
-           SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-            .then(() => this.$router.push(Home));
-        } else {
-            return new Promise(((resolve, reject) => reject(error)));
-        }
-    })
-}
+// axios.interceptors.response.use((response) => {
+//     return response;
+// }, (error) => {
+//     console.log("Error response", error.response)
+//     if (error.response.status === 401 && store.state.refreshToken) {
+//         SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+//             .then(() => this.$router.push(Home));
+//     } else {
+//         return new Promise(((resolve, reject) => reject(error)));
+//     }
+// })
 
 export default {
     name: 'App',
     data: () => ({
-        //
+        isRefreshing: false
     }),
     created() {
 
     },
     methods: {
         goToHome() {
-          this.$router.push(Home);
+            this.$router.push(Home);
         },
         isLoggedIn() {
             return store.getters.isLoggedIn;
@@ -69,6 +71,23 @@ export default {
         },
         async logout() {
             await SpotifyAuthService.logout();
+        },
+        async refresh() {
+            this.isRefreshing = true
+            await SpotifyService.fetchEverything()
+            console.log("DPLS:", store.getters.getDynamicPlaylists)
+            console.log("TPLS:", store.getters.getTaggedPlaylists)
+            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "All data successfully fetched.",
+                duration: 5000,
+            })
+            this.isRefreshing = false
+        },
+        getRefreshedOn() {
+            return store.state.refreshedOn.format("DD-MM-yy HH:mm")
         }
     }
 };

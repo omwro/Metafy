@@ -6,10 +6,11 @@
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import store from "@/store/store";
 import Home from "@/views/Home";
+import {SpotifyService} from "@/spotify/spotifyService";
 
 export default {
     name: 'Callback',
-    created() {
+    async created() {
         const authorizationCode = new URLSearchParams(window.location.search).get("code");
         const authorizationState = new URLSearchParams(window.location.search).get("state");
 
@@ -17,11 +18,21 @@ export default {
         store.commit("authorizationState", authorizationState);
 
         if (authorizationCode && store.state.codeVerifier) {
-            SpotifyAuthService.fetchAccessToken(authorizationCode, store.state.codeVerifier)
-            .then(() => {
-                this.$router.push(Home);
-            });
+            await SpotifyAuthService.fetchAccessToken(authorizationCode, store.state.codeVerifier)
+
+            await SpotifyService.fetchEverything()
+            console.log("DPLS:", store.getters.getDynamicPlaylists)
+            console.log("TPLS:", store.getters.getTaggedPlaylists)
+            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "All data successfully fetched.",
+                duration: 5000,
+            })
+
+            await this.$router.push(Home);
         }
-    }
+    },
 }
 </script>

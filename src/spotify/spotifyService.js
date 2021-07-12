@@ -1,32 +1,34 @@
 import store from "@/store/store";
-import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
+// import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
 import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
 import {Playlist} from "@/models/Playlist";
 import {Song} from "@/models/Song";
 import {getSongsFromDependencyList} from "@/utilities/Dependency";
+import moment from "moment";
 
 export const CATEGORY_REGEX = /\[.*?\]/g;
 
 export class SpotifyService {
 
     static async fetchEverything() {
-        if (SpotifyAuthService.isAccessTokenExpired()) {
-            await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-        }
+        // if (SpotifyAuthService.isAccessTokenExpired()) {
+        //     await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
+        // }
         let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
-        store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
-        store.commit("playlists", playlists);
         playlists = await this.fetchPlaylistSongs(playlists)
         store.commit("playlists", playlists);
+        store.commit("refreshedOn", moment())
         return playlists
     }
 
     static async fetchPlaylistSongs(playlists) {
         return await Promise.all(playlists.map(async (pl) => {
             let songs = await SpotifyRepository.fetchPlaylistTracks(pl.id)
-            pl.songs = songs.map((song) => new Song(song))
+            pl.songs = songs
+                .filter((song) => song.track !== null)
+                .map((song) => new Song(song))
             return pl
         }))
     }

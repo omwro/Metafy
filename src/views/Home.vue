@@ -118,9 +118,6 @@ export default {
         combination: [],
         selectedPlaylist: undefined,
     }),
-    created() {
-        this.fetchPlaylists()
-    },
     methods: {
         isLoggedIn() {
             return store.getters.isLoggedIn;
