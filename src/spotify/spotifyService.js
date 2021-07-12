@@ -16,7 +16,9 @@ export class SpotifyService {
         //     await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
         // }
         let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
+        store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
+        store.commit("playlists", playlists);
         playlists = await this.fetchPlaylistSongs(playlists)
         store.commit("playlists", playlists);
         store.commit("refreshedOn", moment())

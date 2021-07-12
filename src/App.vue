@@ -3,6 +3,7 @@
         <v-app-bar app color="primary" dark>
             <div class="d-flex align-center">
                 <h1 v-on:click="goToHome">Metafy</h1>
+                <v-icon @click="goToGithub" class="ml-2">mdi-github</v-icon>
             </div>
             <v-spacer></v-spacer>
             <div v-if="isLoggedIn()">
@@ -88,6 +89,9 @@ export default {
         },
         getRefreshedOn() {
             return store.state.refreshedOn !== null ? store.state.refreshedOn.format("DD-MM-yy HH:mm") : ""
+        },
+        goToGithub() {
+            window.open("https://github.com/omwro/metafy-vue")
         }
     }
 };
