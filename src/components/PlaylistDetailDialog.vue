@@ -104,7 +104,7 @@ export default {
     }),
     methods: {
         isInstanceOfPlaylist(obj) {
-            return obj instanceof Playlist
+            return Playlist.isInstance(obj)
         },
         redirect() {
             window.open(this.playlist.externalUrl)

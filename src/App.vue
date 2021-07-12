@@ -24,30 +24,11 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import store from "@/store/store";
 import Home from "@/views/Home";
 import {SpotifyService} from "@/spotify/spotifyService";
-
-// axios.interceptors.request.use(function (config) {
-//     if (store.state.accessToken) {
-//         config.headers.Authorization = "Bearer " + store.state.accessToken;
-//     }
-//     return config;
-// });
-
-// axios.interceptors.response.use((response) => {
-//     return response;
-// }, (error) => {
-//     console.log("Error response", error.response)
-//     if (error.response.status === 401 && store.state.refreshToken) {
-//         SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-//             .then(() => this.$router.push(Home));
-//     } else {
-//         return new Promise(((resolve, reject) => reject(error)));
-//     }
-// })
+import moment from "moment";
 
 export default {
     name: 'App',
@@ -88,7 +69,7 @@ export default {
             this.isRefreshing = false
         },
         getRefreshedOn() {
-            return store.state.refreshedOn !== null ? store.state.refreshedOn.format("DD-MM-yy HH:mm") : ""
+            return store.state.refreshedOn ? moment(store.state.refreshedOn).format("DD-MM-yy HH:mm") : ""
         },
         goToGithub() {
             window.open("https://github.com/omwro/metafy-vue")

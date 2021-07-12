@@ -22,7 +22,7 @@ export function splitDependencyString(string) {
 export function getDependencyStringFromList(dependencyList) {
     let string = ""
     dependencyList.forEach((dep) => {
-        if (dep instanceof Playlist) string += dep.id
+        if (Playlist.isInstance(dep)) string += dep.id
         else string += dep
     })
     return string
@@ -43,7 +43,7 @@ export function getSongsFromDependencyList(dependencyList) {
     let songs = []
     let operator = null
     dependencyList.forEach((dep) => {
-        if (dep instanceof Playlist) {
+        if (Playlist.isInstance(dep)) {
             // Get the latest instance from the state
             dep = store.getters.getPlaylistFromId(dep.id)
             switch (operator){

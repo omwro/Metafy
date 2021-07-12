@@ -38,4 +38,8 @@ export class Playlist {
             }
         }
     }
+
+    static isInstance(obj) {
+        return obj instanceof Playlist || obj instanceof Object
+    }
 }

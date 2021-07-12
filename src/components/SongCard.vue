@@ -19,7 +19,7 @@ import {Song} from "@/models/Song";
 export default {
     name: 'SongCard',
     props: {
-        song: Song
+        song: [Song, Object]
     },
     data: () => ({}),
     methods: {

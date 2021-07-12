@@ -135,7 +135,7 @@ export default {
             await this.fetchPlaylists();
         },
         isInstanceOfPlaylist(obj) {
-            return obj instanceof Playlist
+            return Playlist.isInstance(obj)
         },
         showPlaylistDetailDialog(playlist) {
             this.$refs.playlistDetailDialog.playlist = playlist

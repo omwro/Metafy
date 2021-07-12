@@ -166,7 +166,7 @@ export default {
         },
         isOperatorSelectable() {
             if (this.combination.length === 0 || this.combination.length >= 25) return false
-            if (this.getLastCombination() instanceof Playlist) return true
+            if (Playlist.isInstance(this.getLastCombination())) return true
             return false
         },
         notifySuccess(title) {
