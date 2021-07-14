@@ -7,14 +7,20 @@
         </v-row>
         <v-row>
             <v-col>
-                <h2 class="text-center">
-                    Your dynamic playlists
-                    <v-icon v-on:click="refreshDynamicPlaylists">
-                        mdi-refresh
-                    </v-icon>
-                    <v-icon v-on:click="showCreatePlaylistDialog">
-                        mdi-plus
-                    </v-icon>
+                <h2>
+                    <v-row class="pa-4" justify="center">
+                        <v-col cols="auto" class="text-no-wrap pa-0">
+                            Your dynamic playlists
+                        </v-col>
+                        <v-col cols="auto" class="text-no-wrap pa-0">
+                            <v-icon v-on:click="refreshDynamicPlaylists">
+                                mdi-refresh
+                            </v-icon>
+                            <v-icon v-on:click="showCreatePlaylistDialog">
+                                mdi-plus
+                            </v-icon>
+                        </v-col>
+                    </v-row>
                 </h2>
             </v-col>
         </v-row>
@@ -146,7 +152,7 @@ export default {
 
 <style scoped lang="scss">
 .playlist-container {
-    margin: 0 12px;
+    margin: 0 12px 12px;
     padding: 8px;
     border: solid 1px black;
 }

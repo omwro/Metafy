@@ -5,10 +5,10 @@
         v-if="playlist"
     >
         <v-card>
-            <v-card-title>
+            <v-card-title class="pa-3">
                 <span class="text-h5">Edit playlist {{playlist.name}}</span>
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="pa-3">
                 <v-container>
                     <v-row>
                         <v-col cols="12">

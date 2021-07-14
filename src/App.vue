@@ -1,18 +1,37 @@
 <template>
     <v-app>
         <v-app-bar app color="primary" dark>
-            <div class="d-flex align-center">
-                <h1 v-on:click="goToHome">Metafy</h1>
-                <v-icon @click="goToGithub" class="ml-2">mdi-github</v-icon>
-            </div>
-            <v-spacer></v-spacer>
-            <div v-if="isLoggedIn()">
-                <small class="mr-1">{{ getRefreshedOn() }}</small>
-                <v-icon @click="refresh" :disabled="isRefreshing">mdi-refresh</v-icon>
-            </div>
-            <v-spacer></v-spacer>
-            <v-btn v-if="isLoggedIn()" v-on:click="logout">Hi {{ getUser() ? getUser().display_name : "user" }}</v-btn>
-            <v-btn v-else v-on:click="login">Login with Spotify</v-btn>
+            <v-row align="center">
+                <v-col class="d-flex">
+                    <h1 v-on:click="goToHome">
+                        <template v-if="$vuetify.breakpoint.name === 'xs'">
+                            M
+                        </template>
+                        <template v-else>
+                            Metafy
+                        </template>
+                    </h1>
+                    <v-icon @click="goToGithub" class="ml-2">mdi-github</v-icon>
+                </v-col>
+                <v-col v-if="isLoggedIn()" class="text-center">
+                    <small class="mr-1">{{ getRefreshedOn() }}</small>
+                    <v-icon @click="refresh" :disabled="isRefreshing">mdi-refresh</v-icon>
+                </v-col>
+                <v-col class="text-right">
+                    <v-btn v-if="isLoggedIn()" v-on:click="logout">
+                        Hi
+                        <template v-if="$vuetify.breakpoint.name !== 'xs'">
+                            {{ getUser() ? getUser().display_name : "user" }}
+                        </template>
+                    </v-btn>
+                    <v-btn v-else v-on:click="login">
+                        Login
+                        <template v-if="$vuetify.breakpoint.name !== 'xs'">
+                            {{" with Spotify"}}
+                        </template>
+                    </v-btn>
+                </v-col>
+            </v-row>
         </v-app-bar>
 
         <notifications group="main" position="top center" style="top: 64px"/>

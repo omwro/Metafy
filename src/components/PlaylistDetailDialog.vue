@@ -5,7 +5,7 @@
         v-if="playlist"
     >
         <v-card>
-            <v-card-title>
+            <v-card-title class="pa-3">
                 <v-row>
                     <v-col>
                         <v-chip v-if="playlist.category" class="mr-2">[{{ playlist.category }}]</v-chip>
@@ -56,9 +56,9 @@
                     </v-col>
                 </v-row>
             </v-card-title>
-            <v-card-text class="pt-5">
+            <v-card-text class="pa-3">
                 <v-row>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="playlist.dependency.length">
                         <v-chip
                             class="ma-1"
                             v-for="(dep, i) in playlist.dependency"
