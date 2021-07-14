@@ -1,6 +1,5 @@
 import store from "@/store/store";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
-import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
 import {Playlist} from "@/models/Playlist";
 import {Song} from "@/models/Song";
 import {getSongsFromDependencyList} from "@/utilities/Dependency";
@@ -35,6 +34,7 @@ export class SpotifyService {
     }
 
     static async refreshDynamicPlaylistSongs(playlists) {
+        const PLAYLIST_TRACK_FETCH_LIMIT = 100;
         for (let pl of playlists) {
             const oldSongs = pl.songs
 
@@ -42,11 +42,17 @@ export class SpotifyService {
                 const oldSongUris = oldSongs.map((song) => {
                     return {uri: song.uri}
                 })
-                await SpotifyMultiRequestHandler.deleteAllPlaylistTracks(pl.id, oldSongUris)
+                const slicedTrackUriArray = this.sliceArrayIntoChunks(oldSongUris, PLAYLIST_TRACK_FETCH_LIMIT);
+                for (const t of slicedTrackUriArray) {
+                    await SpotifyRepository.deletePlaylistTracks(pl.id, t);
+                }
             }
 
             const newSongUris = getSongsFromDependencyList(pl.dependency).map((song) => song.uri)
-            await SpotifyMultiRequestHandler.addAllPlaylistTracks(pl.id, newSongUris)
+            const slicedTrackUriArray = this.sliceArrayIntoChunks(newSongUris, PLAYLIST_TRACK_FETCH_LIMIT);
+            for (const t of slicedTrackUriArray) {
+                await SpotifyRepository.addPlaylistTracks(pl.id, t);
+            }
         }
     }
 
@@ -60,5 +66,14 @@ export class SpotifyService {
 
     static async deletePlaylist(playlistId) {
         return await SpotifyRepository.deletePlaylist(playlistId);
+    }
+
+    static sliceArrayIntoChunks(array, chunkSize) {
+        const newArray = [];
+        for (let i = 0; i < array.length; i += chunkSize) {
+            const chunk = array.slice(i, i + chunkSize);
+            newArray.push(chunk)
+        }
+        return newArray;
     }
 }

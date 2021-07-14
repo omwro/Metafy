@@ -46,6 +46,3 @@ axios.interceptors.response.use(function (response) {
         return Promise.reject(error);
     }
 });
-
-// TODO Improve the fetch api request chain
-// TODO Fix add/delete repo's so multi request handler can be removed
