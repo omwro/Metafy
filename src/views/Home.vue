@@ -13,18 +13,21 @@
                     </v-col>
                 </v-row>
                 <v-row justify="center">
-<!--                    <v-col cols="auto">-->
-<!--                        <v-row justify="center" class="pa-1">-->
-<!--                            <v-col cols="12" class="text-center pa-0">-->
-<!--                                <v-icon v-on:click="refreshDynamicPlaylists">-->
-<!--                                    mdi-refresh-->
-<!--                                </v-icon>-->
-<!--                            </v-col>-->
-<!--                            <v-col cols="12" class="pa-0 text-center">-->
-<!--                                <small>Refresh Dynamic playlist</small>-->
-<!--                            </v-col>-->
-<!--                        </v-row>-->
-<!--                    </v-col>-->
+                    <v-col cols="auto">
+                        <v-row justify="center" class="pa-1">
+                            <v-col cols="12" class="text-center pa-0">
+                                <v-icon
+                                    v-on:click="refreshDynamicPlaylists"
+                                    :disabled="isRefreshingDynamics"
+                                >
+                                    mdi-refresh
+                                </v-icon>
+                            </v-col>
+                            <v-col cols="12" class="pa-0 text-center">
+                                <small>Refresh Dynamic playlist</small>
+                            </v-col>
+                        </v-row>
+                    </v-col>
                     <v-col cols="auto">
                         <v-row justify="center" class="pa-1">
                             <v-col cols="12" class="text-center pa-0">
@@ -146,6 +149,7 @@ export default {
         dialogOperatorToggle: false,
         combination: [],
         selectedPlaylist: undefined,
+        isRefreshingDynamics: false
     }),
     methods: {
         isLoggedIn() {
@@ -155,9 +159,16 @@ export default {
             await SpotifyService.fetchEverything()
         },
         async refreshDynamicPlaylists() {
+            this.isRefreshingDynamics = true
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
-            this.notifySuccess("Dynamic playlist songs are refreshed.")
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "Your new playlist is created.",
+                duration: 5000,
+            })
             await this.fetchPlaylists();
+            this.isRefreshingDynamics = false
         },
         isInstanceOfPlaylist(obj) {
             return Playlist.isInstance(obj)

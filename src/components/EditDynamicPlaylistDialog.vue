@@ -138,11 +138,16 @@ export default {
         async saveEditPlaylistDialog() {
             this.dialog = false
             await SpotifyService.editPlaylist(this.playlist.id, `[Dynamic] ${this.playlistName}`, getDependencyStringFromList(this.combination))
-            this.notifySuccess("Your playlist is updated.")
-            await SpotifyService.fetchEverything()
-            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "Your playlist is updated.",
+                duration: 5000,
+            })
             this.playlistName = ""
             this.combination = []
+            await SpotifyService.fetchEverything()
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
         },
         clearPlaylistSelect() {
             this.$nextTick(() => {
@@ -170,14 +175,6 @@ export default {
             if (this.combination.length === 0 || this.combination.length >= 25) return false
             if (Playlist.isInstance(this.getLastCombination())) return true
             return false
-        },
-        notifySuccess(title) {
-            this.$notify({
-                group: 'main',
-                type: 'success',
-                title: title,
-                duration: 5000,
-            })
         },
     }
 }

@@ -136,7 +136,12 @@ export default {
         async saveCreatePlaylistDialog() {
             this.dialog = false
             await SpotifyService.createPlaylist(`[Dynamic] ${this.playlistName}`, getDependencyStringFromList(this.combination))
-            this.notifySuccess("Your new playlist is created.")
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "Your new playlist is created.",
+                duration: 5000,
+            })
             this.playlistName = ""
             this.combination = []
             await SpotifyService.fetchEverything()
@@ -168,14 +173,6 @@ export default {
             if (this.combination.length === 0 || this.combination.length >= 25) return false
             if (Playlist.isInstance(this.getLastCombination())) return true
             return false
-        },
-        notifySuccess(title) {
-            this.$notify({
-                group: 'main',
-                type: 'success',
-                title: title,
-                duration: 5000,
-            })
         },
     }
 }
