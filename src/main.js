@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
-import router from './router'
+import router from './router/router'
 import store from './store/store'
 import vuetify from './plugins/vuetify'
 import axios from 'axios';
@@ -30,7 +30,6 @@ axios.interceptors.request.use(async function (config) {
     return config;
 });
 
-// TODO Able to delete playlists in playlist detail dialog
 // TODO Improve the fetch api request chain
 // TODO Fix error code 429 with request tracks
 // TODO Fix add/delete repo's so multi request handler can be removed

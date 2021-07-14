@@ -137,10 +137,10 @@ export default {
             this.dialog = false
             await SpotifyService.createPlaylist(`[Dynamic] ${this.playlistName}`, getDependencyStringFromList(this.combination))
             this.notifySuccess("Your new playlist is created.")
-            await SpotifyService.fetchEverything()
-            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
             this.playlistName = ""
             this.combination = []
+            await SpotifyService.fetchEverything()
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
         },
         clearPlaylistSelect() {
             this.$nextTick(() => {
