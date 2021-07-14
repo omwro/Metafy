@@ -1,7 +1,7 @@
 // Combine 2 lists of songs and remove the duplicate
 export function addSongs(list1, list2) {
     list1.push(...list2)
-    return Array.from(new Set(list1))
+    return list1.filter((value, index, array) => array.findIndex(song => (song.id === value.id)) === index)
 }
 
 // Remove the songs from list 2 in list 1
