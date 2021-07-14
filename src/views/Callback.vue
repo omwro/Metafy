@@ -21,15 +21,6 @@ export default {
             await SpotifyAuthService.fetchAccessToken(authorizationCode, store.state.codeVerifier)
 
             await SpotifyService.fetchEverything()
-            console.log("DPLS:", store.getters.getDynamicPlaylists)
-            console.log("TPLS:", store.getters.getTaggedPlaylists)
-            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
-            this.$notify({
-                group: 'main',
-                type: 'success',
-                title: "All data successfully fetched.",
-                duration: 5000,
-            })
 
             await this.$router.push(Home);
         }

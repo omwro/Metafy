@@ -43,6 +43,7 @@
                                     class="mx-2 red--text"
                                     v-on="on"
                                     v-bind="attrs"
+                                    @click="deletePlaylist"
                                 >
                                     mdi-delete
                                 </v-icon>
@@ -93,6 +94,7 @@ import SongCard from "@/components/SongCard";
 import {Playlist} from "@/models/Playlist";
 import EditDynamicPlaylistDialog from "@/components/EditDynamicPlaylistDialog";
 import {DYNAMIC} from "@/store/store";
+import {SpotifyService} from "@/spotify/spotifyService";
 
 export default {
     name: 'PlayListDetailDialog',
@@ -115,6 +117,11 @@ export default {
             this.$refs.editDynamicPlaylistDialog.playlistName = this.playlist.tag
             this.$refs.editDynamicPlaylistDialog.combination = this.playlist.dependency
             this.$refs.editDynamicPlaylistDialog.dialog = true
+        },
+        async deletePlaylist() {
+            await SpotifyService.deletePlaylist(this.playlist.id)
+            this.dialog = false
+            await SpotifyService.fetchEverything()
         },
     }
 }

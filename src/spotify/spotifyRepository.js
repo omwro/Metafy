@@ -113,4 +113,12 @@ export class SpotifyRepository {
             .then(response => response.data)
             .catch(e => console.error("PlaylistRepository.editPlaylist()", e))
     }
+
+    static async deletePlaylist(
+        playlistId
+    ) {
+        return axios.delete(`${PLAYLISTS_API_BASE_URI}/playlists/${playlistId}/followers`)
+            .then(response => response.data)
+            .catch(e => console.error("PlaylistRepository.deletePlaylist()", e))
+    }
 }

@@ -57,9 +57,6 @@ export default {
         async refresh() {
             this.isRefreshing = true
             await SpotifyService.fetchEverything()
-            console.log("DPLS:", store.getters.getDynamicPlaylists)
-            console.log("TPLS:", store.getters.getTaggedPlaylists)
-            console.log("UTPLS:", store.getters.getUntaggedPlaylists)
             this.$notify({
                 group: 'main',
                 type: 'success',

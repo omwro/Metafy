@@ -1,5 +1,4 @@
 import store from "@/store/store";
-// import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
 import {SpotifyMultiRequestHandler} from "@/spotify/spotifyMultiRequestHandler";
 import {Playlist} from "@/models/Playlist";
@@ -12,9 +11,6 @@ export const CATEGORY_REGEX = /\[.*?\]/g;
 export class SpotifyService {
 
     static async fetchEverything() {
-        // if (SpotifyAuthService.isAccessTokenExpired()) {
-        //     await SpotifyAuthService.refreshAccessToken(store.state.refreshToken)
-        // }
         let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
         store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
@@ -22,6 +18,9 @@ export class SpotifyService {
         playlists = await this.fetchPlaylistSongs(playlists)
         store.commit("playlists", playlists);
         store.commit("refreshedOn", moment())
+        console.log("DPLS:", store.getters.getDynamicPlaylists)
+        console.log("TPLS:", store.getters.getTaggedPlaylists)
+        console.log("UTPLS:", store.getters.getUntaggedPlaylists)
         return playlists
     }
 
@@ -57,5 +56,9 @@ export class SpotifyService {
 
     static async editPlaylist(playlistId, name, description) {
         return await SpotifyRepository.editPlaylist(playlistId, name, description);
+    }
+
+    static async deletePlaylist(playlistId) {
+        return await SpotifyRepository.deletePlaylist(playlistId);
     }
 }
