@@ -5,22 +5,45 @@
                 <h1 class="text-center">Let's vibe with Metafy!</h1>
             </v-col>
         </v-row>
+        <v-row justify="center">
+            <v-col cols="auto" class="playlist-container">
+                <v-row>
+                    <v-col cols="auto" class="py-0">
+                        <div class="playlist-container-title">Quick tools</div>
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+<!--                    <v-col cols="auto">-->
+<!--                        <v-row justify="center" class="pa-1">-->
+<!--                            <v-col cols="12" class="text-center pa-0">-->
+<!--                                <v-icon v-on:click="refreshDynamicPlaylists">-->
+<!--                                    mdi-refresh-->
+<!--                                </v-icon>-->
+<!--                            </v-col>-->
+<!--                            <v-col cols="12" class="pa-0 text-center">-->
+<!--                                <small>Refresh Dynamic playlist</small>-->
+<!--                            </v-col>-->
+<!--                        </v-row>-->
+<!--                    </v-col>-->
+                    <v-col cols="auto">
+                        <v-row justify="center" class="pa-1">
+                            <v-col cols="12" class="text-center pa-0">
+                                <v-icon v-on:click="showCreatePlaylistDialog">
+                                    mdi-plus
+                                </v-icon>
+                            </v-col>
+                            <v-col cols="12" class="pa-0 text-center">
+                                <small>New Dynamic playlist</small>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col>
-                <h2>
-                    <v-row class="pa-4" justify="center">
-                        <v-col cols="auto" class="text-no-wrap pa-0">
-                            Your dynamic playlists
-                        </v-col>
-                        <v-col cols="auto" class="text-no-wrap pa-0">
-                            <v-icon v-on:click="refreshDynamicPlaylists">
-                                mdi-refresh
-                            </v-icon>
-                            <v-icon v-on:click="showCreatePlaylistDialog">
-                                mdi-plus
-                            </v-icon>
-                        </v-col>
-                    </v-row>
+                <h2 class="text-center">
+                    Your dynamic playlists
                 </h2>
             </v-col>
         </v-row>
@@ -155,6 +178,14 @@ export default {
     margin: 0 12px 12px;
     padding: 8px;
     border: solid 1px black;
+    border-radius: 5px;
+
+    .playlist-container-title {
+        width: 100px;
+        margin-top: -10px;
+        background: white;
+        text-align: center;
+    }
 }
 
 .playlist-chip {
