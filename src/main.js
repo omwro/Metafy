@@ -28,8 +28,24 @@ axios.interceptors.request.use(async function (config) {
         config.headers.Authorization = "Bearer " + store.state.accessToken;
     }
     return config;
+}, function (error) {
+        return Promise.reject(error);
+    }
+);
+
+axios.interceptors.response.use(function (response) {
+    return response;
+}, async function (error) {
+    const {response} = error;
+    if (response.status === 429) {
+        const waitInSeconds = parseInt(response.headers['retry-after']) + 1
+        console.warn(`Retrying this request after ${waitInSeconds} seconds`)
+        await new Promise(resolve => setTimeout(resolve, waitInSeconds * 1000));
+        return axios.request(response.config)
+    } else {
+        return Promise.reject(error);
+    }
 });
 
 // TODO Improve the fetch api request chain
-// TODO Fix error code 429 with request tracks
 // TODO Fix add/delete repo's so multi request handler can be removed
