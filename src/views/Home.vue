@@ -29,13 +29,12 @@
                             {{ pl.tag }} ({{ pl.songs.length }})
                     </v-card-title>
                     <v-card-text>
-                        <v-chip
-                            v-for="subPl in pl.subtags"
-                            :key="subPl.id"
-                            class="playlist-chip"
-                        >
-                            {{ subPl.name }}
-                        </v-chip>
+                        <TagChip
+                            v-for="subpl in pl.subtags"
+                            :key="subpl.id"
+                            :playlist="subpl"
+                            :category="subpl.category"
+                        />
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -46,27 +45,16 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col
-                v-for="tpl in $store.getters.getTaggedPlaylists"
-                :key="tpl.category"
-            >
-                <v-row>
-                    <v-col>
-                        <h3 class="text-center">{{ tpl.category }}</h3>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="playlist-container dark-background">
-                        <v-chip
-                            v-for="pl in tpl.playlists"
-                            :key="pl.id"
-                            class="playlist-chip"
-                            @click="showPlaylistDetailDialog(pl)"
-                        >
-                            {{ pl.tag }}
-                        </v-chip>
-                    </v-col>
-                </v-row>
+            <v-col class="playlist-container dark-background">
+                <template v-for="tpl in $store.getters.getTaggedPlaylists">
+                    <TagChip
+                        v-for="pl in tpl.playlists"
+                        :key="pl.id"
+                        :playlist="pl"
+                        :category="pl.category"
+                        @click="showPlaylistDetailDialog(pl)"
+                    />
+                </template>
             </v-col>
         </v-row>
         <v-row>
@@ -76,14 +64,12 @@
         </v-row>
         <v-row>
             <v-col class="playlist-container dark-background">
-                <v-chip
+                <TagChip
                     v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
-                    class="playlist-chip"
+                    :playlist="pl"
                     @click="showPlaylistDetailDialog(pl)"
-                >
-                    {{ pl.name }}
-                </v-chip>
+                />
             </v-col>
         </v-row>
 
@@ -100,10 +86,11 @@ import store from "@/store/store";
 import {Playlist} from "@/models/Playlist";
 import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
 import QuickTools from "@/components/QuickTools";
+import TagChip from "@/components/TagChip";
 
 export default {
     name: 'Home',
-    components: {QuickTools, PlayListDetailDialog},
+    components: {TagChip, QuickTools, PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
@@ -149,6 +136,12 @@ export default {
 
 .playlist-chip {
     margin: 4px;
+
+    &:hover{
+        .v-chip::before {
+            opacity: 0.08;
+        }
+    }
 }
 
 .dialogChipContainer {

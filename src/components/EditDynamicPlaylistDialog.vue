@@ -181,10 +181,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.playlist-chip {
-    margin: 4px;
-}
-
 .song-container {
     max-height: 250px;
     overflow-y: scroll;

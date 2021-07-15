@@ -33,7 +33,7 @@
         </v-main>
 
         <v-footer>
-            <v-row justify="space-between ma-0">
+            <v-row justify="space-between" class="ma-0">
                 <v-col cols="auto" class="pa-0">
                     <div @click="goToGithub" class="cursor-pointer">
                         <v-icon>mdi-github</v-icon>

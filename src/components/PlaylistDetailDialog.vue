@@ -8,7 +8,10 @@
             <v-card-title class="pa-3">
                 <v-row>
                     <v-col>
-                        <v-chip v-if="playlist.category" class="mr-2">[{{ playlist.category }}]</v-chip>
+                        <TagChip
+                            :category="playlist.category"
+                            class="mr-2"
+                        />
                     </v-col>
                     <v-col class="text-right">
                         <v-tooltip bottom>
@@ -60,14 +63,14 @@
             <v-card-text class="pa-3">
                 <v-row>
                     <v-col cols="12" v-if="playlist.dependency.length">
-                        <v-chip
+                        <TagChip
                             class="ma-1"
                             v-for="(dep, i) in playlist.dependency"
                             :key="i"
-                            :label="!isInstanceOfPlaylist(dep)"
-                        >
-                            {{ isInstanceOfPlaylist(dep) ? dep.name : dep }}
-                        </v-chip>
+                            :playlist="dep"
+                            :category="dep.category"
+                            :isOperator="!isInstanceOfPlaylist(dep)"
+                        />
                     </v-col>
                     <v-col cols="12" v-for="(song, i) in playlist.songs" :key="i">
                         <SongCard :song="song"/>
@@ -96,10 +99,11 @@ import {Playlist} from "@/models/Playlist";
 import EditDynamicPlaylistDialog from "@/components/EditDynamicPlaylistDialog";
 import {DYNAMIC} from "@/store/store";
 import {SpotifyService} from "@/spotify/spotifyService";
+import TagChip from "@/components/TagChip";
 
 export default {
     name: 'PlayListDetailDialog',
-    components: {EditDynamicPlaylistDialog, SongCard},
+    components: {TagChip, EditDynamicPlaylistDialog, SongCard},
     data: () => ({
         dialog: false,
         playlist: undefined,
