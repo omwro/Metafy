@@ -2,7 +2,7 @@
     <v-container class="pa-0">
         <v-row>
             <v-col cols="auto" class="py-0">
-                <div class="playlist-container-title">Quick tools</div>
+                <div class="playlist-container-title dark-background">Quick tools</div>
             </v-col>
         </v-row>
         <v-row justify="center">

@@ -26,21 +26,21 @@
             </v-row>
         </v-app-bar>
 
-        <notifications group="main" position="top center" style="top: 64px"/>
+        <notifications group="main" position="top center" style="top: 75px"/>
 
-        <v-main>
+        <v-main class="main">
             <router-view/>
         </v-main>
 
         <v-footer>
-            <v-row justify="space-between">
-                <v-col cols="auto">
+            <v-row justify="space-between ma-0">
+                <v-col cols="auto" class="pa-0">
                     <div @click="goToGithub" class="cursor-pointer">
                         <v-icon>mdi-github</v-icon>
                         Github
                     </div>
                 </v-col>
-                <v-col cols="auto">
+                <v-col cols="auto"  class="pa-0">
                     <div @click="goToPortfolio" class="cursor-pointer">
                         <v-icon>mdi-smart-card</v-icon>
                         Portfolio
@@ -107,13 +107,20 @@ export default {
 </script>
 
 <style lang="scss">
-$spotify-green: #1DB954;
-
 .spotify-text-color {
-    color: $spotify-green !important;
+    color: #1DB954 !important;
+}
+
+.dark-background {
+    background-color: #1E1E1E;
 }
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.main {
+    background: rgb(25,118,210);
+    background: linear-gradient(135deg, rgba(25,118,210,0.9) 0%, rgba(29,185,84,0.9) 100%);
 }
 </style>

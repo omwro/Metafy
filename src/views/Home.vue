@@ -6,7 +6,7 @@
             </v-col>
         </v-row>
         <v-row justify="center" class="mx-0">
-            <v-col cols="auto" class="playlist-container">
+            <v-col cols="auto" class="playlist-container dark-background">
                 <QuickTools/>
             </v-col>
         </v-row>
@@ -18,11 +18,12 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="playlist-container">
+            <v-col class="playlist-container dark-background pa-0">
                 <v-card
                     v-for="pl in $store.getters.getDynamicPlaylists"
                     :key="pl.id"
                     @click="showPlaylistDetailDialog(pl)"
+                    class="dynamic-card"
                 >
                     <v-card-title>
                             {{ pl.tag }} ({{ pl.songs.length }})
@@ -55,10 +56,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col
-
-                        class="playlist-container"
-                    >
+                    <v-col class="playlist-container dark-background">
                         <v-chip
                             v-for="pl in tpl.playlists"
                             :key="pl.id"
@@ -77,7 +75,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="playlist-container">
+            <v-col class="playlist-container dark-background">
                 <v-chip
                     v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
@@ -133,14 +131,19 @@ export default {
 .playlist-container {
     margin: 0 12px 12px;
     padding: 8px;
-    border: solid 1px black;
+    border: solid 1px white;
     border-radius: 5px;
 
     .playlist-container-title {
         width: 100px;
         margin-top: -10px;
-        background: white;
         text-align: center;
+        border-radius: 25px;
+        border: solid 1px white;
+    }
+
+    .dynamic-card:not(:last-child) {
+        border-bottom: dashed 1px white !important;
     }
 }
 
