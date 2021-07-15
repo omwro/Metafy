@@ -10,6 +10,7 @@
                 <QuickTools/>
             </v-col>
         </v-row>
+
         <v-row>
             <v-col>
                 <h2 class="text-center">
@@ -39,6 +40,7 @@
                 </v-card>
             </v-col>
         </v-row>
+
         <v-row>
             <v-col>
                 <h2 class="text-center">Your tagged playlists</h2>
@@ -52,11 +54,12 @@
                         :key="pl.id"
                         :playlist="pl"
                         :category="pl.category"
-                        @click="showPlaylistDetailDialog(pl)"
+                        @click.native="showPlaylistDetailDialog(pl)"
                     />
                 </template>
             </v-col>
         </v-row>
+
         <v-row>
             <v-col>
                 <h2 class="text-center">Your untagged playlists</h2>
@@ -68,7 +71,7 @@
                     v-for="pl in $store.getters.getUntaggedPlaylists"
                     :key="pl.id"
                     :playlist="pl"
-                    @click="showPlaylistDetailDialog(pl)"
+                    @click.native="showPlaylistDetailDialog(pl)"
                 />
             </v-col>
         </v-row>
