@@ -50,19 +50,26 @@
                 </v-row>
             </v-col>
         </v-row>
+
+        <CreateDynamicPlaylistDialog ref="createDynamicPlaylistDialog" />
     </v-container>
 </template>
 
 <script>
 import {SpotifyService} from "@/spotify/spotifyService";
 import store from "@/store/store";
+import CreateDynamicPlaylistDialog from "@/components/CreateDynamicPlaylistDialog";
 
 export default {
     name: "QuickTools",
+    components: {CreateDynamicPlaylistDialog},
     data: () => ({
         isRefreshingDynamics: false
     }),
     methods: {
+        async fetchPlaylists() {
+            await SpotifyService.fetchEverything()
+        },
         async refreshDynamicPlaylists() {
             this.isRefreshingDynamics = true
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);

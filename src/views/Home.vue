@@ -89,8 +89,6 @@
             </v-col>
         </v-row>
 
-        <CreateDynamicPlaylistDialog ref="createDynamicPlaylistDialog" />
-
         <PlayListDetailDialog ref="playlistDetailDialog" />
 
     </v-container>
@@ -100,16 +98,14 @@
 </template>
 
 <script>
-import {SpotifyService} from "@/spotify/spotifyService.js";
 import store from "@/store/store";
 import {Playlist} from "@/models/Playlist";
 import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
-import CreateDynamicPlaylistDialog from "@/components/CreateDynamicPlaylistDialog";
 import QuickTools from "@/components/QuickTools";
 
 export default {
     name: 'Home',
-    components: {QuickTools, CreateDynamicPlaylistDialog, PlayListDetailDialog},
+    components: {QuickTools, PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
@@ -121,9 +117,6 @@ export default {
     methods: {
         isLoggedIn() {
             return store.getters.isLoggedIn;
-        },
-        async fetchPlaylists() {
-            await SpotifyService.fetchEverything()
         },
         isInstanceOfPlaylist(obj) {
             return Playlist.isInstance(obj)
