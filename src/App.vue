@@ -3,15 +3,7 @@
         <v-app-bar app color="primary" dark>
             <v-row align="center">
                 <v-col class="d-flex">
-                    <h1 v-on:click="goToHome">
-                        <template v-if="$vuetify.breakpoint.name === 'xs'">
-                            M
-                        </template>
-                        <template v-else>
-                            Metafy
-                        </template>
-                    </h1>
-                    <v-icon @click="goToGithub" class="ml-2">mdi-github</v-icon>
+                    <h1 v-on:click="goToHome">Metafy</h1>
                 </v-col>
                 <v-col v-if="isLoggedIn()" class="text-center">
                     <small class="mr-1">{{ getRefreshedOn() }}</small>
@@ -27,7 +19,7 @@
                     <v-btn v-else v-on:click="login">
                         Login
                         <template v-if="$vuetify.breakpoint.name !== 'xs'">
-                            {{" with Spotify"}}
+                            {{ " with Spotify" }}
                         </template>
                     </v-btn>
                 </v-col>
@@ -39,6 +31,23 @@
         <v-main>
             <router-view/>
         </v-main>
+
+        <v-footer>
+            <v-row justify="space-between">
+                <v-col cols="auto">
+                    <div @click="goToGithub" class="cursor-pointer">
+                        <v-icon>mdi-github</v-icon>
+                        Github
+                    </div>
+                </v-col>
+                <v-col cols="auto">
+                    <div @click="goToPortfolio" class="cursor-pointer">
+                        <v-icon>mdi-smart-card</v-icon>
+                        Portfolio
+                    </div>
+                </v-col>
+            </v-row>
+        </v-footer>
     </v-app>
 </template>
 
@@ -89,7 +98,16 @@ export default {
         },
         goToGithub() {
             window.open("https://github.com/omwro/metafy-vue")
-        }
+        },
+        goToPortfolio() {
+            window.open("https://omererdem.nl")
+        },
     }
 };
 </script>
+
+<style lang="scss">
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>
