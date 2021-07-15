@@ -7,40 +7,7 @@
         </v-row>
         <v-row justify="center">
             <v-col cols="auto" class="playlist-container">
-                <v-row>
-                    <v-col cols="auto" class="py-0">
-                        <div class="playlist-container-title">Quick tools</div>
-                    </v-col>
-                </v-row>
-                <v-row justify="center">
-                    <v-col cols="auto">
-                        <v-row justify="center" class="pa-1">
-                            <v-col cols="12" class="text-center pa-0">
-                                <v-icon
-                                    v-on:click="refreshDynamicPlaylists"
-                                    :disabled="isRefreshingDynamics"
-                                >
-                                    mdi-refresh
-                                </v-icon>
-                            </v-col>
-                            <v-col cols="12" class="pa-0 text-center">
-                                <small>Refresh Dynamic playlist</small>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="auto">
-                        <v-row justify="center" class="pa-1">
-                            <v-col cols="12" class="text-center pa-0">
-                                <v-icon v-on:click="showCreatePlaylistDialog">
-                                    mdi-plus
-                                </v-icon>
-                            </v-col>
-                            <v-col cols="12" class="pa-0 text-center">
-                                <small>New Dynamic playlist</small>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
+                <QuickTools/>
             </v-col>
         </v-row>
         <v-row>
@@ -138,10 +105,11 @@ import store from "@/store/store";
 import {Playlist} from "@/models/Playlist";
 import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
 import CreateDynamicPlaylistDialog from "@/components/CreateDynamicPlaylistDialog";
+import QuickTools from "@/components/QuickTools";
 
 export default {
     name: 'Home',
-    components: {CreateDynamicPlaylistDialog, PlayListDetailDialog},
+    components: {QuickTools, CreateDynamicPlaylistDialog, PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
@@ -149,7 +117,6 @@ export default {
         dialogOperatorToggle: false,
         combination: [],
         selectedPlaylist: undefined,
-        isRefreshingDynamics: false
     }),
     methods: {
         isLoggedIn() {
@@ -158,18 +125,6 @@ export default {
         async fetchPlaylists() {
             await SpotifyService.fetchEverything()
         },
-        async refreshDynamicPlaylists() {
-            this.isRefreshingDynamics = true
-            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
-            this.$notify({
-                group: 'main',
-                type: 'success',
-                title: "Your new playlist is created.",
-                duration: 5000,
-            })
-            await this.fetchPlaylists();
-            this.isRefreshingDynamics = false
-        },
         isInstanceOfPlaylist(obj) {
             return Playlist.isInstance(obj)
         },
@@ -177,14 +132,11 @@ export default {
             this.$refs.playlistDetailDialog.playlist = playlist
             this.$refs.playlistDetailDialog.dialog = true
         },
-        showCreatePlaylistDialog() {
-            this.$refs.createDynamicPlaylistDialog.dialog = true
-        },
     }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .playlist-container {
     margin: 0 12px 12px;
     padding: 8px;

@@ -107,6 +107,12 @@ export default {
 </script>
 
 <style lang="scss">
+$spotify-green: #1DB954;
+
+.spotify-text-color {
+    color: $spotify-green !important;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

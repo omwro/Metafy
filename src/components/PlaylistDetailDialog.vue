@@ -14,12 +14,12 @@
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
-                                    class="mx-2 blue--text"
+                                    class="mx-2 spotify-text-color"
                                     v-on="on"
                                     v-bind="attrs"
                                     @click="redirect()"
                                 >
-                                    mdi-open-in-new
+                                    mdi-spotify
                                 </v-icon>
                             </template>
                             <span>Redirect to Spotify</span>
@@ -27,7 +27,8 @@
                         <v-tooltip bottom v-if="playlist.category === DYNAMIC">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
-                                    class="mx-2 green--text"
+                                    color="primary"
+                                    class="mx-2"
                                     v-on="on"
                                     v-bind="attrs"
                                     @click="showEditPlaylistDialog()"
