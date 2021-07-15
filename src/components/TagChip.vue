@@ -41,10 +41,10 @@ export default {
             "#039BE5",
             "#43A047",
             "#FB8C00",
-            "#3949AB",
+            "#283593",
             "#00897B",
             "#FDD835",
-            "#8E24AA",
+            "#5E35B1",
             "#6D4C41",
             "#546E7A"
         ]
@@ -54,8 +54,8 @@ export default {
             if (this.category === DYNAMIC) {
                 return "background: linear-gradient(135deg, rgba(25,118,210,0.9) 0%, rgba(29,185,84,0.9) 100%)"
             }
-            if (Playlist.isInstance(this.playlist)) {
-                const index = store.getters.getTaggedPlaylists.map((c) => c.category).indexOf(this.category)
+            const index = store.getters.getTaggedPlaylists.map((c) => c.category).indexOf(this.category)
+            if (index >= 0) {
                 return `background: ${this.colors[index.toString().split('').pop()]}`
             }
         }

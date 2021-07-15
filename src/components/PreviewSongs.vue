@@ -4,6 +4,7 @@
             v-for="(song, i) in getSongsFromDependencyLis(combination)"
             :key="i"
             :song="song"
+            class="mb-1"
         />
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="song-card">
         <v-card-title class="pa-2">
             {{ song.name }}
         </v-card-title>
@@ -38,4 +38,7 @@ export default {
 </script>
 
 <style lang="scss">
+.song-card {
+    background-color: #333333 !important;
+}
 </style>

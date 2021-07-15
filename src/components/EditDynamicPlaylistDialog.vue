@@ -83,7 +83,7 @@
                         </v-col>
                         <v-col cols="12" class="pt-0">
                             <div class="text-h5 text-center">Preview Playlist</div>
-                            <v-container class="px-0 song-container">
+                            <v-container class="pa-0 song-container">
                                 <PreviewSongs :combination="combination"/>
                             </v-container>
                         </v-col>

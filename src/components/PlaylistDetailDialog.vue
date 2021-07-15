@@ -55,7 +55,7 @@
                             <span>Delete the playlist</span>
                         </v-tooltip>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" class="py-0">
                         <span class="text-h5">{{ playlist.tag }}</span>
                     </v-col>
                 </v-row>
@@ -72,7 +72,12 @@
                             :isOperator="!isInstanceOfPlaylist(dep)"
                         />
                     </v-col>
-                    <v-col cols="12" v-for="(song, i) in playlist.songs" :key="i">
+                    <v-col
+                        cols="12"
+                        v-for="(song, i) in playlist.songs"
+                        :key="i"
+                        class="pb-0"
+                    >
                         <SongCard :song="song"/>
                     </v-col>
                 </v-row>
