@@ -5,7 +5,7 @@
                 <h1 class="text-center">Let's vibe with Metafy!</h1>
             </v-col>
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" class="mx-0">
             <v-col cols="auto" class="playlist-container">
                 <QuickTools/>
             </v-col>

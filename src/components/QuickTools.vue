@@ -7,7 +7,7 @@
         </v-row>
         <v-row justify="center">
             <v-col cols="auto">
-                <v-row justify="center" class="pa-1">
+                <v-row class="pa-1">
                     <v-col cols="12" class="text-center pa-0">
                         <v-icon v-on:click="goToSpotify" class="spotify-text-color">
                             mdi-spotify
@@ -19,7 +19,7 @@
                 </v-row>
             </v-col>
             <v-col cols="auto">
-                <v-row justify="center" class="pa-1">
+                <v-row class="pa-1">
                     <v-col cols="12" class="text-center pa-0">
                         <v-icon
                             color="primary"
@@ -35,7 +35,7 @@
                 </v-row>
             </v-col>
             <v-col cols="auto">
-                <v-row justify="center" class="pa-1">
+                <v-row class="pa-1">
                     <v-col cols="12" class="text-center pa-0">
                         <v-icon
                             color="primary"
