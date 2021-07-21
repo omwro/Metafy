@@ -6,14 +6,14 @@
         <v-chip v-if="category" :style="getColor()">
             {{ category }}
         </v-chip>
-        <v-chip v-if="playlist">
-            <template v-if="!isOperator">
+        <template v-if="playlist">
+            <v-chip v-if="playlist.tag">
                 {{ playlist.tag }}
-            </template>
-            <template v-else>
+            </v-chip>
+            <v-chip v-else-if="isOperator">
                 {{ playlist }}
-            </template>
-        </v-chip>
+            </v-chip>
+        </template>
     </v-chip>
 </template>
 
@@ -38,15 +38,25 @@ export default {
     data: () => ({
         colors: [
             "#E53935",
-            "#039BE5",
+            "#1E88E5",
+            "#00ACC1",
             "#43A047",
             "#FB8C00",
-            "#283593",
-            "#00897B",
-            "#FDD835",
             "#5E35B1",
+            "#D81B60",
             "#6D4C41",
-            "#546E7A"
+            "#546E7A",
+            "#757575",
+            "#B71C1C",
+            "#0D47A1",
+            "#006064",
+            "#1B5E20",
+            "#E65100",
+            "#311B92",
+            "#880E4F",
+            "#3E2723",
+            "#263238",
+            "#212121",
         ]
     }),
     methods: {
@@ -56,7 +66,7 @@ export default {
             }
             const index = store.getters.getTaggedPlaylists.map((c) => c.category).indexOf(this.category)
             if (index >= 0) {
-                return `background: ${this.colors[index.toString().split('').pop()]}`
+                return `background: ${this.colors[index % 20]}`
             }
         }
     }
