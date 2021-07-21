@@ -27,7 +27,10 @@
                     class="dynamic-card"
                 >
                     <v-card-title>
-                            {{ pl.tag }} ({{ pl.songs.length }})
+                        {{ pl.tag }}
+                        <v-chip outlined class="ml-1 small-chip">
+                            {{ pl.songs.length }}
+                        </v-chip>
                     </v-card-title>
                     <v-card-text>
                         <TagChip
@@ -134,6 +137,14 @@ export default {
 
     .dynamic-card:not(:last-child) {
         border-bottom: dashed 1px white !important;
+    }
+
+    .small-chip {
+        height: 20px;
+        font-size: 12px;
+        padding: 0 6px;
+        margin-bottom: auto;
+        border-color: white;
     }
 }
 
