@@ -2,6 +2,14 @@
     <v-card class="song-card">
         <v-card-title class="pa-2">
             {{ song.name }}
+            <v-spacer/>
+            <v-icon
+                small
+                style="margin-bottom: auto"
+                @click="redirect"
+            >
+                mdi-spotify
+            </v-icon>
         </v-card-title>
         <v-card-text class="pa-0">
             <v-row class="ma-0">
@@ -32,7 +40,10 @@ export default {
                 string += artist.name
             })
             return string
-        }
+        },
+        redirect() {
+            window.open(this.song.externalUrl)
+        },
     }
 }
 </script>

@@ -9,5 +9,7 @@ export class Song {
         this.name = track.name
         this.artists = track.artists.map((artist) => new Artist(artist))
         this.duration_ms = track.duration_ms
+        if (track["external_urls"]) this.externalUrl = track["external_urls"]["spotify"]
+        if (!track["external_urls"]) this.externalUrl = track.external_urls
     }
 }

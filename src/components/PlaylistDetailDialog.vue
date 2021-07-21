@@ -7,13 +7,15 @@
         <v-card>
             <v-card-title class="pa-3">
                 <v-row>
-                    <v-col>
+                    <v-col cols="auto">
                         <TagChip
                             :category="playlist.category"
+                            :playlist="playlist"
                             class="mr-2"
                         />
                     </v-col>
-                    <v-col class="text-right">
+                    <v-spacer/>
+                    <v-col cols="auto" class="text-no-wrap">
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon
@@ -54,9 +56,6 @@
                             </template>
                             <span>Delete the playlist</span>
                         </v-tooltip>
-                    </v-col>
-                    <v-col cols="12" class="py-0">
-                        <span class="text-h5">{{ playlist.tag }}</span>
                     </v-col>
                 </v-row>
             </v-card-title>
