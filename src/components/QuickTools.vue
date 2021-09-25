@@ -69,6 +69,12 @@ export default {
     methods: {
         async fetchPlaylists() {
             await SpotifyService.fetchEverything()
+            this.$notify({
+                group: 'main',
+                type: 'success',
+                title: "Your playlists are fetched.",
+                duration: 5000,
+            })
         },
         async refreshDynamicPlaylists() {
             this.isRefreshingDynamics = true
@@ -76,7 +82,7 @@ export default {
             this.$notify({
                 group: 'main',
                 type: 'success',
-                title: "Your new playlist is created.",
+                title: "Your Dynamic playlists are refreshed.",
                 duration: 5000,
             })
             await this.fetchPlaylists();
