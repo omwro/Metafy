@@ -2,6 +2,7 @@
 import {Artist} from "@/models/Artist";
 
 import store from "@/store/store";
+import moment from "moment";
 
 
 export class Song {
@@ -13,6 +14,7 @@ export class Song {
         this.artists = track.artists.map((artist) => new Artist(artist))
         this.duration_ms = track.duration_ms
         this.preview_url = track.preview_url
+        this.release_date = moment(track.album.release_date)
         if (track["external_urls"]) this.externalUrl = track["external_urls"]["spotify"]
         if (!track["external_urls"]) this.externalUrl = track.external_urls
         this.tags = store.getters.getTaggedTracksById(track.id)

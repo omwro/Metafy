@@ -57,7 +57,9 @@ export class SpotifyService {
                 }
             }
 
-            const newSongUris = getSongsFromDependencyList(pl.dependency).map((song) => song.uri)
+            const newSongUris = getSongsFromDependencyList(pl.dependency)
+                .sort((a, b) => b.release_date.diff(a.release_date))
+                .map((song) => song.uri)
             const slicedTrackUriArray = this.sliceArrayIntoChunks(newSongUris, PLAYLIST_TRACK_FETCH_LIMIT);
             for (const t of slicedTrackUriArray) {
                 await SpotifyRepository.addPlaylistTracks(pl.id, t);
