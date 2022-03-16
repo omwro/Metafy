@@ -20,6 +20,15 @@ export class SpotifyService {
         console.log("DPLS:", store.getters.getDynamicPlaylists)
         console.log("TPLS:", store.getters.getTaggedPlaylists)
         console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+        let likedTracks = await SpotifyRepository.fetchCurrentUserLikedTracks()
+        const taggedSongs = store.getters.getTaggedSongs(store.getters)
+        store.commit("taggedTracks", taggedSongs)
+        likedTracks = likedTracks.map((song) => new Song(song))
+        store.commit("likedTracks", likedTracks);
+        console.log("LIKED:",likedTracks)
+        const tags = store.getters.getTagsFromTaggedPlaylists(store.getters)
+        store.commit("tags", tags);
+        console.log("TAGS:",tags)
         return playlists
     }
 
@@ -75,5 +84,11 @@ export class SpotifyService {
             newArray.push(chunk)
         }
         return newArray;
+    }
+
+    static async addSongToPlaylist(song, tag) {
+        await SpotifyRepository.addPlaylistTracks(tag.playlistid, [song.uri]);
+        await store.commit("addSongTag", [song, tag])
+
     }
 }

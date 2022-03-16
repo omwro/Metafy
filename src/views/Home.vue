@@ -79,6 +79,22 @@
             </v-col>
         </v-row>
 
+        <v-row>
+            <v-col>
+                <h2 class="text-center">Your Liked Songs</h2>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col class="playlist-container dark-background max-height">
+                <SongCard
+                    v-for="lt in $store.state.likedTracks"
+                    :key="lt.id"
+                    :song="lt"
+                    tagged
+                />
+            </v-col>
+        </v-row>
+
         <PlayListDetailDialog ref="playlistDetailDialog" />
 
     </v-container>
@@ -93,10 +109,11 @@ import {Playlist} from "@/models/Playlist";
 import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
 import QuickTools from "@/components/QuickTools";
 import TagChip from "@/components/TagChip";
+import SongCard from "../components/SongCard";
 
 export default {
     name: 'Home',
-    components: {TagChip, QuickTools, PlayListDetailDialog},
+    components: {SongCard, TagChip, QuickTools, PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",
@@ -161,5 +178,10 @@ export default {
 .dialogChipContainer {
     max-height: 150px;
     overflow-y: scroll;
+}
+
+.max-height {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 </style>

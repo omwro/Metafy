@@ -11,6 +11,8 @@ import {SpotifyAuthService} from "@/spotify/spotifyAuthService";
 Vue.config.productionTip = false
 Vue.use(Notifications)
 
+Vue.prototype.$audio = new Audio()
+
 new Vue({
     router,
     store,

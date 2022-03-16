@@ -24,6 +24,22 @@ export class SpotifyRepository {
             .catch(e => console.error("PlaylistRepository.fetchCurrentUserPlaylists()", e))
     }
 
+    static async fetchCurrentUserLikedTracks(
+        items = [],
+        uri = `${PLAYLISTS_API_BASE_URI}/me/tracks?limit=${PLAYLIST_FETCH_LIMIT}&offset=${DEFAULT_OFFSET}`
+    ) {
+        return axios.get(uri)
+            .then(async response => {
+                const { data } = response
+                items.push(...data.items);
+                if (data.next !== null) {
+                    return await this.fetchCurrentUserLikedTracks(items, data.next)
+                }
+                return items
+            })
+            .catch(e => console.error("PlaylistRepository.fetchCurrentUserLikedTracks()", e))
+    }
+
     static async fetchPlaylist(
         playlistId
     ) {

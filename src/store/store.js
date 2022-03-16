@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 import moment from "moment";
+import {Tag} from "../models/Tag";
 
 Vue.use(Vuex)
 
@@ -18,7 +19,10 @@ const getDefaultState = () => {
         refreshedOn: null,
         expiresIn: moment(),
         user: null,
-        playlists: []
+        playlists: [],
+        likedTracks: [],
+        taggedTracks: {},
+        tags: []
     }
 }
 
@@ -58,6 +62,25 @@ export default new Vuex.Store({
         },
         resetState(state) {
             Object.assign(state, getDefaultState())
+        },
+        likedTracks(state, value) {
+            state.likedTracks = value;
+        },
+        taggedTracks(state, value) {
+            state.taggedTracks = value
+        },
+        tags(state, value) {
+            state.tags = value
+        },
+        addSongTag(state, array) {
+            const song = array[0]
+            const tag = array[1]
+            if (Object.prototype.hasOwnProperty.call(state.taggedTracks, song.id)) {
+                state.taggedTracks[song.id].push(tag)
+            } else {
+                state.taggedTracks[song.id] = [tag]
+            }
+            console.log("ADDED", state.taggedTracks[song.id], song, tag)
         }
     },
     getters: {
@@ -89,8 +112,45 @@ export default new Vuex.Store({
         },
         getUntaggedPlaylists: state => {
             return state.playlists.filter(pl => pl.category === undefined)
+        },
+        // eslint-disable-next-line no-unused-vars
+        getTaggedSongs: state => getters => {
+            let taggedSongs = {}
+            getters.getTaggedPlaylists
+                .forEach((cat) => {
+                    cat.playlists.forEach((pl) => {
+                        pl.songs.forEach((s) => {
+                            if (Object.prototype.hasOwnProperty.call(taggedSongs, s.id)) {
+                                taggedSongs[s.id].push(new Tag(pl.category, pl.tag, pl.id))
+                            } else {
+                                taggedSongs[s.id] = [new Tag(pl.category, pl.tag, pl.id)]
+                            }
+                        })
+                    })
+                })
+            return taggedSongs
+        },
+        getTaggedTracksById: state => id => {
+            return Object.prototype.hasOwnProperty.call(state.taggedTracks, id) ? state.taggedTracks[id] : null
+        },
+        // eslint-disable-next-line no-unused-vars
+        getTagsFromTaggedPlaylists: state => getter => {
+            const tagSet = new Set()
+            getter
+                .getTaggedPlaylists
+                .map((cat) => cat.playlists)
+                .flat()
+                .forEach((pl) => tagSet.add(new Tag(pl.category, pl.tag, pl.id)))
+            return Array.from(tagSet)
+        },
+        getSelectTags: state => {
+            return state.tags.map((t) => {
+                return {
+                    text: `${t.category} - ${t.tag}`,
+                    value: t
+                }
+            })
         }
     },
-    actions: {},
     modules: {}
 })
