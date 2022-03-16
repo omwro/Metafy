@@ -80,7 +80,6 @@ export default new Vuex.Store({
             } else {
                 state.taggedTracks[song.id] = [tag]
             }
-            console.log("ADDED", state.taggedTracks[song.id], song, tag)
         }
     },
     getters: {

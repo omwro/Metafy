@@ -22,7 +22,7 @@
                             <tag-chip :category="t.category" :playlist="{tag: t.tag}"/>
                         </v-col>
                         <v-col class="pa-1" cols="auto">
-                            <v-select :items="$store.getters.getSelectTags"
+                            <v-autocomplete :items="$store.getters.getSelectTags"
                                       item-text="text"
                                       item-value="value"
                                       @change="onTagSelect"

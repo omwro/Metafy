@@ -84,10 +84,21 @@
                 <h2 class="text-center">Your Liked Songs</h2>
             </v-col>
         </v-row>
+        <v-row class="playlist-container dark-background fitcontent" justify="center">
+            <v-col cols="auto">
+                <v-switch label="Hide languages" v-model="hidelang"/>
+            </v-col>
+            <v-col cols="auto">
+                <v-switch label="Hide Genre" v-model="hidegenre"/>
+            </v-col>
+            <v-col cols="auto">
+                <v-switch label="Hide Mood" v-model="hidemood"/>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col class="playlist-container dark-background max-height">
                 <SongCard
-                    v-for="lt in $store.state.likedTracks"
+                    v-for="lt in getFilteredLikedTracks()"
                     :key="lt.id"
                     :song="lt"
                     tagged
@@ -121,6 +132,9 @@ export default {
         dialogOperatorToggle: false,
         combination: [],
         selectedPlaylist: undefined,
+        hidelang: false,
+        hidegenre: false,
+        hidemood: false
     }),
     methods: {
         isLoggedIn() {
@@ -133,6 +147,24 @@ export default {
             this.$refs.playlistDetailDialog.playlist = playlist
             this.$refs.playlistDetailDialog.dialog = true
         },
+        getFilteredLikedTracks() {
+            return this.$store.state.likedTracks
+                .filter((lt) => {
+                    if (lt.tags === null) return true
+                    const categoryList = lt.tags.map((t) => t.category).flat()
+                    if (this.hidelang) {
+                        if (categoryList.includes("Language")) return false
+                    }
+                    if (this.hidegenre) {
+                        if (categoryList.includes("Genre")) return false
+                    }
+                    if (this.hidemood) {
+                        if (categoryList.includes("Mood")) return false
+                    }
+                    return true
+                })
+
+        }
     }
 }
 </script>
@@ -183,5 +215,11 @@ export default {
 .max-height {
     height: calc(100vh - 100px);
     overflow-y: auto;
+}
+
+.fitcontent {
+    width: fit-content;
+    margin-left: auto;
+    margin: auto;
 }
 </style>
