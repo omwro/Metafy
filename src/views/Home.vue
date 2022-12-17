@@ -1,56 +1,56 @@
 <template>
-    <v-container v-if="isLoggedIn()">
-        <v-row>
-            <v-col>
+    <div v-if="isLoggedIn()">
+        <div>
+            <div>
                 <h1 class="text-center">Let's vibe with Metafy!</h1>
-            </v-col>
-        </v-row>
-        <v-row justify="center" class="mx-0">
-            <v-col cols="auto" class="playlist-container dark-background">
+            </div>
+        </div>
+        <div justify="center" class="mx-0">
+            <div cols="auto" class="playlist-container dark-background">
                 <QuickTools/>
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
-        <v-row>
-            <v-col>
+        <div>
+            <div>
                 <h2 class="text-center">
                     Your dynamic playlists
                 </h2>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="playlist-container dark-background pa-0">
-                <v-card
+            </div>
+        </div>
+        <div>
+            <div class="playlist-container dark-background pa-0">
+                <div
                     v-for="pl in $store.getters.getDynamicPlaylists()"
                     :key="pl.id"
                     @click="showPlaylistDetailDialog(pl)"
                     class="dynamic-card"
                 >
-                    <v-card-title>
+                    <div>
                         {{ pl.tag }}
-                        <v-chip outlined class="ml-1 small-chip">
+                        <div outlined class="ml-1 small-chip">
                             {{ pl.songs.length }}
-                        </v-chip>
-                    </v-card-title>
-                    <v-card-text>
+                        </div>
+                    </div>
+                    <div>
                         <TagChip
                             v-for="subpl in pl.subtags"
                             :key="subpl.id"
                             :playlist="subpl"
                             :category="subpl.category"
                         />
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <v-row>
-            <v-col>
+        <div>
+            <div>
                 <h2 class="text-center">Your tagged playlists</h2>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="playlist-container dark-background">
+            </div>
+        </div>
+        <div>
+            <div class="playlist-container dark-background">
                 <template v-for="tpl in $store.getters.getTaggedPlaylists()">
                     <TagChip
                         v-for="pl in tpl.playlists"
@@ -60,58 +60,58 @@
                         @click.native="showPlaylistDetailDialog(pl)"
                     />
                 </template>
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
-        <v-row>
-            <v-col>
+        <div>
+            <div>
                 <h2 class="text-center">Your untagged playlists</h2>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="playlist-container dark-background">
+            </div>
+        </div>
+        <div>
+            <div class="playlist-container dark-background">
                 <TagChip
                     v-for="pl in $store.getters.getUntaggedPlaylists()"
                     :key="pl.id"
                     :playlist="pl"
                     @click.native="showPlaylistDetailDialog(pl)"
                 />
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
-        <v-row>
-            <v-col>
+        <div>
+            <div>
                 <h2 class="text-center">Your Liked Songs</h2>
-            </v-col>
-        </v-row>
-        <v-row class="playlist-container dark-background fitcontent" justify="center">
-            <v-col cols="auto">
-                <v-switch label="Hide languages" v-model="hidelang"/>
-            </v-col>
-            <v-col cols="auto">
-                <v-switch label="Hide Genre" v-model="hidegenre"/>
-            </v-col>
-            <v-col cols="auto">
-                <v-switch label="Hide Mood" v-model="hidemood"/>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="playlist-container dark-background max-height">
+            </div>
+        </div>
+        <div class="playlist-container dark-background fitcontent" justify="center">
+            <div cols="auto">
+                <div label="Hide languages" />
+            </div>
+            <div cols="auto">
+                <div label="Hide Genre"/>
+            </div>
+            <div cols="auto">
+                <div label="Hide Mood" />
+            </div>
+        </div>
+        <div>
+            <div class="playlist-container dark-background max-height">
                 <SongCard
                     v-for="lt in getFilteredLikedTracks()"
                     :key="lt.id"
                     :song="lt"
                     tagged
                 />
-            </v-col>
-        </v-row>
+            </div>
+        </div>
 
         <PlayListDetailDialog ref="playlistDetailDialog" />
 
-    </v-container>
-    <v-container v-else>
+    </div>
+    <div v-else>
         <h1>Welcome to Metafy!</h1>
-    </v-container>
+    </div>
 </template>
 
 <script>
@@ -201,7 +201,7 @@ export default {
     margin: 4px;
 
     &:hover{
-        .v-chip::before {
+        .div::before {
             opacity: 0.08;
         }
     }

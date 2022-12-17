@@ -1,58 +1,58 @@
 <template>
-    <v-card class="song-card">
-        <v-row class="ma-0 mb-2 pa-1">
-            <v-col>
-                <v-card-title class="pa-2">
+    <div class="song-card">
+        <div class="ma-0 mb-2 pa-1">
+            <div>
+                <div class="pa-2">
                     {{ song.name }}
-                </v-card-title>
-                <v-card-text class="pa-0">
-                    <v-row class="ma-0">
-                        <v-col cols="12" class="px-2 py-1">
+                </div>
+                <div class="pa-0">
+                    <div class="ma-0">
+                        <div cols="12" class="px-2 py-1">
                             {{ getArtistsString() }}
-                        </v-col>
-                    </v-row>
-                </v-card-text>
+                        </div>
+                    </div>
+                </div>
                 <template v-if="tagged">
-                    <v-row class="pt-2" :key="key">
-                        <v-col v-for="(t, i) in $store.getters.getTaggedTracksById(song.id)"
+                    <div class="pt-2" :key="key">
+                        <div v-for="(t, i) in $store.getters.getTaggedTracksById(song.id)"
                                :key="i"
                                cols="auto"
                                class="pa-1"
                         >
                             <tag-chip :category="t.category" :playlist="{tag: t.tag}"/>
-                        </v-col>
-                        <v-col class="pa-1" cols="auto">
-                            <v-autocomplete :items="$store.getters.getSelectTags()"
+                        </div>
+                        <div class="pa-1" cols="auto">
+                            <div :items="$store.getters.getSelectTags()"
                                       item-text="text"
                                       item-value="value"
                                       @change="onTagSelect"
                                       solo/>
-                        </v-col>
-                    </v-row>
+                        </div>
+                    </div>
                 </template>
-            </v-col>
-            <v-col cols="auto">
-                <v-col class="pa-1">
-                    <v-icon
+            </div>
+            <div cols="auto">
+                <div class="pa-1">
+                    <div
                         small
                         style="margin-bottom: auto"
                         @click="redirect"
                     >
                         mdi-spotify
-                    </v-icon>
-                </v-col>
-                <v-col class="pa-1" v-if="song.preview_url">
-                    <v-icon
+                    </div>
+                </div>
+                <div class="pa-1" v-if="song.preview_url">
+                    <div
                         small
                         style="margin-bottom: auto"
                         @click="play"
                     >
                         mdi-play
-                    </v-icon>
-                </v-col>
-            </v-col>
-        </v-row>
-    </v-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>

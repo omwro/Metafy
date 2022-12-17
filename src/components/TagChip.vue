@@ -1,20 +1,20 @@
 <template>
-    <v-chip
+    <div
         class="playlist-chip pa-0"
         :label="isOperator"
     >
-        <v-chip v-if="category" :style="getColor()">
+        <div v-if="category" :style="getColor()">
             {{ category }}
-        </v-chip>
+        </div>
         <template v-if="playlist">
-            <v-chip v-if="playlist.tag">
+            <div v-if="playlist.tag">
                 {{ playlist.tag }}
-            </v-chip>
-            <v-chip v-else-if="isOperator">
+            </div>
+            <div v-else-if="isOperator">
                 {{ playlist }}
-            </v-chip>
+            </div>
         </template>
-    </v-chip>
+    </div>
 </template>
 
 <script>

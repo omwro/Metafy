@@ -1,54 +1,54 @@
 <template>
-    <v-app>
-        <v-app-bar app color="primary" dark>
-            <v-row align="center">
-                <v-col class="d-flex">
+    <main>
+        <div app class="bg-red-100 primary" dark>
+            <div align="center">
+                <div class="d-flex">
                     <h1 v-on:click="goToHome">Metafy</h1>
-                </v-col>
-                <v-col v-if="isLoggedIn()" class="text-center">
+                </div>
+                <div v-if="isLoggedIn()" class="text-center">
                     <small class="mr-1">{{ getRefreshedOn() }}</small>
-                    <v-icon @click="refresh" :disabled="isRefreshing">mdi-refresh</v-icon>
-                </v-col>
-                <v-col class="text-right">
-                    <v-btn v-if="isLoggedIn()" v-on:click="logout">
+                    <div @click="refresh" :disabled="isRefreshing">mdi-refresh</div>
+                </div>
+                <div class="text-right">
+                    <button v-if="isLoggedIn()" v-on:click="logout">
                         Hi
-                        <template v-if="$vuetify.breakpoint.name !== 'xs'">
+                        <template>
                             {{ getUser() ? getUser().display_name : "user" }}
                         </template>
-                    </v-btn>
-                    <v-btn v-else v-on:click="login">
+                    </button>
+                    <button v-else v-on:click="login">
                         Login
-                        <template v-if="$vuetify.breakpoint.name !== 'xs'">
+                        <template >
                             {{ " with Spotify" }}
                         </template>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-app-bar>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <notifications group="main" position="top center" style="top: 75px"/>
 
-        <v-main class="main">
+        <div class="main">
             <router-view/>
-        </v-main>
+        </div>
 
-        <v-footer>
-            <v-row justify="space-between" class="ma-0">
-                <v-col cols="auto" class="pa-0">
+        <div>
+            <div justify="space-between" class="ma-0">
+                <div cols="auto" class="pa-0">
                     <div @click="goToGithub" class="cursor-pointer">
-                        <v-icon>mdi-github</v-icon>
+                        <div>mdi-github</div>
                         Github
                     </div>
-                </v-col>
-                <v-col cols="auto"  class="pa-0">
+                </div>
+                <div cols="auto"  class="pa-0">
                     <div @click="goToPortfolio" class="cursor-pointer">
-                        <v-icon>mdi-smart-card</v-icon>
+                        <div>mdi-smart-card</div>
                         Portfolio
                     </div>
-                </v-col>
-            </v-row>
-        </v-footer>
-    </v-app>
+                </div>
+            </div>
+        </div>
+    </main>
 </template>
 
 <script>

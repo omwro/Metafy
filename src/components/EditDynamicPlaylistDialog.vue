@@ -1,26 +1,25 @@
 <template>
-    <v-dialog
-        v-model="dialog"
+    <div
         max-width="600px"
         v-if="playlist"
     >
-        <v-card>
-            <v-card-title class="pa-3">
+        <div>
+            <div class="pa-3">
                 <span class="text-h5">Edit playlist {{playlist.name}}</span>
-            </v-card-title>
-            <v-card-text class="pa-3">
-                <v-container>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field
+            </div>
+            <div class="pa-3">
+                <div>
+                    <div>
+                        <div cols="12">
+                            <input
                                 v-model="playlistName"
                                 label="Playlist name *"
                                 hint="The playlist name without the category. "
                                 required
                             />
-                        </v-col>
-                        <v-col cols="12" class="pb-0">
-                            <v-textarea
+                        </div>
+                        <div cols="12" class="pb-0">
+                            <input
                                 :value="getCombinationString()"
                                 label="Playlist combination *"
                                 auto-grow
@@ -28,89 +27,88 @@
                                 row-height="15"
                                 disabled
                             />
-                        </v-col>
-                        <v-col cols="12" class="py-0">
+                        </div>
+                        <div cols="12" class="py-0">
                             <small>Max 13 playlists</small>
-                        </v-col>
-                        <v-col cols="3">
-                            <v-btn
+                        </div>
+                        <div cols="3">
+                            <button
                                 :disabled="!isOperatorSelectable()"
                                 @click="combination.push(operator.PLUS)"
                                 block
                             >
                                 +
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="3">
-                            <v-btn
+                            </button>
+                        </div>
+                        <div cols="3">
+                            <button
                                 :disabled="!isOperatorSelectable()"
                                 @click="combination.push(operator.MINUS)"
                                 block
                             >
                                 -
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="3">
-                            <v-btn
+                            </button>
+                        </div>
+                        <div cols="3">
+                            <button
                                 :disabled="!isOperatorSelectable()"
                                 @click="combination.push(operator.EQUAL)"
                                 block
                             >
                                 =
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="3">
-                            <v-btn
+                            </button>
+                        </div>
+                        <div cols="3">
+                            <button
                                 :disabled="combination.length === 0"
                                 @click="combination.pop();"
                                 block
                             >
-                                <v-icon>mdi-keyboard-backspace</v-icon>
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-autocomplete
+                                <div>mdi-keyboard-backspace</div>
+                            </button>
+                        </div>
+                        <div cols="12">
+                            <div
                                 label="Playlists"
                                 solo
                                 :items="$store.state.playlists"
                                 item-text="name"
                                 return-object
-                                v-model="selectedPlaylist"
                                 @change="combination.push(selectedPlaylist);clearPlaylistSelect()"
                                 :disabled="!isTagSelectable()"
                             >
-                            </v-autocomplete>
-                        </v-col>
-                        <v-col cols="12" class="pt-0">
+                            </div>
+                        </div>
+                        <div cols="12" class="pt-0">
                             <div class="text-h5 text-center">Preview Playlist</div>
-                            <v-container class="pa-0 song-container">
+                            <div class="pa-0 song-container">
                                 <PreviewSongs :combination="combination"/>
-                            </v-container>
-                        </v-col>
-                    </v-row>
-                </v-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <small>*indicates required field</small>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
+            </div>
+            <div>
+                <div></div>
+                <button
                     color="blue darken-1"
                     text
                     @click="dialog = false"
                 >
                     Close
-                </v-btn>
-                <v-btn
+                </button>
+                <button
                     color="blue darken-1"
                     text
                     :disabled="!isOperatorSelectable()"
                     @click="saveEditPlaylistDialog"
                 >
                     Save
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+                </button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>

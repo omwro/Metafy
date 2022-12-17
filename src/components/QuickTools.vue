@@ -1,58 +1,58 @@
 <template>
-    <v-container class="pa-0">
-        <v-row>
-            <v-col cols="auto" class="py-0">
+    <div class="pa-0">
+        <div>
+            <div cols="auto" class="py-0">
                 <div class="playlist-container-title dark-background">Quick tools</div>
-            </v-col>
-        </v-row>
-        <v-row justify="center">
-            <v-col cols="auto">
-                <v-row class="pa-1">
-                    <v-col cols="12" class="text-center pa-0">
-                        <v-icon v-on:click="goToSpotify" class="spotify-text-color">
+            </div>
+        </div>
+        <div justify="center">
+            <div cols="auto">
+                <div class="pa-1">
+                    <div cols="12" class="text-center pa-0">
+                        <div v-on:click="goToSpotify" class="spotify-text-color">
                             mdi-spotify
-                        </v-icon>
-                    </v-col>
-                    <v-col cols="12" class="pa-0 text-center">
+                        </div>
+                    </div>
+                    <div cols="12" class="pa-0 text-center">
                         <small>Open Spotify</small>
-                    </v-col>
-                </v-row>
-            </v-col>
-            <v-col cols="auto">
-                <v-row class="pa-1">
-                    <v-col cols="12" class="text-center pa-0">
-                        <v-icon
+                    </div>
+                </div>
+            </div>
+            <div cols="auto">
+                <div class="pa-1">
+                    <div cols="12" class="text-center pa-0">
+                        <div
                             color="primary"
                             v-on:click="refreshDynamicPlaylists"
                             :disabled="isRefreshingDynamics"
                         >
                             mdi-refresh
-                        </v-icon>
-                    </v-col>
-                    <v-col cols="12" class="pa-0 text-center">
+                        </div>
+                    </div>
+                    <div cols="12" class="pa-0 text-center">
                         <small>Refresh Dynamic playlist</small>
-                    </v-col>
-                </v-row>
-            </v-col>
-            <v-col cols="auto">
-                <v-row class="pa-1">
-                    <v-col cols="12" class="text-center pa-0">
-                        <v-icon
+                    </div>
+                </div>
+            </div>
+            <div cols="auto">
+                <div class="pa-1">
+                    <div cols="12" class="text-center pa-0">
+                        <div
                             color="primary"
                             v-on:click="showCreatePlaylistDialog"
                         >
                             mdi-plus
-                        </v-icon>
-                    </v-col>
-                    <v-col cols="12" class="pa-0 text-center">
+                        </div>
+                    </div>
+                    <div cols="12" class="pa-0 text-center">
                         <small>New Dynamic playlist</small>
-                    </v-col>
-                </v-row>
-            </v-col>
-        </v-row>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <CreateDynamicPlaylistDialog ref="createDynamicPlaylistDialog" />
-    </v-container>
+    </div>
 </template>
 
 <script>

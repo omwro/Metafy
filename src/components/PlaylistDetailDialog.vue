@@ -1,37 +1,33 @@
 <template>
-    <v-dialog
-        v-model="dialog"
+    <div
         max-width="600px"
         v-if="playlist"
     >
-        <v-card>
-            <v-card-title class="pa-3">
-                <v-row>
-                    <v-col cols="auto">
+        <div>
+            <div class="pa-3">
+                <div>
+                    <div cols="auto">
                         <TagChip
                             :category="playlist.category"
                             :playlist="playlist"
                             class="mr-2"
                         />
-                    </v-col>
-                    <v-spacer/>
-                    <v-col cols="auto" class="text-no-wrap">
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon
+                    </div>
+                    <div/>
+                    <div cols="auto" class="text-no-wrap">
+                        <div bottom>
+                                <div
                                     class="mx-2 spotify-text-color"
                                     v-on="on"
                                     v-bind="attrs"
                                     @click="redirect()"
                                 >
                                     mdi-spotify
-                                </v-icon>
-                            </template>
+                                </div>
                             <span>Redirect to Spotify</span>
-                        </v-tooltip>
-                        <v-tooltip bottom v-if="playlist.category === DYNAMIC">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon
+                        </div>
+                        <div bottom v-if="playlist.category === DYNAMIC">
+                                <div
                                     color="primary"
                                     class="mx-2"
                                     v-on="on"
@@ -39,29 +35,26 @@
                                     @click="showEditPlaylistDialog()"
                                 >
                                     mdi-lead-pencil
-                                </v-icon>
-                            </template>
+                                </div>
                             <span>Edit the playlist</span>
-                        </v-tooltip>
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon
+                        </div>
+                        <div bottom>
+                                <div
                                     class="mx-2 red--text"
                                     v-on="on"
                                     v-bind="attrs"
                                     @click="deletePlaylist"
                                 >
                                     mdi-delete
-                                </v-icon>
-                            </template>
+                                </div>
                             <span>Delete the playlist</span>
-                        </v-tooltip>
-                    </v-col>
-                </v-row>
-            </v-card-title>
-            <v-card-text class="pa-3">
-                <v-row>
-                    <v-col cols="12" v-if="playlist.dependency.length">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-3">
+                <div>
+                    <div cols="12" v-if="playlist.dependency.length">
                         <TagChip
                             class="ma-1"
                             v-for="(dep, i) in playlist.dependency"
@@ -70,31 +63,31 @@
                             :category="dep.category"
                             :isOperator="!isInstanceOfPlaylist(dep)"
                         />
-                    </v-col>
-                    <v-col
+                    </div>
+                    <div
                         cols="12"
                         v-for="(song, i) in playlist.songs"
                         :key="i"
                         class="pb-0"
                     >
                         <SongCard :song="song"/>
-                    </v-col>
-                </v-row>
-            </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div></div>
+                <button
                     color="blue darken-1"
                     text
                     @click="dialog = false"
                 >
                     Close
-                </v-btn>
-            </v-card-actions>
-        </v-card>
+                </button>
+            </div>
+        </div>
 
         <EditDynamicPlaylistDialog ref="editDynamicPlaylistDialog"/>
-    </v-dialog>
+    </div>
 </template>
 
 <script>

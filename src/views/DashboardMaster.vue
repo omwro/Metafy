@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0">
+  <div class="pa-0">
     <v-navigation-drawer
         permanent
     >
@@ -9,7 +9,7 @@
       >
         <v-list-item @click="$router.push({name:'Dashboard'})">
           <v-list-item-icon>
-            <v-icon>mdi-view-dashboard</v-icon>
+            <div>mdi-view-dashboard</div>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Dashboard</v-list-item-title>
@@ -17,7 +17,7 @@
         </v-list-item>
         <v-list-item @click="$router.push({name:'Dynamics'})">
           <v-list-item-icon>
-            <v-icon>mdi-playlist-music</v-icon>
+            <div>mdi-playlist-music</div>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Dynamics</v-list-item-title>
@@ -25,7 +25,7 @@
         </v-list-item>
         <v-list-item @click="$router.push({name:'Tagged'})">
           <v-list-item-icon>
-            <v-icon>mdi-playlist-music</v-icon>
+            <div>mdi-playlist-music</div>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Tagged</v-list-item-title>
@@ -33,7 +33,7 @@
         </v-list-item>
         <v-list-item @click="$router.push({name:'Untagged'})">
           <v-list-item-icon>
-            <v-icon>mdi-playlist-music</v-icon>
+            <div>mdi-playlist-music</div>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Untagged</v-list-item-title>
@@ -42,10 +42,10 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
+    <div>
       <router-view></router-view>
-    </v-main>
-  </v-container>
+    </div>
+  </div>
 </template>
 
 <script>
