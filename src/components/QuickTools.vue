@@ -78,7 +78,7 @@ export default {
         },
         async refreshDynamicPlaylists() {
             this.isRefreshingDynamics = true
-            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists());
             this.$notify({
                 group: 'main',
                 type: 'success',

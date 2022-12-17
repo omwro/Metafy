@@ -21,7 +21,7 @@
         <v-row>
             <v-col class="playlist-container dark-background pa-0">
                 <v-card
-                    v-for="pl in $store.getters.getDynamicPlaylists"
+                    v-for="pl in $store.getters.getDynamicPlaylists()"
                     :key="pl.id"
                     @click="showPlaylistDetailDialog(pl)"
                     class="dynamic-card"
@@ -51,7 +51,7 @@
         </v-row>
         <v-row>
             <v-col class="playlist-container dark-background">
-                <template v-for="tpl in $store.getters.getTaggedPlaylists">
+                <template v-for="tpl in $store.getters.getTaggedPlaylists()">
                     <TagChip
                         v-for="pl in tpl.playlists"
                         :key="pl.id"
@@ -71,7 +71,7 @@
         <v-row>
             <v-col class="playlist-container dark-background">
                 <TagChip
-                    v-for="pl in $store.getters.getUntaggedPlaylists"
+                    v-for="pl in $store.getters.getUntaggedPlaylists()"
                     :key="pl.id"
                     :playlist="pl"
                     @click.native="showPlaylistDetailDialog(pl)"
@@ -138,7 +138,7 @@ export default {
     }),
     methods: {
         isLoggedIn() {
-            return store.getters.isLoggedIn;
+            return store.getters.isLoggedIn();
         },
         isInstanceOfPlaylist(obj) {
             return Playlist.isInstance(obj)

@@ -71,7 +71,7 @@ export default {
             this.$router.push(Home);
         },
         isLoggedIn() {
-            return store.getters.isLoggedIn;
+            return store.getters.isLoggedIn();
         },
         getUser() {
             return store.state.user;

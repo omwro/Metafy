@@ -145,7 +145,7 @@ export default {
             this.playlistName = ""
             this.combination = []
             await SpotifyService.fetchEverything()
-            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists);
+            await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists());
         },
         clearPlaylistSelect() {
             this.$nextTick(() => {

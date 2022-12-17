@@ -1,0 +1,41 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Building
+        uses: appleboy/ssh-action@master
+        with:
+          host: omererdem.nl
+          PORT: 22
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.SSHKEY }}
+          command_timeout: 60m
+          script: |
+            cd /var/www/github-actions/MetafyVue
+            git reset --hard
+            git pull
+            npm install
+            npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: omererdem.nl
+          PORT: 22
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.SSHKEY }}
+          script: |
+            rm -rf /var/www/metafy/index/*
+            rsync -a /var/www/github-actions/MetafyVue/dist/* /var/www/omererdem/metafy

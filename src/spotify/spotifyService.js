@@ -17,9 +17,9 @@ export class SpotifyService {
         playlists = await this.fetchPlaylistSongs(playlists)
         store.commit("playlists", playlists);
         store.commit("refreshedOn", moment())
-        console.log("DPLS:", store.getters.getDynamicPlaylists)
-        console.log("TPLS:", store.getters.getTaggedPlaylists)
-        console.log("UTPLS:", store.getters.getUntaggedPlaylists)
+        console.log("DPLS:", store.getters.getDynamicPlaylists())
+        console.log("TPLS:", store.getters.getTaggedPlaylists())
+        console.log("UTPLS:", store.getters.getUntaggedPlaylists())
         let likedTracks = await SpotifyRepository.fetchCurrentUserLikedTracks()
         const taggedSongs = store.getters.getTaggedSongs(store.getters)
         store.commit("taggedTracks", taggedSongs)

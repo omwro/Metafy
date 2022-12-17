@@ -64,7 +64,7 @@ export default {
             if (this.category === DYNAMIC) {
                 return "background: linear-gradient(135deg, rgba(25,118,210,0.9) 0%, rgba(29,185,84,0.9) 100%)"
             }
-            const index = store.getters.getTaggedPlaylists.map((c) => c.category).indexOf(this.category)
+            const index = store.getters.getTaggedPlaylists().map((c) => c.category).indexOf(this.category)
             if (index >= 0) {
                 return `background: ${this.colors[index % 20]}`
             }

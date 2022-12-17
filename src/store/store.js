@@ -83,16 +83,16 @@ export default new Vuex.Store({
         }
     },
     getters: {
-        isLoggedIn: state => {
+        isLoggedIn: state => () => {
             return state.accessToken != null;
         },
-        getPlaylistFromId: state => id => {
+        getPlaylistFromId: state => (id) => {
             return state.playlists.filter(pl => pl.id === id).pop()
         },
-        getDynamicPlaylists: state => {
+        getDynamicPlaylists: state => () => {
             return state.playlists.filter(pl => pl.category === DYNAMIC)
         },
-        getTaggedPlaylists: state => {
+        getTaggedPlaylists: state => () => {
             const taggedList = []
             state.playlists
                 .filter(pl => pl.category !== DYNAMIC && pl.category !== undefined)
@@ -109,13 +109,13 @@ export default new Vuex.Store({
                 })
             return taggedList
         },
-        getUntaggedPlaylists: state => {
+        getUntaggedPlaylists: state => () => {
             return state.playlists.filter(pl => pl.category === undefined)
         },
         // eslint-disable-next-line no-unused-vars
-        getTaggedSongs: state => getters => {
+        getTaggedSongs: state => getters => () => {
             let taggedSongs = {}
-            getters.getTaggedPlaylists
+            getters.getTaggedPlaylists()
                 .forEach((cat) => {
                     cat.playlists.forEach((pl) => {
                         pl.songs.forEach((s) => {
@@ -129,20 +129,20 @@ export default new Vuex.Store({
                 })
             return taggedSongs
         },
-        getTaggedTracksById: state => id => {
+        getTaggedTracksById: state => (id) => {
             return Object.prototype.hasOwnProperty.call(state.taggedTracks, id) ? state.taggedTracks[id] : null
         },
         // eslint-disable-next-line no-unused-vars
-        getTagsFromTaggedPlaylists: state => getter => {
+        getTagsFromTaggedPlaylists: state => (getter) => {
             const tagSet = new Set()
             getter
-                .getTaggedPlaylists
+                .getTaggedPlaylists()
                 .map((cat) => cat.playlists)
                 .flat()
                 .forEach((pl) => tagSet.add(new Tag(pl.category, pl.tag, pl.id)))
             return Array.from(tagSet)
         },
-        getSelectTags: state => {
+        getSelectTags: state => () => {
             return state.tags.map((t) => {
                 return {
                     text: `${t.category} - ${t.tag}`,
