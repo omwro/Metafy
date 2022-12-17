@@ -1,62 +1,52 @@
 <template>
-    <main>
-        <div app class="bg-red-100 primary" dark>
-            <div align="center">
-                <div class="d-flex">
-                    <h1 v-on:click="goToHome">Metafy</h1>
-                </div>
-                <div v-if="isLoggedIn()" class="text-center">
-                    <small class="mr-1">{{ getRefreshedOn() }}</small>
-                    <div @click="refresh" :disabled="isRefreshing">mdi-refresh</div>
-                </div>
-                <div class="text-right">
-                    <button v-if="isLoggedIn()" v-on:click="logout">
-                        Hi
-                        <template>
-                            {{ getUser() ? getUser().display_name : "user" }}
-                        </template>
-                    </button>
-                    <button v-else v-on:click="login">
-                        Login
-                        <template >
-                            {{ " with Spotify" }}
-                        </template>
-                    </button>
-                </div>
+    <main class="bg-main text-white">
+        <nav class="h-16 bg-nav flex flex-row justify-between">
+            <h1 class="text-4xl" v-on:click="goToHome">Metafy</h1>
+            <div v-if="isLoggedIn()" class="text-center">
+                <small class="mr-1">{{ getRefreshedOn() }}</small>
+                <div @click="refresh" :disabled="isRefreshing">mdi-refresh</div>
             </div>
-        </div>
+            <div class="text-right">
+                <button v-if="isLoggedIn()" v-on:click="logout">
+                    Hi
+                    <template>
+                        {{ getUser() ? getUser().display_name : "user" }}
+                    </template>
+                </button>
+                <button v-else v-on:click="login">
+                    Login
+                    <template>
+                        {{ " with Spotify" }}
+                    </template>
+                </button>
+            </div>
+        </nav>
 
         <notifications group="main" position="top center" style="top: 75px"/>
 
-        <div class="main">
+        <div>
             <router-view/>
         </div>
 
-        <div>
-            <div justify="space-between" class="ma-0">
-                <div cols="auto" class="pa-0">
-                    <div @click="goToGithub" class="cursor-pointer">
-                        <div>mdi-github</div>
-                        Github
-                    </div>
-                </div>
-                <div cols="auto"  class="pa-0">
-                    <div @click="goToPortfolio" class="cursor-pointer">
-                        <div>mdi-smart-card</div>
-                        Portfolio
-                    </div>
-                </div>
+        <footer class="flex justify-between">
+            <div @click="goToGithub" class="cursor-pointer">
+                <div>mdi-github</div>
+                Github
             </div>
-        </div>
+            <div @click="goToPortfolio" class="cursor-pointer">
+                <div>mdi-smart-card</div>
+                Portfolio
+            </div>
+        </footer>
     </main>
 </template>
 
 <script>
-import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
-import store from "@/store/store";
-import Home from "@/views/Home";
-import {SpotifyService} from "@/spotify/spotifyService";
 import moment from "moment";
+import store from "/src/store/store";
+import Home from "/src/views/Home";
+import {SpotifyAuthService} from "/src/spotify/spotifyAuthService.js";
+import {SpotifyService} from "/src/spotify/spotifyService";
 
 export default {
     name: 'App',
@@ -111,16 +101,7 @@ export default {
     color: #1DB954 !important;
 }
 
-.dark-background {
-    background-color: #1E1E1E;
-}
-
 .cursor-pointer {
     cursor: pointer;
-}
-
-.main {
-    background: rgb(25,118,210);
-    background: linear-gradient(135deg, rgba(25,118,210,0.9) 0%, rgba(29,185,84,0.9) 100%);
 }
 </style>

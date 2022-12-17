@@ -1,6 +1,6 @@
 import store from "@/store/store";
 import {SpotifyRepository} from "@/spotify/spotifyRepository";
-import {Playlist} from "@/models/Playlist";
+import {Playlist} from "/src/models/Playlist";
 import {Song} from "@/models/Song";
 import {getSongsFromDependencyList} from "@/utilities/Dependency";
 import moment from "moment";
@@ -11,6 +11,7 @@ export class SpotifyService {
 
     static async fetchEverything() {
         let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
+        console.log("OMER", playlists)
         store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
         store.commit("playlists", playlists);

@@ -5,93 +5,37 @@
                 <h1 class="text-center">Let's vibe with Metafy!</h1>
             </div>
         </div>
-        <div justify="center" class="mx-0">
-            <div cols="auto" class="playlist-container dark-background">
+        <div class="mx-0">
+            <div class="playlist-container dark-background">
                 <QuickTools/>
             </div>
         </div>
 
-        <div>
-            <div>
-                <h2 class="text-center">
-                    Your dynamic playlists
-                </h2>
-            </div>
-        </div>
-        <div>
-            <div class="playlist-container dark-background pa-0">
-                <div
-                    v-for="pl in $store.getters.getDynamicPlaylists()"
-                    :key="pl.id"
-                    @click="showPlaylistDetailDialog(pl)"
-                    class="dynamic-card"
-                >
-                    <div>
-                        {{ pl.tag }}
-                        <div outlined class="ml-1 small-chip">
-                            {{ pl.songs.length }}
-                        </div>
-                    </div>
-                    <div>
-                        <TagChip
-                            v-for="subpl in pl.subtags"
-                            :key="subpl.id"
-                            :playlist="subpl"
-                            :category="subpl.category"
-                        />
-                    </div>
-                </div>
-            </div>
+        <h2 class="text-center">Your dynamic playlists</h2>
+        <PlaylistContainer :playlists="$store.getters.getDynamicPlaylists()" />
+
+        <h2 class="text-center">Your tagged playlists</h2>
+        <div v-for="taggedPlaylists in $store.getters.getTaggedPlaylists()" :key="taggedPlaylists.category">
+            <h3 class="text-center">{{ taggedPlaylists.category }}</h3>
+            <PlaylistContainer :playlists="taggedPlaylists.playlists"/>
         </div>
 
-        <div>
-            <div>
-                <h2 class="text-center">Your tagged playlists</h2>
-            </div>
-        </div>
-        <div>
-            <div class="playlist-container dark-background">
-                <template v-for="tpl in $store.getters.getTaggedPlaylists()">
-                    <TagChip
-                        v-for="pl in tpl.playlists"
-                        :key="pl.id"
-                        :playlist="pl"
-                        :category="pl.category"
-                        @click.native="showPlaylistDetailDialog(pl)"
-                    />
-                </template>
-            </div>
-        </div>
-
-        <div>
-            <div>
-                <h2 class="text-center">Your untagged playlists</h2>
-            </div>
-        </div>
-        <div>
-            <div class="playlist-container dark-background">
-                <TagChip
-                    v-for="pl in $store.getters.getUntaggedPlaylists()"
-                    :key="pl.id"
-                    :playlist="pl"
-                    @click.native="showPlaylistDetailDialog(pl)"
-                />
-            </div>
-        </div>
+        <h2 class="text-center">Your untagged playlists</h2>
+        <PlaylistContainer :playlists="$store.getters.getUntaggedPlaylists()" />
 
         <div>
             <div>
                 <h2 class="text-center">Your Liked Songs</h2>
             </div>
         </div>
-        <div class="playlist-container dark-background fitcontent" justify="center">
-            <div cols="auto">
+        <div class="playlist-container dark-background fitcontent" >
+            <div>
                 <div label="Hide languages" />
             </div>
-            <div cols="auto">
+            <div >
                 <div label="Hide Genre"/>
             </div>
-            <div cols="auto">
+            <div >
                 <div label="Hide Mood" />
             </div>
         </div>
@@ -119,12 +63,12 @@ import store from "@/store/store";
 import {Playlist} from "@/models/Playlist";
 import PlayListDetailDialog from "@/components/PlaylistDetailDialog";
 import QuickTools from "@/components/QuickTools";
-import TagChip from "@/components/TagChip";
 import SongCard from "../components/SongCard";
+import PlaylistContainer from "../components/PlaylistContainer";
 
 export default {
     name: 'Home',
-    components: {SongCard, TagChip, QuickTools, PlayListDetailDialog},
+    components: {PlaylistContainer, SongCard, QuickTools, PlayListDetailDialog},
     data: () => ({
         createPlaylistDialog: false,
         createPlaylistDialogName: "",

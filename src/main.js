@@ -6,7 +6,7 @@ import router from './router/router'
 import store from './store/store'
 import axios from 'axios';
 import Notifications from 'vue-notification'
-import {SpotifyAuthService} from "@/spotify/spotifyAuthService";
+import {SpotifyAuthService} from "/src/spotify/spotifyAuthService";
 import './assets/tailwind.css'
 
 Vue.config.productionTip = false
