@@ -18,5 +18,6 @@ export class Song {
         if (track["external_urls"]) this.externalUrl = track["external_urls"]["spotify"]
         if (!track["external_urls"]) this.externalUrl = track.external_urls
         this.tags = store.getters.getTaggedTracksById(track.id)
+        this.img = track.album.images.length ? track.album.images.at(-1).url : null
     }
 }

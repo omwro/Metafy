@@ -130,6 +130,7 @@ export default new Vuex.Store({
             return taggedSongs
         },
         getTaggedTracksById: state => (id) => {
+            console.log(id, state.taggedTracks)
             return Object.prototype.hasOwnProperty.call(state.taggedTracks, id) ? state.taggedTracks[id] : null
         },
         // eslint-disable-next-line no-unused-vars

@@ -1,10 +1,15 @@
 <template>
-  <h1>Untagged</h1>
+  <div>
+      <h2 class="text-center">Your untagged playlists</h2>
+      <PlaylistContainer :playlists="$store.getters.getUntaggedPlaylists()"/>
+  </div>
 </template>
 
 <script>
+import PlaylistContainer from "../../components/PlaylistContainer";
 export default {
-  name: "Untagged"
+  name: "Untagged",
+    components: {PlaylistContainer}
 }
 </script>
 

@@ -1,61 +1,40 @@
 <template>
-  <div class="pa-0">
-    <v-navigation-drawer
-        permanent
-    >
-      <v-list
-          dense
-          rounded
-      >
-        <v-list-item @click="$router.push({name:'Dashboard'})">
-          <v-list-item-icon>
-            <div>mdi-view-dashboard</div>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Dashboard</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="$router.push({name:'Dynamics'})">
-          <v-list-item-icon>
-            <div>mdi-playlist-music</div>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Dynamics</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="$router.push({name:'Tagged'})">
-          <v-list-item-icon>
-            <div>mdi-playlist-music</div>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Tagged</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="$router.push({name:'Untagged'})">
-          <v-list-item-icon>
-            <div>mdi-playlist-music</div>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>Untagged</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <div>
-      <router-view></router-view>
+    <div class="flex flex-row">
+        <div class="w-24 bg-nav">
+            <div @click="$router.push({name:'Dashboard'})">
+                <div>mdi-view-dashboard</div>
+                <div>Dashboard</div>
+            </div>
+            <div @click="$router.push({name:'Dynamics'})">
+                <div>mdi-playlist-music</div>
+                <div>Dynamics</div>
+            </div>
+            <div @click="$router.push({name:'Tagged'})">
+                <div>mdi-playlist-music</div>
+                <div>Tagged</div>
+            </div>
+            <div @click="$router.push({name:'Untagged'})">
+                <div>mdi-playlist-music</div>
+                <div>Untagged</div>
+            </div>
+        </div>
+        <div class="w-full">
+            <router-view></router-view>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 
+import store from "../store/store";
+import Home from "/src/views/Home";
+
 export default {
-  name: 'DashboardMaster',
-  data: () => ({}),
-  created() {
-  },
-  methods: {}
+    name: 'DashboardMaster',
+    data: () => ({}),
+    async created() {
+        if (!store.getters.isLoggedIn()) await this.$router.push(Home);
+    }
 }
 </script>
 

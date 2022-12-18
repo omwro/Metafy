@@ -71,6 +71,7 @@ export default {
         },
         async logout() {
             await SpotifyAuthService.logout();
+            location.reload();
         },
         async refresh() {
             this.isRefreshing = true

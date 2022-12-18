@@ -8,6 +8,7 @@ import Dashboard from "@/views/Dashboard/Dashboard";
 import Dynamics from "@/views/Dashboard/Dynamics";
 import Tagged from "@/views/Dashboard/Tagged";
 import Untagged from "@/views/Dashboard/Untagged";
+import Playlist from "../views/Dashboard/Playlist";
 
 Vue.use(VueRouter)
 
@@ -51,8 +52,18 @@ const routes = [
         name: 'Untagged',
         component: Untagged
       },
+      {
+        path: '/dashboard/p/:id',
+        name: 'Playlist',
+        component: Playlist
+      },
     ]
   },
+  {
+    path: '*',
+    name: '404',
+    component: Home
+  }
 ]
 
 const router = new VueRouter({
