@@ -1,32 +1,34 @@
 <template>
-    <div class="flex flex-row flex-wrap gap-4">
-        <div
+    <div class="flex flex-row flex-wrap gap-4 justify-center">
+        <template v-if="liked">
+            <PlaylistCard id="liked"
+                          name="Liked Songs"
+                          img="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
+                          :songs="likedSongs" />
+        </template>
+        <PlaylistCard
             v-for="playlist in playlists"
             :key="playlist.id"
-            class="w-64 bg-block p-4 rounded-md flex flex-col gap-2 cursor-pointer	"
-            @click="$router.push({name: 'Playlist', params: {id: playlist.id}})"
-        >
-            <img :src="playlist.img" :alt="playlist.name" />
-            <div class="text-lg">{{ playlist.tag }}</div>
-            <div class="italic text-sm">Tracks count: {{ playlist.songs ? playlist.songs.length : 0 }}</div>
-            <div v-if="playlist.subtags" class="flex flex-row flex-wrap gap-1">
-                <TagChip
-                    v-for="subPlaylist in playlist.subtags"
-                    :key="subPlaylist.id"
-                    :playlist="subPlaylist"
-                    :category="subPlaylist.category"
-                />
-            </div>
-        </div>
+            :id="playlist.id"
+            :name="playlist.name"
+            :img="playlist.img"
+            :songs="likedSongs"
+            :subtags="playlist.subtags"/>
     </div>
 </template>
 
 <script>
-import TagChip from "./TagChip";
+import store from "/src/store/store";
+import PlaylistCard from "./PlaylistCard";
 export default {
     name: "PlaylistContainer",
-    components: {TagChip},
-    props: ['playlists']
+    components: {PlaylistCard},
+    props: ['playlists', 'liked'],
+    computed: {
+        likedSongs() {
+            return store.state.likedTracks
+        }
+    }
 }
 </script>
 

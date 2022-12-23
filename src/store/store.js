@@ -20,6 +20,7 @@ const getDefaultState = () => {
         expiresIn: moment(),
         user: null,
         playlists: [],
+        songs: [],
         likedTracks: [],
         taggedTracks: {},
         tags: []
@@ -59,6 +60,9 @@ export default new Vuex.Store({
         },
         playlists(state, value) {
             state.playlists = value;
+        },
+        songs(state, value) {
+            state.songs = value;
         },
         resetState(state) {
             Object.assign(state, getDefaultState())
@@ -113,9 +117,9 @@ export default new Vuex.Store({
             return state.playlists.filter(pl => pl.category === undefined)
         },
         // eslint-disable-next-line no-unused-vars
-        getTaggedSongs: state => getters => () => {
+        getTaggedSongs: state => (taggedPlaylists) => {
             let taggedSongs = {}
-            getters.getTaggedPlaylists()
+            taggedPlaylists
                 .forEach((cat) => {
                     cat.playlists.forEach((pl) => {
                         pl.songs.forEach((s) => {
@@ -130,14 +134,12 @@ export default new Vuex.Store({
             return taggedSongs
         },
         getTaggedTracksById: state => (id) => {
-            console.log(id, state.taggedTracks)
             return Object.prototype.hasOwnProperty.call(state.taggedTracks, id) ? state.taggedTracks[id] : null
         },
         // eslint-disable-next-line no-unused-vars
-        getTagsFromTaggedPlaylists: state => (getter) => {
+        getTagsFromTaggedPlaylists: state => (taggedPlaylists) => {
             const tagSet = new Set()
-            getter
-                .getTaggedPlaylists()
+            taggedPlaylists
                 .map((cat) => cat.playlists)
                 .flat()
                 .forEach((pl) => tagSet.add(new Tag(pl.category, pl.tag, pl.id)))

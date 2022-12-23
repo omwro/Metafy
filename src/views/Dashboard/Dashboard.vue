@@ -1,106 +1,35 @@
 <template>
-    <div>
-        <h1 class="text-center">Let's vibe with Metafy!</h1>
+    <section>
+        <div class="p-4">
+            <h1 class="text-center text-2xl mb-4">Let's vibe with Metafy!</h1>
 
-        <div class="mx-0">
-            <div class="playlist-container dark-background">
-                <QuickTools/>
+            <div class="mx-0">
+                <div class="playlist-container dark-background">
+                    <QuickTools/>
+                </div>
             </div>
+
         </div>
 
-        <h2 class="text-center">Your dynamic playlists</h2>
-        <PlaylistContainer :playlists="$store.getters.getDynamicPlaylists()"/>
+        <Dynamics/>
 
-        <h2 class="text-center">Your tagged playlists</h2>
-        <div v-for="taggedPlaylists in $store.getters.getTaggedPlaylists()" :key="taggedPlaylists.category">
-            <h3 class="text-center">{{ taggedPlaylists.category }}</h3>
-            <PlaylistContainer :playlists="taggedPlaylists.playlists"/>
-        </div>
+        <Tagged/>
 
-        <h2 class="text-center">Your untagged playlists</h2>
-        <PlaylistContainer :playlists="$store.getters.getUntaggedPlaylists()"/>
-
-        <div>
-            <div>
-                <h2 class="text-center">Your Liked Songs</h2>
-            </div>
-        </div>
-        <div class="playlist-container dark-background fitcontent">
-            <div>
-                <div label="Hide languages"/>
-            </div>
-            <div>
-                <div label="Hide Genre"/>
-            </div>
-            <div>
-                <div label="Hide Mood"/>
-            </div>
-        </div>
-        <div>
-            <div class="playlist-container dark-background max-height">
-                <SongCard
-                    v-for="lt in getFilteredLikedTracks()"
-                    :key="lt.id"
-                    :song="lt"
-                    tagged
-                />
-            </div>
-        </div>
-
-    </div>
+        <Untagged/>
+    </section>
 </template>
 
 <script>
-import store from "/src/store/store";
-import {Playlist} from "/src/models/Playlist";
 import QuickTools from "/src/components/QuickTools";
-import PlaylistContainer from "/src/components/PlaylistContainer";
-import SongCard from "/src/components/SongCard";
+import Dynamics from "./Dynamics";
+import Tagged from "./Tagged";
+import Untagged from "./Untagged";
 
 export default {
     name: "Dashboard",
-    components: {SongCard, PlaylistContainer, QuickTools},
+    components: {Untagged, Tagged, Dynamics, QuickTools},
     data: () => ({
-        createPlaylistDialog: false,
-        createPlaylistDialogName: "",
-        dialogTagToggle: true,
-        dialogOperatorToggle: false,
-        combination: [],
-        selectedPlaylist: undefined,
-        hidelang: false,
-        hidegenre: false,
-        hidemood: false
-    }),
-    methods: {
-        isLoggedIn() {
-            return store.getters.isLoggedIn();
-        },
-        isInstanceOfPlaylist(obj) {
-            return Playlist.isInstance(obj)
-        },
-        showPlaylistDetailDialog(playlist) {
-            this.$refs.playlistDetailDialog.playlist = playlist
-            this.$refs.playlistDetailDialog.dialog = true
-        },
-        getFilteredLikedTracks() {
-            return this.$store.state.likedTracks
-                .filter((lt) => {
-                    if (lt.tags === null) return true
-                    const categoryList = lt.tags.map((t) => t.category).flat()
-                    if (this.hidelang) {
-                        if (categoryList.includes("Language")) return false
-                    }
-                    if (this.hidegenre) {
-                        if (categoryList.includes("Genre")) return false
-                    }
-                    if (this.hidemood) {
-                        if (categoryList.includes("Mood")) return false
-                    }
-                    return true
-                })
-
-        }
-    }
+    })
 }
 </script>
 

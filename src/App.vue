@@ -1,19 +1,24 @@
 <template>
-    <main class="bg-main text-white">
-        <nav class="h-16 bg-nav flex flex-row justify-between">
+    <main class="text-white">
+        <nav class="h-16 bg-nav fixed w-full flex flex-row justify-between px-4 items-center">
             <h1 class="text-4xl" v-on:click="goToHome">Metafy</h1>
-            <div v-if="isLoggedIn()" class="text-center">
-                <small class="mr-1">{{ getRefreshedOn() }}</small>
-                <div @click="refresh" :disabled="isRefreshing">mdi-refresh</div>
+            <div v-if="isLoggedIn()" class="text-center flex flex-row items-center">
+                <div class="mr-2 flex flex-col">
+                    <small>Last refresh: </small>
+                    <small>{{ getRefreshedOn() }}</small>
+                </div>
+                <font-awesome-icon icon="fa-solid fa-rotate cursor-pointer"
+                                   @click="refresh"
+                                   :disabled="isRefreshing"/>
             </div>
-            <div class="text-right">
-                <button v-if="isLoggedIn()" v-on:click="logout">
+            <div>
+                <button v-if="isLoggedIn()" v-on:click="logout" class="text-right bg-block px-4 py-2 rounded hover:bg-light">
                     Hi
                     <template>
                         {{ getUser() ? getUser().display_name : "user" }}
                     </template>
                 </button>
-                <button v-else v-on:click="login">
+                <button v-else v-on:click="login" class="text-right bg-block px-4 py-2 rounded hover:bg-light">
                     Login
                     <template>
                         {{ " with Spotify" }}
@@ -24,20 +29,9 @@
 
         <notifications group="main" position="top center" style="top: 75px"/>
 
-        <div>
+        <div class="pt-16">
             <router-view/>
         </div>
-
-        <footer class="flex justify-between">
-            <div @click="goToGithub" class="cursor-pointer">
-                <div>mdi-github</div>
-                Github
-            </div>
-            <div @click="goToPortfolio" class="cursor-pointer">
-                <div>mdi-smart-card</div>
-                Portfolio
-            </div>
-        </footer>
     </main>
 </template>
 
@@ -85,7 +79,7 @@ export default {
             this.isRefreshing = false
         },
         getRefreshedOn() {
-            return store.state.refreshedOn ? moment(store.state.refreshedOn).format("DD-MM-yy HH:mm") : ""
+            return store.state.refreshedOn ? moment(store.state.refreshedOn).fromNow() : ""
         },
         goToGithub() {
             window.open("https://github.com/omwro/metafy-vue")
@@ -98,11 +92,7 @@ export default {
 </script>
 
 <style lang="scss">
-.spotify-text-color {
-    color: #1DB954 !important;
-}
-
-.cursor-pointer {
-    cursor: pointer;
+html, body {
+    @apply bg-main
 }
 </style>

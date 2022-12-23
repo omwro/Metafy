@@ -1,14 +1,18 @@
 <template>
-    <div>
-        <h1 class="text-2xl">{{playlist.name}}</h1>
-        <div class="flex flex-col">
+    <section class="p-4">
+        <h1 class="text-center text-2xl mb-4">{{playlist.name}}</h1>
+        <div v-if="playlist.songs && playlist.songs.length" class="flex flex-col">
             <SongCard
-                v-for="song in playlist.songs"
+                v-for="(song, index) in playlist.songs"
                 :key="song.id"
                 :song="song"
+                :index="index"
             />
         </div>
-    </div>
+        <div v-else>
+            <h2 class="text-xl text-center pt-8">No songs inside this playlist</h2>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -18,10 +22,18 @@ export default {
     name: "Playlist",
     components: {SongCard},
     data: () => ({
-        playlist: []
+        playlist: {}
     }),
     created() {
-        this.playlist = store.getters.getPlaylistFromId(this.$route.params.id)
+        if (this.$route.params.id === "liked") {
+            this.playlist = {
+                id: 0,
+                name: "Liked Songs",
+                songs: store.state.likedTracks
+            }
+        } else {
+            this.playlist = store.getters.getPlaylistFromId(this.$route.params.id)
+        }
     }
 }
 </script>

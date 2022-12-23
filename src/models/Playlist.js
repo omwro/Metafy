@@ -16,7 +16,8 @@ export class Playlist {
         this.subtags = []
         this.dependency = []
         this.songs = []
-        this.img = spotifyPlaylist.images.length ? spotifyPlaylist.images[0].url : null
+        this.totalSongs = spotifyPlaylist.tracks.total
+        this.img = spotifyPlaylist.images.length ? spotifyPlaylist.images.at(0).url : null
 
         this.convert()
     }

@@ -1,8 +1,8 @@
 <template>
-  <div>
-      <h2 class="text-center">Your dynamic playlists</h2>
+  <section class="p-4">
+      <h1 class="text-center text-2xl mb-4">Your dynamic playlists</h1>
       <PlaylistContainer :playlists="$store.getters.getDynamicPlaylists()"/>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -13,6 +13,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

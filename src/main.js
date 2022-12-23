@@ -7,10 +7,15 @@ import store from './store/store'
 import axios from 'axios';
 import Notifications from 'vue-notification'
 import {SpotifyAuthService} from "/src/spotify/spotifyAuthService";
-import './assets/tailwind.css'
+import './assets/tailwind.css';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faHouse, faBolt, faTag, faBarsStaggered, faRotate } from '@fortawesome/free-solid-svg-icons';
 
 Vue.config.productionTip = false
 Vue.use(Notifications)
+library.add(faHouse, faBolt, faTag, faBarsStaggered, faRotate)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.prototype.$audio = new Audio()
 

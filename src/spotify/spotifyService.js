@@ -11,8 +11,6 @@ export class SpotifyService {
 
     static async fetchEverything() {
         let playlists = await SpotifyRepository.fetchCurrentUserPlaylists();
-        console.log("OMER", playlists)
-        store.commit("playlists", playlists);
         playlists = playlists.map((playlist) => new Playlist(playlist))
         store.commit("playlists", playlists);
         playlists = await this.fetchPlaylistSongs(playlists)
@@ -22,12 +20,12 @@ export class SpotifyService {
         console.log("TPLS:", store.getters.getTaggedPlaylists())
         console.log("UTPLS:", store.getters.getUntaggedPlaylists())
         let likedTracks = await SpotifyRepository.fetchCurrentUserLikedTracks()
-        const taggedSongs = store.getters.getTaggedSongs(store.getters)
+        const taggedSongs = store.getters.getTaggedSongs(store.getters.getTaggedPlaylists())
         store.commit("taggedTracks", taggedSongs)
         likedTracks = likedTracks.map((song) => new Song(song))
         store.commit("likedTracks", likedTracks);
         console.log("LIKED:",likedTracks)
-        const tags = store.getters.getTagsFromTaggedPlaylists(store.getters)
+        const tags = store.getters.getTagsFromTaggedPlaylists(store.getters.getTaggedPlaylists())
         store.commit("tags", tags);
         console.log("TAGS:",tags)
         return playlists
