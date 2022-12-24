@@ -4,7 +4,7 @@
         @click="$router.push({name: 'Playlist', params: {id: id}})"
     >
         <div class="flex flex-row md:flex-col gap-4 md:gap-0">
-            <img :src="img ? img : require('@/assets/placeholder.png')" :alt="name" class="h-24 w-24 md:h-56 md:w-56 bg-light"/>
+            <img :src="image" :alt="name" class="h-24 w-24 md:h-56 md:w-56 bg-light"/>
             <div class="flex flex-col md:self-auto gap-3 md:gap-2 md:pt-2">
                 <div class="text-lg">{{ name }}</div>
                 <div class="italic text-sm">Tracks count: {{ songsCount }}</div>
@@ -31,6 +31,9 @@ export default {
     computed: {
         subPlaylists() {
             return this.subtags.map(playlistId => store.state.playlists[playlistId])
+        },
+        image() {
+            return this.img ? this.img : require("@/assets/placeholder.png")
         }
     }
 }

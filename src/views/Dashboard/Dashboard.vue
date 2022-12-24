@@ -1,20 +1,9 @@
 <template>
     <section>
-        <div class="p-4">
-            <h1 class="text-center text-2xl mb-4">Let's vibe with Metafy!</h1>
-
-            <div class="mx-0">
-                <div class="playlist-container dark-background">
-                    <QuickTools/>
-                </div>
-            </div>
-
-        </div>
-
+        <h1 class="text-center text-2xl p-4">Let's vibe with Metafy!</h1>
+        <QuickTools/>
         <Dynamics/>
-
         <Tagged/>
-
         <Untagged/>
     </section>
 </template>

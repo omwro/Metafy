@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home'
-import About from '@/views/About'
-import Callback from "@/views/Callback";
-import DashboardMaster from "@/views/DashboardMaster";
-import Dashboard from "@/views/Dashboard/Dashboard";
-import Dynamics from "@/views/Dashboard/Dynamics";
-import Tagged from "@/views/Dashboard/Tagged";
-import Untagged from "@/views/Dashboard/Untagged";
-import Playlist from "../views/Dashboard/Playlist";
+import Home from '/src/views/Home'
+import About from '/src/views/About'
+import Callback from "/src/views/Callback";
+import DashboardMaster from "/src/views/DashboardMaster";
+import Dashboard from "/src/views/Dashboard/Dashboard";
+import Dynamics from "/src/views/Dashboard/Dynamics";
+import Tagged from "/src/views/Dashboard/Tagged";
+import Untagged from "/src/views/Dashboard/Untagged";
+import Playlist from "/src/views/Dashboard/Playlist";
+import NewPlaylist from "/src/views/Dashboard/NewPlaylist";
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,11 @@ const routes = [
         path: '/dashboard/p/:id',
         name: 'Playlist',
         component: Playlist
+      },
+      {
+        path: '/dashboard/new',
+        name: 'NewPlaylist',
+        component: NewPlaylist
       },
     ]
   },

@@ -1,6 +1,6 @@
-import store from "@/store/store";
-import {Playlist} from "@/models/Playlist";
-import {addSongs, equalizeSongs, removeSongs} from "@/utilities/Combination";
+import store from "/src/store/store";
+import {Playlist} from "/src/models/Playlist";
+import {addSongs, equalizeSongs, removeSongs} from "/src/utilities/Combination";
 
 export const OPERATOR_REGEX = /[+|\-|=]+/g
 export const COMBINATION_REGEX = /([[:alnum:]]+|[+|\-|=]+)/g
@@ -43,19 +43,18 @@ export function getSongsFromDependencyList(dependencyList) {
     let songs = []
     let operator = null
     dependencyList.forEach((dep) => {
-        if (Playlist.isInstance(dep)) {
-            // Get the latest instance from the state
-            dep = store.state.playlists[dep.id]
+        if (store.state.playlists[dep]) {
+            const dependencySongs = store.state.playlists[dep].songs.map(songId => store.state.songs[songId])
             switch (operator){
                 case null:
                 case "+":
-                    songs = addSongs(songs, dep.songs)
+                    songs = addSongs(songs, dependencySongs)
                     break
                 case "-":
-                    songs = removeSongs(songs, dep.songs)
+                    songs = removeSongs(songs, dependencySongs)
                     break
                 case "=":
-                    songs = equalizeSongs(songs, dep.songs)
+                    songs = equalizeSongs(songs, dependencySongs)
                     break
             }
         } else {

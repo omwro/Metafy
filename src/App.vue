@@ -1,6 +1,6 @@
 <template>
     <main class="text-white">
-        <nav class="h-16 bg-nav fixed w-full flex flex-row justify-between px-4 items-center">
+        <nav class="h-16 bg-nav fixed w-full flex flex-row justify-between px-4 items-center z-10">
             <h1 class="text-4xl" v-on:click="goToHome">Metafy</h1>
             <div v-if="isLoggedIn()" class="text-center flex flex-row items-center">
                 <div class="mr-2 flex flex-col">

@@ -10,11 +10,12 @@ import {SpotifyAuthService} from "/src/spotify/spotifyAuthService";
 import './assets/tailwind.css';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHouse, faBolt, faTag, faBarsStaggered, faRotate } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faBolt, faTag, faBarsStaggered, faRotate, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 
 Vue.config.productionTip = false
 Vue.use(Notifications)
-library.add(faHouse, faBolt, faTag, faBarsStaggered, faRotate)
+library.add(faHouse, faBolt, faTag, faBarsStaggered, faRotate, faPlus, faSpotify)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.prototype.$audio = new Audio()

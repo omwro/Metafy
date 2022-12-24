@@ -68,7 +68,7 @@ export class SpotifyService {
     static async refreshDynamicPlaylistSongs(playlists) {
         const PLAYLIST_TRACK_FETCH_LIMIT = 100;
         for (let pl of playlists) {
-            const oldSongs = pl.songs
+            const oldSongs = pl.songs.map(songId => store.state.songs[songId])
 
             if (oldSongs.length) {
                 const oldSongUris = oldSongs.map((song) => {
@@ -80,9 +80,9 @@ export class SpotifyService {
                 }
             }
 
-            const newSongUris = getSongsFromDependencyList(pl.dependency)
-                .sort((a, b) => b.release_date.diff(a.release_date))
-                .map((song) => song.uri)
+            let newSongUris = getSongsFromDependencyList(pl.dependency)
+            newSongUris = newSongUris.sort((a, b) => b.release_date < a.release_date)
+            newSongUris = newSongUris.map((song) => song.uri)
             const slicedTrackUriArray = this.sliceArrayIntoChunks(newSongUris, PLAYLIST_TRACK_FETCH_LIMIT);
             for (const t of slicedTrackUriArray) {
                 await SpotifyRepository.addPlaylistTracks(pl.id, t);

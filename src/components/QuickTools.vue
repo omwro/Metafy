@@ -1,71 +1,32 @@
 <template>
-    <div class="pa-0">
-        <div>
-            <div cols="auto" class="py-0">
-                <div class="playlist-container-title dark-background">Quick tools</div>
+    <section class="p-4 flex justify-center relative">
+        <div class="absolute bg-block border rounded-xl px-2">Quick tools</div>
+        <div class="flex flex-row gap-4 bg-block w-max p-4 border rounded-xl mt-3 pt-6">
+            <a href="https://open.spotify.com/"
+               target="_blank"
+               rel="noopener"
+               class="flex flex-col text-center gap-1 cursor-pointer">
+                <font-awesome-icon icon="fa-brands fa-spotify" class="text-green" />
+                <small>Open Spotify</small>
+            </a>
+            <div class="flex flex-col text-center gap-1 cursor-pointer" @click="refreshDynamicPlaylists">
+                <font-awesome-icon icon="fa-solid fa-rotate" class="text-green" />
+                <small>Dynamify playlists</small>
+            </div>
+            <div class="flex flex-col text-center gap-1 cursor-pointer" @click="$router.push({name:'NewPlaylist'})">
+                <font-awesome-icon icon="fa-solid fa-plus" class="text-green" />
+                <small>New playlist</small>
             </div>
         </div>
-        <div justify="center">
-            <div cols="auto">
-                <div class="pa-1">
-                    <div cols="12" class="text-center pa-0">
-                        <div v-on:click="goToSpotify" class="spotify-text-color">
-                            mdi-spotify
-                        </div>
-                    </div>
-                    <div cols="12" class="pa-0 text-center">
-                        <small>Open Spotify</small>
-                    </div>
-                </div>
-            </div>
-            <div cols="auto">
-                <div class="pa-1">
-                    <div cols="12" class="text-center pa-0">
-                        <div
-                            color="primary"
-                            v-on:click="refreshDynamicPlaylists"
-                            :disabled="isRefreshingDynamics"
-                        >
-                            mdi-refresh
-                        </div>
-                    </div>
-                    <div cols="12" class="pa-0 text-center">
-                        <small>Refresh Dynamic playlist</small>
-                    </div>
-                </div>
-            </div>
-            <div cols="auto">
-                <div class="pa-1">
-                    <div cols="12" class="text-center pa-0">
-                        <div
-                            color="primary"
-                            v-on:click="showCreatePlaylistDialog"
-                        >
-                            mdi-plus
-                        </div>
-                    </div>
-                    <div cols="12" class="pa-0 text-center">
-                        <small>New Dynamic playlist</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <CreateDynamicPlaylistDialog ref="createDynamicPlaylistDialog" />
-    </div>
+    </section>
 </template>
 
 <script>
-import {SpotifyService} from "@/spotify/spotifyService";
-import store from "@/store/store";
-import CreateDynamicPlaylistDialog from "@/components/CreateDynamicPlaylistDialog";
+import {SpotifyService} from "/src/spotify/spotifyService";
+import store from "/src/store/store";
 
 export default {
     name: "QuickTools",
-    components: {CreateDynamicPlaylistDialog},
-    data: () => ({
-        isRefreshingDynamics: false
-    }),
     methods: {
         async fetchPlaylists() {
             await SpotifyService.fetchEverything()
@@ -77,7 +38,6 @@ export default {
             })
         },
         async refreshDynamicPlaylists() {
-            this.isRefreshingDynamics = true
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists());
             this.$notify({
                 group: 'main',
@@ -86,11 +46,8 @@ export default {
                 duration: 5000,
             })
             await this.fetchPlaylists();
-            this.isRefreshingDynamics = false
         },
-        showCreatePlaylistDialog() {
-            this.$refs.createDynamicPlaylistDialog.dialog = true
-        },
+
         goToSpotify() {
             window.open("https://open.spotify.com/")
         },

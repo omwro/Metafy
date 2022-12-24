@@ -33,6 +33,15 @@
                 </div>
                 <div class="hidden md:block">Untagged</div>
             </div>
+            <div class="border-t w-full border-gray-400"/>
+            <div @click="$router.push({name:'NewPlaylist'})"
+                 class="nav-item"
+                 :class="$route.name === 'NewPlaylist' ? 'active' : ''">
+                <div class="nav-item-icon">
+                    <font-awesome-icon icon="fa-solid fa-plus"/>
+                </div>
+                <div class="hidden md:block">New Playlist</div>
+            </div>
         </div>
         <div class="w-full pl-14 md:pl-48">
             <router-view></router-view>
