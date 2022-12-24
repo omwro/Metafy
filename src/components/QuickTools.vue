@@ -28,29 +28,18 @@ import store from "/src/store/store";
 export default {
     name: "QuickTools",
     methods: {
-        async fetchPlaylists() {
-            await SpotifyService.fetchEverything()
-            this.$notify({
-                group: 'main',
-                type: 'success',
-                title: "Your playlists are fetched.",
-                duration: 5000,
-            })
-        },
         async refreshDynamicPlaylists() {
+            store.commit("loading", true)
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists());
+            await SpotifyService.fetchEverything()
+            store.commit("loading", false)
             this.$notify({
                 group: 'main',
                 type: 'success',
                 title: "Your Dynamic playlists are refreshed.",
                 duration: 5000,
             })
-            await this.fetchPlaylists();
-        },
-
-        goToSpotify() {
-            window.open("https://open.spotify.com/")
-        },
+        }
     }
 }
 </script>

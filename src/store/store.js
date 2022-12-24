@@ -20,6 +20,7 @@ const getDefaultState = () => {
         user: null,
         playlists: [],
         songs: [],
+        loading: false
     }
 }
 
@@ -59,6 +60,9 @@ export default new Vuex.Store({
         },
         songs(state, value) {
             state.songs = value;
+        },
+        loading(state, value) {
+            state.loading = value;
         },
         resetState(state) {
             Object.assign(state, getDefaultState())

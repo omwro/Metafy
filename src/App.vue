@@ -32,6 +32,11 @@
         <div class="pt-16">
             <router-view/>
         </div>
+
+        <div class="h-full w-full fixed top-0 left-0 z-20 bg-black bg-opacity-70"
+             :class="$store.state.loading ? 'block' : 'hidden'">
+            <font-awesome-icon icon="fa-solid fa-spinner" class="w-16 h-16 fa-spin absolute top-1/2 left-1/2" />
+        </div>
     </main>
 </template>
 
@@ -68,25 +73,19 @@ export default {
             location.reload();
         },
         async refresh() {
-            this.isRefreshing = true
+            store.commit("loading", true)
             await SpotifyService.fetchEverything()
+            store.commit("loading", false)
             this.$notify({
                 group: 'main',
                 type: 'success',
                 title: "All data successfully fetched.",
                 duration: 5000,
             })
-            this.isRefreshing = false
         },
         getRefreshedOn() {
             return store.state.refreshedOn ? moment(store.state.refreshedOn).fromNow() : ""
-        },
-        goToGithub() {
-            window.open("https://github.com/omwro/metafy-vue")
-        },
-        goToPortfolio() {
-            window.open("https://omererdem.nl")
-        },
+        }
     }
 };
 </script>
