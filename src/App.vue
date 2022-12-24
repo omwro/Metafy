@@ -4,7 +4,7 @@
             <h1 class="text-4xl" v-on:click="goToHome">Metafy</h1>
             <div v-if="isLoggedIn()" class="text-center flex flex-row items-center">
                 <div class="mr-2 flex flex-col">
-                    <small>Last refresh: </small>
+                    <small>Last synchronize: </small>
                     <small>{{ getRefreshedOn() }}</small>
                 </div>
                 <font-awesome-icon icon="fa-solid fa-rotate cursor-pointer"

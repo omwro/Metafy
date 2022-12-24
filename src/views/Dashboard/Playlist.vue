@@ -1,6 +1,6 @@
 <template>
     <section class="p-4">
-        <h1 class="text-center text-2xl mb-4">{{playlist.name}}</h1>
+        <h1 class="text-center text-2xl mb-4">{{ playlist.name }}</h1>
         <div v-if="playlist.songs && playlist.songs.length" class="flex flex-col">
             <SongCard
                 v-for="(song, index) in playlist.songs"
@@ -18,6 +18,7 @@
 <script>
 import store from "/src/store/store";
 import SongCard from "../../components/SongCard";
+
 export default {
     name: "Playlist",
     components: {SongCard},
@@ -25,14 +26,13 @@ export default {
         playlist: {}
     }),
     created() {
-        if (this.$route.params.id === "liked") {
-            this.playlist = {
-                id: 0,
-                name: "Liked Songs",
-                songs: store.state.likedTracks
-            }
-        } else {
-            this.playlist = store.getters.getPlaylistFromId(this.$route.params.id)
+        const id = this.$route.params.id;
+        const playlist = store.state.playlists[id]
+        const songs = playlist.songs.map(songId => store.state.songs[songId])
+        this.playlist = {
+            id,
+            name: playlist.name,
+            songs
         }
     }
 }

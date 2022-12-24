@@ -7,13 +7,12 @@
             <img :src="img ? img : require('@/assets/placeholder.png')" :alt="name" class="h-24 w-24 md:h-56 md:w-56 bg-light"/>
             <div class="flex flex-col md:self-auto gap-3 md:gap-2 md:pt-2">
                 <div class="text-lg">{{ name }}</div>
-                <div class="italic text-sm">Tracks count: {{ songs ? songs.length : 0 }}</div>
-
+                <div class="italic text-sm">Tracks count: {{ songsCount }}</div>
             </div>
         </div>
         <div v-if="subtags && subtags.length" class="flex flex-row flex-wrap gap-1">
             <TagChip
-                v-for="subPlaylist in subtags"
+                v-for="subPlaylist in subPlaylists"
                 :key="subPlaylist.id"
                 :playlist="subPlaylist"
                 :category="subPlaylist.category"
@@ -24,10 +23,16 @@
 
 <script>
 import TagChip from "./TagChip";
+import store from "/src/store/store";
 export default {
     name: "PlaylistCard",
     components: {TagChip},
-    props: ["id", "name", "img", "songs", "subtags"]
+    props: ["id", "name", "img", "songsCount", "subtags"],
+    computed: {
+        subPlaylists() {
+            return this.subtags.map(playlistId => store.state.playlists[playlistId])
+        }
+    }
 }
 </script>
 

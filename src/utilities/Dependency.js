@@ -8,14 +8,14 @@ export const COMBINATION_REGEX = /([[:alnum:]]+|[+|\-|=]+)/g
 // Split the dependency string from "dwadwa+vrfrrdgdr" to a combined list like [Playlist, "+", Playlist]
 export function splitDependencyString(string) {
     return string.split(COMBINATION_REGEX)
-        .map((char) => {
-            if (!char.match(OPERATOR_REGEX)) {
-                const foundPlaylist = store.state.playlists.find((pl) => pl.id === char)
-                return foundPlaylist ? new Playlist(foundPlaylist) : null
-            }
-            return char
-        })
-        .filter((char) => char !== null)
+        // .map((char) => {
+        //     if (!char.match(OPERATOR_REGEX)) {
+        //         const foundPlaylist = Object.values(store.state.playlists).find((pl) => pl.id === char)
+        //         return foundPlaylist ? new Playlist(foundPlaylist) : null
+        //     }
+        //     return char
+        // })
+        // .filter((char) => char !== null)
 }
 
 // Make a string from the dependency list
@@ -31,11 +31,11 @@ export function getDependencyStringFromList(dependencyList) {
 // Split the dependency string from "dwadwa+vrfrrdgdr" to subtags like [Playlist, Playlist]
 export function getSubTagsFromDependencyString(string) {
     return string.split(OPERATOR_REGEX)
-        .map((id) => {
-            const foundPlaylist = store.state.playlists.find((pl) => pl.id === id)
-            return foundPlaylist ? new Playlist(foundPlaylist) : null
-        })
-        .filter((id) => id !== null)
+        // .map((id) => {
+        //     const foundPlaylist = Object.values(store.state.playlists).find((pl) => pl.id === id)
+        //     return foundPlaylist ? new Playlist(foundPlaylist) : null
+        // })
+        // .filter((id) => id !== null)
 }
 
 // Get songs based on the dependency list
@@ -45,7 +45,7 @@ export function getSongsFromDependencyList(dependencyList) {
     dependencyList.forEach((dep) => {
         if (Playlist.isInstance(dep)) {
             // Get the latest instance from the state
-            dep = store.getters.getPlaylistFromId(dep.id)
+            dep = store.state.playlists[dep.id]
             switch (operator){
                 case null:
                 case "+":

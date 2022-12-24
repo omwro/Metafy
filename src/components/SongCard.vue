@@ -8,20 +8,21 @@
                 <div class="text-md text-gray-300">{{ getArtistsString() }}</div>
             </div>
         </div>
-        <div v-if="$store.getters.getTaggedTracksById(song.id)" :key="key" class="flex flex-row flex-wrap gap-2">
-            <TagChip v-for="(t, i) in $store.getters.getTaggedTracksById(song.id)"
+        <div v-if="song.playlists" :key="key" class="flex flex-row flex-wrap gap-2">
+            <TagChip v-for="(playlist, i) in songPlaylists"
                      :key="i"
-                     :category="t.category"
-                     :playlist="{tag: t.tag}"/>
+                     :category="playlist.category"
+                     :playlist="{tag: playlist.tag}"/>
         </div>
     </div>
 </template>
 
 <script>
-import {Song} from "@/models/Song";
+import {Song} from "/src/models/Song";
 import Vue from "vue";
 import TagChip from "./TagChip";
-import {SpotifyService} from "@/spotify/spotifyService";
+import {SpotifyService} from "/src/spotify/spotifyService";
+import store from "../store/store";
 
 export default {
     name: 'SongCard',
@@ -33,6 +34,12 @@ export default {
     data: () => ({
         key: 0
     }),
+    computed: {
+        songPlaylists() {
+            return this.song.playlists
+                .map(playlistId => store.state.playlists[playlistId]);
+        }
+    },
     methods: {
         getArtistsString() {
             let string = ""

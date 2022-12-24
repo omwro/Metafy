@@ -1,7 +1,8 @@
 // This class is meant to cast the spotify class to our own to reduce data size
-import {CATEGORY_REGEX} from "@/spotify/spotifyService";
-import {DYNAMIC} from "@/store/store";
-import {getSubTagsFromDependencyString, splitDependencyString} from "@/utilities/Dependency";
+import {DYNAMIC} from "/src/store/store";
+import {getSubTagsFromDependencyString, splitDependencyString} from "/src/utilities/Dependency";
+
+const CATEGORY_REGEX = /\[.*?\]/g;
 
 export class Playlist {
     constructor(spotifyPlaylist) {
@@ -16,7 +17,7 @@ export class Playlist {
         this.subtags = []
         this.dependency = []
         this.songs = []
-        this.totalSongs = spotifyPlaylist.tracks.total
+        this.songsCount = spotifyPlaylist.tracks ? spotifyPlaylist.tracks.total : 0
         this.img = spotifyPlaylist.images.length ? spotifyPlaylist.images.at(0).url : null
 
         this.convert()
