@@ -1,6 +1,6 @@
 <template>
     <section class="p-4 flex flex-col gap-4 items-center mx-auto max-w-screen-sm 2xl:max-w-screen-xl">
-        <h1 class="text-center text-2xl">New Dynamic Playlist</h1>
+        <h1 class="text-center text-2xl">Edit Dynamic Playlist</h1>
         <div class="flex flex-col gap-8 w-full 2xl:flex-row">
             <div class="flex flex-col w-full gap-8 max-w-screen-sm">
                 <div class="flex flex-col gap-2">
@@ -75,7 +75,7 @@
                         class="rounded w-full py-4"
                         :class="allowCreatePlaylist ? 'bg-green' : 'bg-gray-500'"
                         :disabled="!allowCreatePlaylist" @click="createPlaylist">
-                    Create playlist
+                    Edit playlist
                 </button>
             </div>
             <div class="flex flex-col w-full gap-2 max-w-screen-sm" style="max-height: 900px">
@@ -104,7 +104,7 @@ import {SpotifyService} from "/src/spotify/spotifyService";
 import SongCard from "/src/components/SongCard";
 
 export default {
-    name: "NewPlaylist",
+    name: "EditPlaylist",
     components: {SongCard, PlaylistCard},
     data: () => ({
         dynamic: DYNAMIC,
@@ -112,21 +112,28 @@ export default {
         filter: "",
         combination: []
     }),
+    created() {
+        const id = this.$route.params.id;
+        const playlist = store.state.playlists[id]
+        this.name = playlist.tag
+        this.combination = playlist.dependency
+    },
     methods: {
         async createPlaylist() {
             store.commit("loading", true);
-            const newPlaylist = await SpotifyService.createPlaylist(
+            const editedPlaylist = await SpotifyService.editPlaylist(
+                this.$route.params.id,
                 `[${this.dynamic}] ${this.name}`,
                 getDependencyStringFromList(this.combination)
             )
             await SpotifyService.fetchEverything()
             await SpotifyService.refreshDynamicPlaylistSongs(store.getters.getDynamicPlaylists());
             store.commit("loading", false);
-            await this.$router.push({name: 'Playlist', params: {id: newPlaylist.id}})
+            await this.$router.push({name: 'Playlist', params: {id: editedPlaylist.id}})
             this.$notify({
                 group: 'main',
                 type: 'success',
-                title: "Your new playlist is created.",
+                title: "Your playlist is edited.",
                 duration: 5000,
             })
         }

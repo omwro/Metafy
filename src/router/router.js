@@ -10,6 +10,7 @@ import Tagged from "/src/views/Dashboard/Tagged";
 import Untagged from "/src/views/Dashboard/Untagged";
 import Playlist from "/src/views/Dashboard/Playlist";
 import NewPlaylist from "/src/views/Dashboard/NewPlaylist";
+import EditPlaylist from "../views/Dashboard/EditPlaylist";
 
 Vue.use(VueRouter)
 
@@ -62,6 +63,11 @@ const routes = [
         path: '/dashboard/new',
         name: 'NewPlaylist',
         component: NewPlaylist
+      },
+      {
+        path: '/dashboard/e/:id',
+        name: 'EditPlaylist',
+        component: EditPlaylist
       },
     ]
   },

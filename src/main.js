@@ -20,7 +20,8 @@ import {
     faSpinner,
     faArrowLeft,
     faMinus,
-    faEquals
+    faEquals,
+    faPencil,
 } from '@fortawesome/free-solid-svg-icons';
 import {faSpotify} from '@fortawesome/free-brands-svg-icons';
 
@@ -37,7 +38,8 @@ library.add(
     faSpinner,
     faArrowLeft,
     faMinus,
-    faEquals
+    faEquals,
+    faPencil
 )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

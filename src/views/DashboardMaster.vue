@@ -33,7 +33,7 @@
                 </div>
                 <div class="hidden md:block">Untagged</div>
             </div>
-            <div class="border-t w-full border-gray-400"/>
+            <div class="border-t w-full border-gray-600"/>
             <div @click="$router.push({name:'NewPlaylist'})"
                  class="nav-item"
                  :class="$route.name === 'NewPlaylist' ? 'active' : ''">
