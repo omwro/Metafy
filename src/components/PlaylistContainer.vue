@@ -3,11 +3,8 @@
         <PlaylistCard
             v-for="playlist in playlists"
             :key="playlist.id"
-            :id="playlist.id"
-            :name="playlist.name"
-            :img="playlist.img"
-            :songsCount="playlist.songsCount"
-            :subtags="playlist.subtags"/>
+            :playlist="playlist"
+            @click="$router.push({name: 'Playlist', params: {id: playlist.id}})"/>
     </div>
 </template>
 
