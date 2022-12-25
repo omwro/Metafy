@@ -1,5 +1,4 @@
 import store from "/src/store/store";
-import {Playlist} from "/src/models/Playlist";
 import {addSongs, equalizeSongs, removeSongs} from "/src/utilities/Combination";
 
 export const OPERATOR_REGEX = /[+|\-|=]+/g
@@ -22,8 +21,18 @@ export function splitDependencyString(string) {
 export function getDependencyStringFromList(dependencyList) {
     let string = ""
     dependencyList.forEach((dep) => {
-        if (Playlist.isInstance(dep)) string += dep.id
+        if (store.state.playlists[dep]) string += store.state.playlists[dep].id
         else string += dep
+    })
+    return string
+}
+
+export function getDependencyNamesFromList(dependencyList) {
+    let string = ""
+    dependencyList.forEach((dep) => {
+        if (store.state.playlists[dep]) string += store.state.playlists[dep].name
+        else string += dep
+        string += " "
     })
     return string
 }

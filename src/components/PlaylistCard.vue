@@ -1,16 +1,17 @@
 <template>
     <div
-        class="w-full md:w-64 bg-block p-4 rounded flex flex-col gap-3 cursor-pointer hover:bg-light"
-        @click="$router.push({name: 'Playlist', params: {id: id}})"
+        class="playlist-card w-full bg-block p-4 rounded flex flex-col gap-3 cursor-pointer hover:bg-light"
+        :class="forceMobileView ? 'mobile-view' : ''"
+        @click="$emit('click')"
     >
-        <div class="flex flex-row md:flex-col gap-4 md:gap-0">
-            <img :src="image" :alt="name" class="h-24 w-24 md:h-56 md:w-56 bg-light"/>
-            <div class="flex flex-col md:self-auto gap-3 md:gap-2 md:pt-2">
-                <div class="text-lg">{{ name }}</div>
-                <div class="italic text-sm">Tracks count: {{ songsCount }}</div>
+        <div class="playlist-card-top flex flex-row gap-4">
+            <img :src="image" :alt="playlist.name" class="h-24 w-24 bg-light"/>
+            <div class="flex flex-col gap-3">
+                <div class="text-lg">{{ playlist.name }}</div>
+                <div class="italic text-sm">Tracks count: {{ playlist.songsCount }}</div>
             </div>
         </div>
-        <div v-if="subtags && subtags.length" class="flex flex-row flex-wrap gap-1">
+        <div v-if="playlist.subtags && playlist.subtags.length" class="flex flex-row flex-wrap gap-1">
             <TagChip
                 v-for="subPlaylist in subPlaylists"
                 :key="subPlaylist.id"
@@ -27,18 +28,35 @@ import store from "/src/store/store";
 export default {
     name: "PlaylistCard",
     components: {TagChip},
-    props: ["id", "name", "img", "songsCount", "subtags"],
+    props: ["playlist", "forceMobileView"],
     computed: {
         subPlaylists() {
-            return this.subtags.map(playlistId => store.state.playlists[playlistId])
+            return this.playlist.subtags.map(playlistId => store.state.playlists[playlistId])
         },
         image() {
-            return this.img ? this.img : require("@/assets/placeholder.png")
+            return this.playlist.img ? this.playlist.img : require("@/assets/placeholder.png")
         }
     }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.playlist-card:not(.mobile-view) {
+    &.playlist-card {
+        @apply md:w-64
+    }
 
+    .playlist-card-top {
+        @apply md:flex-col md:gap-0;
+
+        > img {
+            @apply md:h-56 md:w-56
+        }
+
+        > div {
+            @apply md:self-auto md:gap-2 md:pt-2
+        }
+    }
+
+}
 </style>
