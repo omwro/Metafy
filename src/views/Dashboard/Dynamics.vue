@@ -1,13 +1,18 @@
 <template>
-  <h1>Dynamics</h1>
+  <section class="p-4">
+      <h1 class="text-center text-2xl mb-4">Your dynamic playlists</h1>
+      <PlaylistContainer :playlists="$store.getters.getDynamicPlaylists()"/>
+  </section>
 </template>
 
 <script>
+import PlaylistContainer from "/src/components/PlaylistContainer";
 export default {
-  name: "Dynamics"
+  name: "Dynamics",
+    components: {PlaylistContainer}
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

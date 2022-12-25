@@ -4,7 +4,7 @@
 
 <script>
 import {SpotifyAuthService} from "@/spotify/spotifyAuthService.js";
-import store from "@/store/store";
+import store from "/src/store";
 import Home from "@/views/Home";
 import {SpotifyService} from "@/spotify/spotifyService";
 

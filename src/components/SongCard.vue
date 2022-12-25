@@ -1,79 +1,45 @@
 <template>
-    <v-card class="song-card">
-        <v-row class="ma-0 mb-2 pa-1">
-            <v-col>
-                <v-card-title class="pa-2">
-                    {{ song.name }}
-                </v-card-title>
-                <v-card-text class="pa-0">
-                    <v-row class="ma-0">
-                        <v-col cols="12" class="px-2 py-1">
-                            {{ getArtistsString() }}
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <template v-if="tagged">
-                    <v-row class="pt-2" :key="key">
-                        <v-col v-for="(t, i) in $store.getters.getTaggedTracksById(song.id)"
-                               :key="i"
-                               cols="auto"
-                               class="pa-1"
-                        >
-                            <tag-chip :category="t.category" :playlist="{tag: t.tag}"/>
-                        </v-col>
-                        <v-col class="pa-1" cols="auto">
-                            <v-autocomplete :items="$store.getters.getSelectTags()"
-                                      item-text="text"
-                                      item-value="value"
-                                      @change="onTagSelect"
-                                      solo/>
-                        </v-col>
-                    </v-row>
-                </template>
-            </v-col>
-            <v-col cols="auto">
-                <v-col class="pa-1">
-                    <v-icon
-                        small
-                        style="margin-bottom: auto"
-                        @click="redirect"
-                    >
-                        mdi-spotify
-                    </v-icon>
-                </v-col>
-                <v-col class="pa-1" v-if="song.preview_url">
-                    <v-icon
-                        small
-                        style="margin-bottom: auto"
-                        @click="play"
-                    >
-                        mdi-play
-                    </v-icon>
-                </v-col>
-            </v-col>
-        </v-row>
-    </v-card>
+    <div class="flex flex-col gap-2 p-2 rounded hover:bg-block">
+        <div class="flex flex-row gap-4">
+            <div class="self-center w-6 text-center text-gray-300">{{ index + 1 }}</div>
+            <img :src="song.img" :alt="song.name" class="h-16 w-16">
+            <div class="flex flex-col self-center">
+                <div class="text-lg">{{ song.name }}</div>
+                <div class="text-md text-gray-300">{{ getArtistsString() }}</div>
+            </div>
+        </div>
+        <div v-if="song.playlists" :key="key" class="flex flex-row flex-wrap gap-2">
+            <TagChip v-for="(playlist, i) in songPlaylists"
+                     :key="i"
+                     :category="playlist.category"
+                     :playlist="{tag: playlist.tag}"/>
+        </div>
+    </div>
 </template>
 
 <script>
-import {Song} from "@/models/Song";
+import {Song} from "/src/models/Song";
 import Vue from "vue";
 import TagChip from "./TagChip";
-import {SpotifyService} from "@/spotify/spotifyService";
+import {SpotifyService} from "/src/spotify/spotifyService";
+import store from "/src/store";
 
 export default {
     name: 'SongCard',
     components: {TagChip},
     props: {
         song: [Song, Object],
-        tagged: {
-            type: Boolean,
-            required: false
-        }
+        index: Number
     },
     data: () => ({
         key: 0
     }),
+    computed: {
+        songPlaylists() {
+            return this.song.playlists
+                .map(playlistId => store.state.playlists[playlistId]);
+        }
+    },
     methods: {
         getArtistsString() {
             let string = ""
@@ -112,7 +78,4 @@ export default {
 </script>
 
 <style lang="scss">
-.song-card {
-    background-color: #333333 !important;
-}
 </style>

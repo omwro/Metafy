@@ -1,25 +1,22 @@
 <template>
-    <v-chip
-        class="playlist-chip pa-0"
-        :label="isOperator"
-    >
-        <v-chip v-if="category" :style="getColor()">
+    <div class="border rounded-2xl overflow-hidden border-green flex flex-row w-min">
+        <div v-if="category" class="bg-green rounded-2xl whitespace-nowrap px-2 pb-0.5 text-xs">
             {{ category }}
-        </v-chip>
-        <template v-if="playlist">
-            <v-chip v-if="playlist.tag">
+        </div>
+        <div v-if="playlist" class="whitespace-nowrap px-2 pb-0.5 text-xs">
+            <template v-if="playlist.tag">
                 {{ playlist.tag }}
-            </v-chip>
-            <v-chip v-else-if="isOperator">
+            </template>
+            <template v-else-if="isOperator">
                 {{ playlist }}
-            </v-chip>
-        </template>
-    </v-chip>
+            </template>
+        </div>
+    </div>
 </template>
 
 <script>
 import {Playlist} from "@/models/Playlist";
-import store, {DYNAMIC} from "@/store/store";
+import store, {DYNAMIC} from "/src/store";
 
 export default {
     name: "TagChip",
