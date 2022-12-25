@@ -1,5 +1,5 @@
 // This class is meant to cast the spotify class to our own to reduce data size
-import {DYNAMIC} from "/src/store/store";
+import {DYNAMIC} from "/src/store";
 import {getSubTagsFromDependencyString, splitDependencyString} from "/src/utilities/Dependency";
 
 const CATEGORY_REGEX = /\[.*?\]/g;

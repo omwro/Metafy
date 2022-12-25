@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import store, {DYNAMIC} from "/src/store/store";
+import store, {DYNAMIC} from "/src/store";
 import {
     getDependencyNamesFromList,
     getDependencyStringFromList,
@@ -149,7 +149,7 @@ export default {
 
         },
         allowCreatePlaylist() {
-            return this.combination.length >= 3 &&
+            return this.combination.length >= 1 &&
                 this.combination.length <= 25 &&
                 this.combination.length % 2 === 1 &&
                 this.name !== ""

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import store from "@/store/store";
+import store from "/src/store";
 import moment from "moment";
 
 export class SpotifyAuthService {

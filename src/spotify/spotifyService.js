@@ -1,4 +1,4 @@
-import store from "/src/store/store";
+import store from "/src/store";
 import {SpotifyRepository} from "/src/spotify/spotifyRepository";
 import {Playlist} from "/src/models/Playlist";
 import {Song} from "/src/models/Song";

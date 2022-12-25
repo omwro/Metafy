@@ -1,4 +1,4 @@
-import store from "/src/store/store";
+import store from "/src/store";
 import {addSongs, equalizeSongs, removeSongs} from "/src/utilities/Combination";
 
 export const OPERATOR_REGEX = /[+|\-|=]+/g

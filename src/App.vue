@@ -42,7 +42,7 @@
 
 <script>
 import moment from "moment";
-import store from "/src/store/store";
+import store from "/src/store";
 import Home from "/src/views/Home";
 import {SpotifyAuthService} from "/src/spotify/spotifyAuthService.js";
 import {SpotifyService} from "/src/spotify/spotifyService";

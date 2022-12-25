@@ -16,7 +16,7 @@
 
 <script>
 import {Playlist} from "@/models/Playlist";
-import store, {DYNAMIC} from "@/store/store";
+import store, {DYNAMIC} from "/src/store";
 
 export default {
     name: "TagChip",

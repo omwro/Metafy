@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import store, {DYNAMIC} from "/src/store/store";
+import store, {DYNAMIC} from "/src/store";
 import SongCard from "/src/components/SongCard";
 
 export default {

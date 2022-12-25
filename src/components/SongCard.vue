@@ -22,7 +22,7 @@ import {Song} from "/src/models/Song";
 import Vue from "vue";
 import TagChip from "./TagChip";
 import {SpotifyService} from "/src/spotify/spotifyService";
-import store from "../store/store";
+import store from "/src/store";
 
 export default {
     name: 'SongCard',

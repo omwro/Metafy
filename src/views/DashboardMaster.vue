@@ -51,7 +51,7 @@
 
 <script>
 
-import store from "../store/store";
+import store from "/src/store";
 import Home from "/src/views/Home";
 
 export default {

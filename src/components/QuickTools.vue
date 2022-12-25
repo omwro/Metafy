@@ -23,7 +23,7 @@
 
 <script>
 import {SpotifyService} from "/src/spotify/spotifyService";
-import store from "/src/store/store";
+import store from "/src/store";
 
 export default {
     name: "QuickTools",

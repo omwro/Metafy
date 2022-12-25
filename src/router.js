@@ -10,7 +10,7 @@ import Tagged from "/src/views/Dashboard/Tagged";
 import Untagged from "/src/views/Dashboard/Untagged";
 import Playlist from "/src/views/Dashboard/Playlist";
 import NewPlaylist from "/src/views/Dashboard/NewPlaylist";
-import EditPlaylist from "../views/Dashboard/EditPlaylist";
+import EditPlaylist from "./views/Dashboard/EditPlaylist";
 
 Vue.use(VueRouter)
 

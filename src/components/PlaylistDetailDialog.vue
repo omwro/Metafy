@@ -94,7 +94,7 @@
 import SongCard from "@/components/SongCard";
 import {Playlist} from "@/models/Playlist";
 import EditDynamicPlaylistDialog from "@/components/EditDynamicPlaylistDialog";
-import {DYNAMIC} from "@/store/store";
+import {DYNAMIC} from "/src/store";
 import {SpotifyService} from "@/spotify/spotifyService";
 import TagChip from "@/components/TagChip";
 

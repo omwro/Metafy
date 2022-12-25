@@ -24,7 +24,7 @@
 
 <script>
 import TagChip from "./TagChip";
-import store from "/src/store/store";
+import store from "/src/store";
 export default {
     name: "PlaylistCard",
     components: {TagChip},
