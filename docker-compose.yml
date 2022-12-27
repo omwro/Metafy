@@ -1,9 +1,19 @@
-version: '3'
+version: "3.7"
 
 services:
-  metafy:
-    image: metafy
+  frontend:
+    container_name: metafy-vue
+    build: .
+    networks:
+      - proxy
+      - default
+    restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.metafy.entrypoints=http"
-      - "traefik.http.routers.metafy.rule=Host(`metafy.omererdem.nl`)"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.metafy-secure.entrypoints=websecure"
+      - "traefik.http.routers.metafy-secure.rule=Host(`www.metafy.omererdem.nl`, `metafy.omererdem.nl`)"
+
+networks:
+  proxy:
+    external: true
