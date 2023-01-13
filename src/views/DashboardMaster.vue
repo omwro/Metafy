@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row">
-        <div class="flex flex-col bg-nav p-4 gap-4 w-14 md:w-48 fixed h-full">
+        <div class="flex flex-col bg-nav p-4 pb-20 gap-4 w-14 md:w-48 fixed h-full">
             <div @click="$router.push({name:'Dashboard'})"
                  class="nav-item"
                  :class="$route.name === 'Dashboard' ? 'active' : ''">
@@ -42,6 +42,13 @@
                 </div>
                 <div class="hidden md:block">New Playlist</div>
             </div>
+            <div @click="toggleEditorMode"
+                 class="nav-item mt-auto">
+                <div class="nav-item-icon">
+                    <font-awesome-icon icon="fa-solid fa-pencil" :class="editorMode ? 'text-green' : ''"/>
+                </div>
+                <div class="hidden md:block" :class="editorMode ? 'text-green' : ''">Editor Mode</div>
+            </div>
         </div>
         <div class="w-full pl-14 md:pl-48">
             <router-view></router-view>
@@ -59,6 +66,16 @@ export default {
     data: () => ({}),
     async created() {
         if (!store.getters.isLoggedIn()) await this.$router.push(Home);
+    },
+    computed: {
+        editorMode() {
+            return store.state.editorMode
+        }
+    },
+    methods: {
+        toggleEditorMode() {
+            store.commit('editorMode', !store.state.editorMode)
+        }
     }
 }
 </script>

@@ -1,14 +1,14 @@
 <template>
-    <section class="p-4">
+    <section class="py-4 md:p-4">
         <h1 class="text-center text-2xl mb-4">
             {{ playlist.name }}
             <font-awesome-icon v-if="playlist.category === dynamic" icon="fa-solid fa-pencil"
                                class="h-4 w-4 p-1 bg-green rounded cursor-pointer"
                                @click="$router.push({name: 'EditPlaylist', params: {id: playlist.id}})"/>
         </h1>
-        <div v-if="playlist.songs && playlist.songs.length" class="flex flex-col">
+        <div v-if="songs && songs.length" class="flex flex-col">
             <SongCard
-                v-for="(song, index) in playlist.songs"
+                v-for="(song, index) in songs"
                 :key="song.id"
                 :song="song"
                 :index="index"
@@ -28,18 +28,18 @@ export default {
     name: "Playlist",
     components: {SongCard},
     data: () => ({
-        playlist: {},
+        playlistId: null,
         dynamic: DYNAMIC
     }),
     created() {
-        const id = this.$route.params.id;
-        const playlist = store.state.playlists[id]
-        const songs = playlist.songs.map(songId => store.state.songs[songId])
-        this.playlist = {
-            id,
-            name: playlist.name,
-            category: playlist.category,
-            songs
+        this.playlistId = this.$route.params.id;
+    },
+    computed: {
+        playlist() {
+            return store.state.playlists[this.playlistId]
+        },
+        songs() {
+            return this.playlist.songs.map(songId => store.state.songs[songId])
         }
     }
 }

@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       colors: {
         'green': '#1DB954',
+        'red': '#DC2626',
       },
       backgroundColor: {
         'main': '#181818',
@@ -16,11 +17,12 @@ module.exports = {
   plugins: [],
   variants: {
     extend: {
-      textColor: ['active']
+      textColor: ['active'],
+      backgroundColor: ['hover'],
     }
   },
   purge: {
-    enabled: true,
+    enabled: false,
     content: ['./public/**/*.html', './src/**/*.{vue,js,ts,jsx,tsx}']
   }
 }

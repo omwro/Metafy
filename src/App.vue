@@ -37,6 +37,7 @@
              :class="$store.state.loading ? 'block' : 'hidden'">
             <font-awesome-icon icon="fa-solid fa-spinner" class="w-16 h-16 fa-spin absolute top-1/2 left-1/2" />
         </div>
+        <Confirm/>
     </main>
 </template>
 
@@ -46,9 +47,11 @@ import store from "/src/store";
 import Home from "/src/views/Home";
 import {SpotifyAuthService} from "/src/spotify/spotifyAuthService.js";
 import {SpotifyService} from "/src/spotify/spotifyService";
+import Confirm from "/src/components/overlays/Confirm";
 
 export default {
     name: 'App',
+    components: {Confirm},
     data: () => ({
         isRefreshing: false
     }),

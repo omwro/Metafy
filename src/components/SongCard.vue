@@ -8,11 +8,14 @@
                 <div class="text-md text-gray-300">{{ getArtistsString() }}</div>
             </div>
         </div>
-        <div v-if="song.playlists" :key="key" class="flex flex-row flex-wrap gap-2">
+        <div v-if="song.playlists || editable" :key="key" class="flex flex-row flex-wrap gap-2">
             <TagChip v-for="(playlist, i) in songPlaylists"
                      :key="i"
                      :category="playlist.category"
-                     :playlist="{tag: playlist.tag}"/>
+                     :playlist="{tag: playlist.tag}"
+                     :removable="editable"
+                     @click-remove="removePlaylist(playlist)"/>
+            <TagChip v-if="editable" :creatable="editable"/>
         </div>
     </div>
 </template>
@@ -23,6 +26,7 @@ import Vue from "vue";
 import TagChip from "./TagChip";
 import {SpotifyService} from "/src/spotify/spotifyService";
 import store from "/src/store";
+import {Action} from "/src/models/Action";
 
 export default {
     name: 'SongCard',
@@ -38,6 +42,9 @@ export default {
         songPlaylists() {
             return this.song.playlists
                 .map(playlistId => store.state.playlists[playlistId]);
+        },
+        editable() {
+            return store.state.editorMode
         }
     },
     methods: {
@@ -50,6 +57,14 @@ export default {
                 string += artist.name
             })
             return string
+        },
+        removePlaylist(playlist) {
+            store.commit("confirmAction", new Action(
+                'REMOVE',
+                this.song,
+                playlist,
+                `Are you sure, you would like to remove the song '${this.song.name}' from the playlist '${playlist.name}'?`
+            ));
         },
         redirect() {
             window.open(this.song.externalUrl)

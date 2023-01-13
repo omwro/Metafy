@@ -1,9 +1,10 @@
 <template>
     <div class="border rounded-2xl overflow-hidden border-green flex flex-row w-min">
-        <div v-if="category" class="bg-green rounded-2xl whitespace-nowrap px-2 pb-0.5 text-xs">
+        <div v-if="category" class="bg-green rounded-2xl whitespace-nowrap px-2 pb-0.5"
+             :class="editable ? 'text-md' : 'text-xs'">
             {{ category }}
         </div>
-        <div v-if="playlist" class="whitespace-nowrap px-2 pb-0.5 text-xs">
+        <div v-if="playlist" class="whitespace-nowrap px-2 pb-0.5"  :class="editable ? 'text-md' : 'text-xs'">
             <template v-if="playlist.tag">
                 {{ playlist.tag }}
             </template>
@@ -11,12 +12,23 @@
                 {{ playlist }}
             </template>
         </div>
+        <div v-if="removable"
+             class="text-red px-2 cursor-pointer border-l border-green hover:bg-red hover:text-white"
+             :class="editable ? 'text-md' : 'text-xs'"
+             @click="$emit('click-remove')">
+            <font-awesome-icon icon="fa-solid fa-minus"/>
+        </div>
+        <div v-if="creatable"
+             class="text-green px-2 cursor-pointer border-l border-green hover:bg-green hover:text-white"
+             :class="editable ? 'text-md' : 'text-xs'">
+            <font-awesome-icon icon="fa-solid fa-plus"/>
+        </div>
     </div>
 </template>
 
 <script>
-import {Playlist} from "@/models/Playlist";
-import store, {DYNAMIC} from "/src/store";
+import {Playlist} from "/src/models/Playlist";
+import store from "/src/store";
 
 export default {
     name: "TagChip",
@@ -30,46 +42,26 @@ export default {
         isOperator: {
             type: Boolean,
             default: false
+        },
+        removable: {
+            type: Boolean,
+            default: false
+        },
+        creatable: {
+            type: Boolean,
+            default: false
         }
     },
-    data: () => ({
-        colors: [
-            "#E53935",
-            "#1E88E5",
-            "#00ACC1",
-            "#43A047",
-            "#FB8C00",
-            "#5E35B1",
-            "#D81B60",
-            "#6D4C41",
-            "#546E7A",
-            "#757575",
-            "#B71C1C",
-            "#0D47A1",
-            "#006064",
-            "#1B5E20",
-            "#E65100",
-            "#311B92",
-            "#880E4F",
-            "#3E2723",
-            "#263238",
-            "#212121",
-        ]
-    }),
-    methods: {
-        getColor() {
-            if (this.category === DYNAMIC) {
-                return "background: linear-gradient(135deg, rgba(25,118,210,0.9) 0%, rgba(29,185,84,0.9) 100%)"
-            }
-            const index = store.getters.getTaggedPlaylists().map((c) => c.category).indexOf(this.category)
-            if (index >= 0) {
-                return `background: ${this.colors[index % 20]}`
-            }
+    computed: {
+        editable() {
+            return store.state.editorMode
         }
     }
 }
 </script>
 
 <style scoped>
-
+.border-l {
+    border-left-width: 1px;
+}
 </style>

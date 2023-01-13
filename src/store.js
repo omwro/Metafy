@@ -20,7 +20,9 @@ const getDefaultState = () => {
         user: null,
         playlists: [],
         songs: [],
-        loading: false
+        loading: false,
+        editorMode: false,
+        confirmAction: null,
     }
 }
 
@@ -67,6 +69,12 @@ export default new Vuex.Store({
         resetState(state) {
             Object.assign(state, getDefaultState())
         },
+        editorMode(state, value) {
+            state.editorMode = value;
+        },
+        confirmAction(state, value) {
+            state.confirmAction = value;
+        },
     },
     getters: {
         isLoggedIn: state => () => {
@@ -95,6 +103,21 @@ export default new Vuex.Store({
         getUntaggedPlaylists: state => () => {
             return Object.values(state.playlists).filter(pl => pl.category === undefined)
         },
+    },
+    actions: {
+        removeSongTag(state, value) {
+            const songId = value[0]
+            const playlistId = value[1]
+
+            let newSongs = state.state.songs
+            let newPlaylists = state.state.playlists
+
+            newSongs[songId].playlists = newSongs[songId].playlists.filter(playlist => playlist !== playlistId)
+            newPlaylists[playlistId].songs = newPlaylists[playlistId].songs.filter(song => song !== songId)
+
+            state.commit("songs", newSongs)
+            state.commit("playlists", newPlaylists)
+        }
     },
     modules: {}
 })

@@ -114,6 +114,10 @@ export class SpotifyService {
     static async addSongToPlaylist(song, tag) {
         await SpotifyRepository.addPlaylistTracks(tag.playlistid, [song.uri]);
         await store.commit("addSongTag", [song, tag])
+    }
 
+    static async removeSongToPlaylist(song, playlist) {
+        await SpotifyRepository.deletePlaylistTracks(playlist.id, [{'uri': song.uri}]);
+        await store.dispatch("removeSongTag", [song.id, playlist.id])
     }
 }
