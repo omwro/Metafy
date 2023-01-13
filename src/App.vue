@@ -38,6 +38,7 @@
             <font-awesome-icon icon="fa-solid fa-spinner" class="w-16 h-16 fa-spin absolute top-1/2 left-1/2" />
         </div>
         <Confirm/>
+        <AddSongPlaylist/>
     </main>
 </template>
 
@@ -48,10 +49,11 @@ import Home from "/src/views/Home";
 import {SpotifyAuthService} from "/src/spotify/spotifyAuthService.js";
 import {SpotifyService} from "/src/spotify/spotifyService";
 import Confirm from "/src/components/overlays/Confirm";
+import AddSongPlaylist from "./components/overlays/AddSongPlaylist";
 
 export default {
     name: 'App',
-    components: {Confirm},
+    components: {AddSongPlaylist, Confirm},
     data: () => ({
         isRefreshing: false
     }),

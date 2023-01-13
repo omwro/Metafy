@@ -20,7 +20,8 @@
         </div>
         <div v-if="creatable"
              class="text-green px-2 cursor-pointer border-l border-green hover:bg-green hover:text-white"
-             :class="editable ? 'text-md' : 'text-xs'">
+             :class="editable ? 'text-md' : 'text-xs'"
+             @click="$emit('click-add')">
             <font-awesome-icon icon="fa-solid fa-plus"/>
         </div>
     </div>

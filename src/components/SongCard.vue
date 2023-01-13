@@ -15,7 +15,9 @@
                      :playlist="{tag: playlist.tag}"
                      :removable="editable"
                      @click-remove="removePlaylist(playlist)"/>
-            <TagChip v-if="editable" :creatable="editable"/>
+            <TagChip v-if="editable"
+                     :creatable="editable"
+                     @click-add="addPlaylist"/>
         </div>
     </div>
 </template>
@@ -64,6 +66,13 @@ export default {
                 this.song,
                 playlist,
                 `Are you sure, you would like to remove the song '${this.song.name}' from the playlist '${playlist.name}'?`
+            ));
+        },
+        addPlaylist() {
+            store.commit("songAction", new Action(
+                'ADD',
+                this.song,
+                null,
             ));
         },
         redirect() {
